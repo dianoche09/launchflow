@@ -1,18 +1,18 @@
-import { SubmissionStatus } from '@/types'
+import { SubmissionStatus } from '@/types';
 
 export function SubmissionStatusBadge({ status }: { status: SubmissionStatus }) {
     const styles: Record<SubmissionStatus, string> = {
-        pending: 'bg-gray-100 text-gray-800',
-        queued: 'bg-blue-100 text-blue-800',
-        submitted: 'bg-yellow-100 text-yellow-800',
-        approved: 'bg-green-100 text-green-800',
-        rejected: 'bg-red-100 text-red-800',
-        failed: 'bg-red-100 text-red-800',
-    }
+        pending: 'bg-muted text-muted-foreground border-muted-foreground/30',
+        queued: 'bg-blue-500/10 text-blue-500 border-blue-500/30',
+        submitted: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30',
+        approved: 'bg-primary/20 text-primary border-primary/50',
+        rejected: 'bg-red-500/10 text-red-500 border-red-500/30',
+        failed: 'bg-red-500/10 text-red-500 border-red-500/30',
+    };
 
     return (
-        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${styles[status]}`}>
-            {status.toUpperCase()}
+        <span className={`px-3 py-1 border text-[10px] font-black uppercase tracking-widest ${styles[status]}`}>
+            {status.toUpperCase().replace('_', ' ')}
         </span>
-    )
+    );
 }

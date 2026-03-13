@@ -160,3 +160,34 @@
 - Build completed. Ready for production integrations.
 
 ---
+
+## 2026-03-13 — UI Redesign: Technical Brutalist (90/10)
+**Phase:** 4.1 — Visual Excellence
+**Task:** Redesign all screens to Technical Brutalist style
+**Status:** Done
+
+### What was done
+- Abandoned generic "Modern SaaS" aesthetic in favor of a "Technical Brutalist" (90/10 Asymmetry) design.
+- Implemented **Acid Green (`#BFFF00`)** accents against a **Pitch Black (`#050505`)** background.
+- Enforced **0px-2px sharp edges** across all components (buttons, inputs, cards, tables).
+- Redesigned the Landing Page with massive typography and high-velocity motion reveals.
+- Redesigned the Dashboard Control Terminal with data-heavy, mono-font aesthetics and staggered project list animations.
+- Updated the Login Terminal and Project Registration Seq to follow the aggressive, high-contrast visual identity.
+
+### Files created/modified
+- `src/app/globals.css` — Redefined design tokens and CSS variables.
+- `src/app/page.tsx` — Brutalist Landing Page.
+- `src/app/dashboard/page.tsx` — Control Terminal Dashboard.
+- `src/app/dashboard/[id]/page.tsx` — Deployment Protocol View.
+- `src/app/dashboard/new/page.tsx` — Registration Sequence Form.
+- `src/app/(auth)/login/page.tsx` — Access Terminal Login.
+- `src/components/dashboard/submission-status-badge.tsx` — Updated status visuals.
+
+### Decisions made
+- Chose Acid Green as the primary signal color to represent high-velocity deployment status and technical nature (Purle Ban ✅).
+- Used `framer-motion` for staggered entrances to reduce perceived cognitive load while maintaining high visual tension.
+
+### Next step
+- Final check and handover.
+
+---
