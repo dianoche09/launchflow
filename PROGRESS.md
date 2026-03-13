@@ -75,6 +75,36 @@
 - We set up `schema.sql` and `seed.sql` within a `.supabase/` or `supabase/` local directory rather than requesting remote DB execution directly, so that the code repository accurately reflects the state of truth for the schemas. This makes deployment and version control robust.
 
 ### Next step
-- Setup Supabase client components (`lib/supabase/*`)
+- Automation Worker setup (Phase 5)
+
+---
+
+## 2026-03-13 — Phase 4: Core Application Logic & UI
+**Phase:** 4 — Core Application Logic & UI
+**Task:** Commit Phase 4 completion
+**Status:** Done
+
+### What was done
+- Setup Supabase server/client configuration for auth management.
+- Defined TypeScript generic typings spanning from Profiles to Platforms (`types/index.ts`).
+- Integrated OpenAI for `generateLaunchContent` which creates custom launch assets.
+- Built App Router API routes to handle Project Creation, Display, and Launching (queued status + event pushing).
+- Engineered the App UI spanning exactly from the Landing Page (`/`), Auth Login (`/login`), Dashboard listing (`/dashboard`), Project Builder (`/dashboard/new`) to Project launch views (`/dashboard/[id]`).
+
+### Files created/modified
+- `src/lib/supabase/*` — Setup clients.
+- `src/lib/openai/generate-launch-content.ts` — AI Generation engine.
+- `src/lib/queue/index.ts` — Upstash + BullMQ Job processing connection.
+- `src/app/api/...` — APIs spanning `/projects`, `/projects/[id]/launch`, `/submissions`.
+- `src/app/` — Views for Dashboard, Authentication, and the Root Landing Page. 
+
+### Decisions made
+- Next.js server actions vs API routes: Proceeded with API routes as specified in the blueprint for a clean separation of concerns handling OpenAI logic payload execution & queue insertion. 
+
+### Issues / Notes
+- None currently. Basic forms and data handling are strictly typed via Zod validation integrated gracefully.
+
+### Next step
+- Initialize standalone `worker` directory and Playwright (Phase 5)
 
 ---
