@@ -52,7 +52,7 @@
 ## Phase 6: Deployment & Final Configs
 > Goal: Setup configurations for deployment on Vercel (Frontend) and Railway (Worker).
 
-- [ ] Create `vercel.json`
-- [ ] Configure `README.md` with setup/deploy guide
-- [ ] Perform final local test run
-- [ ] Commit Phase 6 completion
+- [x] Create `vercel.json`
+- [x] Configure `README.md` with setup/deploy guide
+- [x] Perform final local test run
+- [x] Commit Phase 6 completion
