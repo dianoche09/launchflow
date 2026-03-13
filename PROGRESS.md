@@ -52,6 +52,29 @@
 - Shadcn CLI required confirmation but proceeded smoothly. All Phase 1 tasks are completed inline with the blueprint.
 
 ### Next step
-- Create `profiles` table and `projects` table (Phase 2: Database Schema & RLS)
+- Core Application Logic & UI (Phase 4)
+
+---
+
+## 2026-03-13 — Phase 2 & 3: Database Schema & Seed Data
+**Phase:** 2 and 3 — Database Creation & Seeding
+**Task:** Commit Phase 2 & 3 completions
+**Status:** Done
+
+### What was done
+- Created local representations for the Supabase SQL schema architecture.
+- Scaffolded `profiles`, `projects`, `launch_content`, `platforms`, and `submissions` tables.
+- Implemented Row Level Security (RLS) policies for user isolation and access control.
+- Consolidated over 30 tier 1, 2, and 3 platform seeds into `seed.sql`.
+
+### Files created/modified
+- `supabase/schema.sql` — Main database structure and RLS setup.
+- `supabase/seed.sql` — Initial launch platforms seed data.
+
+### Decisions made
+- We set up `schema.sql` and `seed.sql` within a `.supabase/` or `supabase/` local directory rather than requesting remote DB execution directly, so that the code repository accurately reflects the state of truth for the schemas. This makes deployment and version control robust.
+
+### Next step
+- Setup Supabase client components (`lib/supabase/*`)
 
 ---
