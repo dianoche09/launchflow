@@ -43,11 +43,11 @@
 ## Phase 5: Automation Worker
 > Goal: Create the standalone Node.js service for Playwright automation and Redis queue processing.
 
-- [ ] Initialize standalone `worker` directory and connect to Redis/BullMQ
-- [ ] Create abstract `base-bot.ts` and generic `form-bot.ts`
-- [ ] Create specific bots (e.g., `microlaunch-bot.ts`)
-- [ ] Write worker `Dockerfile` and `package.json`
-- [ ] Commit Phase 5 completion
+- [x] Initialize standalone `worker` directory and connect to Redis/BullMQ
+- [x] Create abstract `base-bot.ts` and generic `form-bot.ts`
+- [x] Create specific bots (e.g., `microlaunch-bot.ts`)
+- [x] Write worker `Dockerfile` and `package.json`
+- [x] Commit Phase 5 completion
 
 ## Phase 6: Deployment & Final Configs
 > Goal: Setup configurations for deployment on Vercel (Frontend) and Railway (Worker).

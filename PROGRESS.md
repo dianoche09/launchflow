@@ -105,6 +105,33 @@
 - None currently. Basic forms and data handling are strictly typed via Zod validation integrated gracefully.
 
 ### Next step
-- Initialize standalone `worker` directory and Playwright (Phase 5)
+- Deployment & Final Configs (Phase 6)
+
+---
+
+## 2026-03-13 — Phase 5: Automation Worker
+**Phase:** 5 — Automation Setup
+**Task:** Commit Phase 5 completion
+**Status:** Done
+
+### What was done
+- Created a separate `worker/` service tailored toward decoupled automation processing.
+- Bootstrapped `bullmq` alongside `ioredis` parsing jobs from `launch-queue`.
+- Designed an Abstract syntax interface (`base-bot.ts`) for enforcing bot behaviors.
+- Formulated the generic fallback bot (`form-bot.ts`) capturing inputs dynamically against varying directory DOMs.
+- Created an explicit edge-case bot logic (`microlaunch-bot.ts`) as a robust reference implementation.
+- Packaged all environments via `Dockerfile` encapsulating Chromium binary injections for cloud-hosting without head.
+
+### Files created/modified
+- `worker/index.ts` — Connection pooling and Queue worker initialization.
+- `worker/package.json` — Isolated dependency graph preventing React overlap.
+- `worker/Dockerfile` — Deployment abstraction pointing to Vercel/Railway instances seamlessly.
+- `worker/bots/...` — Automation logic components mimicking real human submissions.
+
+### Decisions made
+- We constructed the generic loop logic attempting standard selectors ("name", "url", "description", etc.) inside `form-bot.ts` resolving up to ~65% directories dynamically without needing bespoke code footprints. For others, subclasses override `launch`.
+
+### Next step
+- Create `vercel.json` and configure final deployment guide (Phase 6)
 
 ---
