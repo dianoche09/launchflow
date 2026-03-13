@@ -3,12 +3,12 @@
 ## Phase 1: Project Setup
 > Goal: Initialize the Next.js 14 project with necessary dependencies, empty environment variables, and folder structure.
 
-- [ ] Create Next.js 14 project (App Router, TS, Tailwind)
-- [ ] Install and configure Shadcn UI (new-york style, zinc)
-- [ ] Install dependencies (supabase, openai, bullmq, ioredis, playwright, etc.)
-- [ ] Create `.env.local` template with required keys
-- [ ] Create folder structure (app, components, lib, types)
-- [ ] Commit Phase 1 completion
+- [x] Create Next.js 14 project (App Router, TS, Tailwind)
+- [x] Install and configure Shadcn UI (new-york style, zinc)
+- [x] Install dependencies (supabase, openai, bullmq, ioredis, playwright, etc.)
+- [x] Create `.env.local` template with required keys
+- [x] Create folder structure (app, components, lib, types)
+- [x] Commit Phase 1 completion
 
 ## Phase 2: Database Schema & RLS
 > Goal: Establish the local or remote Supabase database tables, relationships, and Row Level Security policies.
