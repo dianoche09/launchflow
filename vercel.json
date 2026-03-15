@@ -40,8 +40,6 @@
         }
     ],
     "regions": [
-        "cdg1",
-        "iad1",
         "fra1"
     ],
     "framework": "nextjs"
