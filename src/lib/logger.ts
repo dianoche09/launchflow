@@ -1,13 +1,11 @@
-import { log } from '@axiomhq/nextjs';
-
 export const logger = {
     info: (message: string, context?: Record<string, any>) => {
-        log.info(message, context);
+        console.log(JSON.stringify({ level: 'info', message, ...context }));
     },
     warn: (message: string, context?: Record<string, any>) => {
-        log.warn(message, context);
+        console.warn(JSON.stringify({ level: 'warn', message, ...context }));
     },
     error: (message: string, context?: Record<string, any>) => {
-        log.error(message, context);
+        console.error(JSON.stringify({ level: 'error', message, ...context }));
     },
 };

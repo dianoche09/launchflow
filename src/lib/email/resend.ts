@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import { welcomeEmail, launchStartedEmail, launchCompleteEmail as launchCompleteEmailTemplate, lowCreditsEmail } from './templates';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_123');
 
 const FROM = 'LaunchFlow <hello@launchflow.io>';
 
