@@ -1,0 +1,33 @@
+---
+title: "Building LaunchFlow in Public (Month 1)"
+date: "2025-03-01"
+author: "Founder"
+type: "Journey"
+summary: "A behind-the-scenes look at how we built the core engine of LaunchFlow in under 3 weeks using Next.js, Supabase, and Playwright."
+image: "/images/blog/building.jpg"
+---
+
+# Building LaunchFlow in Public
+
+When we set out to build **LaunchFlow**, the goal was simple: stop the mind-numbing repetition of manual startup directory submissions. The launch of a product is thrilling; filling out the same 50 forms with your tagline and logo is soul-crushing.
+
+## Week 1: The Core Automation Engine
+
+The hardest part wasn't the website; it was the automation. Every directory has different forms, different CSRF tokens, and different requirements. Wait, *are we really going to use Selenium?* No, we chose **Playwright**.
+
+Playwright allowed us to write robust, headless browser scripts that navigate the web just like a human. But managing headless browsers at scale? That required a dedicated worker cluster in Railway.
+
+## Week 2: The AI Subsystem
+
+We didn't just want to automate the form-filling, we wanted to automate the copywriting. We integrated the OpenAI API to analyze a project's URL and automatically extract:
+
+- A 60-character elevator pitch
+- High-converting long-form descriptions
+- A custom Reddit post and Hacker News title
+- Targeted SEO hashtags
+
+## Week 3: Swiss-Punk Design & Stripe
+
+The last week was focused on wrapping this complex backend in a bold, unforgettable UI. Enter the Swiss-Punk aesthetic: stark, industrial, heavily structural. We integrated Stripe payments so users can buy "Credits" instead of locking them into subscriptions.
+
+Next up: scaling the automation queue. Keep building.

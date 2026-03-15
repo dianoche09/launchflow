@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --blue:#1a1aff;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.nav-links{display:flex;list-style:none}
+.nav-links li{border-left:var(--border)}
+.nav-links a{display:flex;align-items:center;padding:0 24px;height:56px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none;transition:background .12s;letter-spacing:.5px}
+.nav-links a:hover{background:var(--paper2)}
+.nav-links a.active{background:var(--ink);color:var(--acid)}
+.nav-cta-wrap{border-left:var(--border);margin-left:auto;display:flex;align-items:center}
+.nav-cta{display:block;background:var(--acid);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:500;padding:0 24px;height:56px;line-height:56px;text-decoration:none;letter-spacing:.5px;transition:background .12s}
+.nav-cta:hover{background:var(--acid-dark)}
+
+/* HERO */
+.blog-hero{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr}
+.bh-left{border-right:var(--border);padding:52px 64px 52px 40px}
+.bh-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.bh-eyebrow::before{content:'';width:24px;height:2px;background:var(--rust)}
+.bh-h1{font-family:var(--display);font-size:clamp(64px,7vw,96px);letter-spacing:2px;line-height:.88;margin-bottom:20px}
+.bh-sub{font-size:15px;color:#666;line-height:1.65;max-width:400px}
+
+.bh-right{padding:40px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.bh-tabs{display:flex;gap:0;border:var(--border)}
+.bh-tab{flex:1;padding:12px;font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;text-align:center;cursor:pointer;border:none;border-right:var(--border);background:transparent;color:#888;transition:all .12s}
+.bh-tab:last-child{border-right:none}
+.bh-tab:hover{background:var(--paper2);color:var(--ink)}
+.bh-tab.active{background:var(--ink);color:var(--acid)}
+
+.bh-newsletter{margin-top:auto}
+.bh-nl-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px}
+.bh-nl-row{display:flex;border:var(--border)}
+.bh-nl-input{flex:1;padding:14px 16px;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:13px;color:var(--ink)}
+.bh-nl-input::placeholder{color:#bbb}
+.bh-nl-btn{background:var(--ink);color:var(--acid);font-family:var(--display);font-size:18px;letter-spacing:1px;padding:0 24px;border:none;cursor:pointer;transition:background .12s}
+.bh-nl-btn:hover{background:#222}
+
+/* FEATURED POST */
+.featured-post{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr;cursor:pointer;transition:background .15s}
+.featured-post:hover{background:var(--paper2)}
+.fp-left{border-right:var(--border);padding:48px 64px 48px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.fp-meta{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.fp-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px}
+.fp-tag-blog{background:var(--ink);color:var(--acid)}
+.fp-tag-changelog{background:var(--rust);color:white}
+.fp-tag-story{background:var(--blue);color:white}
+.fp-date{font-family:var(--mono);font-size:11px;color:#aaa}
+.fp-h2{font-family:var(--display);font-size:clamp(36px,5vw,64px);letter-spacing:1px;line-height:.9;margin-bottom:16px}
+.fp-excerpt{font-size:15px;color:#666;line-height:1.65;max-width:440px;margin-bottom:32px}
+.fp-author{display:flex;align-items:center;gap:12px}
+.fp-avatar{width:36px;height:36px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;color:var(--acid);flex-shrink:0}
+.fp-author-info{}
+.fp-author-name{font-size:14px;font-weight:600}
+.fp-author-role{font-family:var(--mono);font-size:11px;color:#888}
+
+.fp-right{padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.fp-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink);border:var(--border)}
+.fp-stat{background:var(--paper);padding:20px;display:flex;flex-direction:column;justify-content:flex-end}
+.fp-stat-num{font-family:var(--display);font-size:44px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.fp-stat-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+.fp-cta{display:block;text-align:center;font-family:var(--display);font-size:22px;letter-spacing:1px;padding:16px;border:var(--border);color:var(--ink);background:transparent;text-decoration:none;transition:all .12s;margin-top:20px}
+.fp-cta:hover{background:var(--ink);color:var(--acid)}
+
+/* FILTER + GRID */
+.blog-filter{border-bottom:var(--border);display:flex;align-items:stretch;height:48px;background:var(--paper);position:sticky;top:56px;z-index:50}
+.bf-btn{height:48px;padding:0 24px;font-family:var(--mono);font-size:11px;letter-spacing:.5px;border:none;border-right:var(--border);background:transparent;cursor:pointer;color:#888;transition:all .12s}
+.bf-btn:hover{background:var(--paper2);color:var(--ink)}
+.bf-btn.active{background:var(--ink);color:var(--acid)}
+
+/* BLOG GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);background:var(--ink)}
+.post-card{background:var(--paper);border-right:var(--border);border-bottom:var(--border);padding:36px 32px;cursor:pointer;transition:background .15s;display:flex;flex-direction:column}
+.post-card:nth-child(3n){border-right:none}
+.post-card:hover{background:var(--paper2)}
+.post-card.hidden{display:none}
+
+.pc-meta{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.pc-tag{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px}
+.pc-tag-blog{background:var(--ink);color:var(--acid)}
+.pc-tag-changelog{background:var(--rust);color:white}
+.pc-tag-story{background:var(--blue);color:white}
+.pc-date{font-family:var(--mono);font-size:10px;color:#aaa}
+
+.pc-title{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:.95;margin-bottom:14px}
+.pc-excerpt{font-size:13px;color:#666;line-height:1.65;flex:1;margin-bottom:20px}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.pc-read{font-family:var(--mono);font-size:11px;color:#aaa}
+.pc-arrow{font-family:var(--mono);font-size:14px;color:#bbb;transition:transform .12s}
+.post-card:hover .pc-arrow{transform:translateX(4px);color:var(--ink)}
+
+/* CHANGELOG SECTION */
+.changelog-section{border-top:var(--border)}
+.cl-header{border-bottom:var(--border);padding:32px 40px;display:flex;align-items:flex-end;justify-content:space-between}
+.cl-h2{font-family:var(--display);font-size:clamp(48px,6vw,72px);letter-spacing:2px;line-height:.88}
+.cl-sub{font-family:var(--mono);font-size:11px;color:#888;max-width:240px;text-align:right;line-height:1.6}
+
+.cl-list{display:grid;grid-template-columns:200px 1fr}
+.cl-item{display:contents}
+.cl-date-col{border-right:var(--border);border-bottom:1px solid var(--paper2);padding:28px 32px;display:flex;flex-direction:column;justify-content:flex-start}
+.cl-item:last-child .cl-date-col{border-bottom:none}
+.cl-item:last-child .cl-content-col{border-bottom:none}
+.cl-version{font-family:var(--display);font-size:28px;letter-spacing:1px;margin-bottom:4px}
+.cl-date{font-family:var(--mono);font-size:10px;color:#aaa;letter-spacing:.5px}
+
+.cl-content-col{border-bottom:1px solid var(--paper2);padding:28px 40px}
+.cl-title{font-size:18px;font-weight:700;margin-bottom:12px}
+.cl-changes{display:flex;flex-direction:column;gap:8px}
+.cl-change{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:#555;line-height:1.5}
+.cl-change-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dot-new{background:var(--acid-dark)}
+.dot-fix{background:var(--rust)}
+.dot-improve{background:var(--blue)}
+
+footer{border-top:var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--display);font-size:22px;letter-spacing:1px}
+.footer-center{font-family:var(--mono);font-size:11px;color:#aaa}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#aaa;text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <ul class="nav-links">
+    <li><a href="launchflow-v2.html">Home</a></li>
+    <li><a href="launchflow-platforms.html">Platforms</a></li>
+    <li><a href="launchflow-pricing.html">Pricing</a></li>
+    <li><a href="#" class="active">Blog</a></li>
+  </ul>
+  <div class="nav-cta-wrap">
+    <a href="launchflow-login.html" class="nav-cta">Get started free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="blog-hero">
+  <div class="bh-left">
+    <div class="bh-eyebrow">Blog & Changelog</div>
+    <h1 class="bh-h1">BUILD<br>IN<br>PUBLIC.</h1>
+    <p class="bh-sub">How we're building LaunchFlow. Distribution strategy, launch stories, product updates. Written by and for vibecoders.</p>
+  </div>
+  <div class="bh-right">
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:12px">Filter by</div>
+      <div class="bh-tabs">
+        <button class="bh-tab active" onclick="filterPosts('all',this)">All</button>
+        <button class="bh-tab" onclick="filterPosts('blog',this)">Blog</button>
+        <button class="bh-tab" onclick="filterPosts('changelog',this)">Changelog</button>
+        <button class="bh-tab" onclick="filterPosts('story',this)">Stories</button>
+      </div>
+    </div>
+    <div class="bh-newsletter">
+      <div class="bh-nl-label">Get new posts in your inbox</div>
+      <div class="bh-nl-row">
+        <input type="email" class="bh-nl-input" placeholder="you@example.com" id="nl-email">
+        <button class="bh-nl-btn" onclick="subscribeNL()">SUBSCRIBE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED POST -->
+<div class="featured-post">
+  <div class="fp-left">
+    <div>
+      <div class="fp-meta">
+        <span class="fp-tag fp-tag-blog">Blog</span>
+        <span class="fp-date">March 14, 2025</span>
+      </div>
+      <h2 class="fp-h2">WHY WE<br>BUILT THIS</h2>
+      <p class="fp-excerpt">Every time I shipped something with Cursor, I spent the next 3 hours manually submitting to Product Hunt, Uneed, DevHunt, SaaSHub... I built LaunchFlow so I never have to do that again. And now neither do you.</p>
+    </div>
+    <div class="fp-author">
+      <div class="fp-avatar">G</div>
+      <div class="fp-author-info">
+        <div class="fp-author-name">Gürkan Keşaplı</div>
+        <div class="fp-author-role">Founder, LaunchFlow</div>
+      </div>
+    </div>
+  </div>
+  <div class="fp-right">
+    <div class="fp-stat-grid">
+      <div class="fp-stat"><div class="fp-stat-num" style="color:var(--rust)">3h</div><div class="fp-stat-label">Saved per launch</div></div>
+      <div class="fp-stat"><div class="fp-stat-num">99+</div><div class="fp-stat-label">Platforms</div></div>
+      <div class="fp-stat"><div class="fp-stat-num">$9</div><div class="fp-stat-label">Starting price</div></div>
+      <div class="fp-stat"><div class="fp-stat-num" style="color:var(--acid-dark)">0</div><div class="fp-stat-label">Monthly fees</div></div>
+    </div>
+    <a href="#" class="fp-cta">READ THE STORY →</a>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="blog-filter">
+  <button class="bf-btn active" onclick="filterPosts('all',this)">All posts</button>
+  <button class="bf-btn" onclick="filterPosts('blog',this)">Blog</button>
+  <button class="bf-btn" onclick="filterPosts('changelog',this)">Changelog</button>
+  <button class="bf-btn" onclick="filterPosts('story',this)">Launch stories</button>
+</div>
+
+<!-- GRID -->
+<div class="blog-grid" id="blog-grid"></div>
+
+<!-- CHANGELOG -->
+<div class="changelog-section">
+  <div class="cl-header">
+    <h2 class="cl-h2">CHANGE-<br>LOG</h2>
+    <div class="cl-sub">Every update, every fix, every new platform added. Shipped fast, documented honestly.</div>
+  </div>
+  <div class="cl-list">
+
+    <div class="cl-item">
+      <div class="cl-date-col">
+        <div class="cl-version">v1.2</div>
+        <div class="cl-date">Mar 14, 2025</div>
+      </div>
+      <div class="cl-content-col">
+        <div class="cl-title">Launch Pro tier + 99+ platforms</div>
+        <div class="cl-changes">
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Added Launch Pro package with 99+ platforms and community posting</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Reddit copy generator — 5 subreddit-specific post formats</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Tier 3 platforms: AppSumo, Dealify, dev communities</div>
+          <div class="cl-change"><div class="cl-change-dot dot-improve"></div>Improved guided submission flow with step-by-step instructions</div>
+          <div class="cl-change"><div class="cl-change-dot dot-fix"></div>Fixed Fazier bot CAPTCHA handling</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-date-col">
+        <div class="cl-version">v1.1</div>
+        <div class="cl-date">Mar 7, 2025</div>
+      </div>
+      <div class="cl-content-col">
+        <div class="cl-title">AI launch kit improvements</div>
+        <div class="cl-changes">
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>GPT-4o-mini integration for faster kit generation</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Twitter thread generator added to launch kit</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>HN Show post format now platform-specific</div>
+          <div class="cl-change"><div class="cl-change-dot dot-improve"></div>Launch report PDF now includes all platform links</div>
+          <div class="cl-change"><div class="cl-change-dot dot-fix"></div>Fixed BetaList form selector changes</div>
+          <div class="cl-change"><div class="cl-change-dot dot-fix"></div>Peerlist login flow stabilized</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-item">
+      <div class="cl-date-col">
+        <div class="cl-version">v1.0</div>
+        <div class="cl-date">Feb 28, 2025</div>
+      </div>
+      <div class="cl-content-col">
+        <div class="cl-title">Initial launch</div>
+        <div class="cl-changes">
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>19 Tier 1 platforms — Starter package live</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>49 platforms — Full Launch package live</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>AI launch kit: PH, Reddit, HN, Twitter</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Playwright bot system — 6 workers</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>Credit system + Stripe payments</div>
+          <div class="cl-change"><div class="cl-change-dot dot-new"></div>User dashboard + admin panel</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-center">Built for vibecoders — 2025</div>
+  <div class="footer-links">
+    <a href="launchflow-v2.html">Home</a>
+    <a href="launchflow-pricing.html">Pricing</a>
+    <a href="launchflow-platforms.html">Platforms</a>
+  </div>
+</footer>
+
+<script>
+const POSTS = [
+  {
+    type:'story',
+    date:'Mar 12, 2025',
+    title:'FROM 0 TO 200 USERS IN ONE WEEK',
+    excerpt:'I launched ShipStack with LaunchFlow. Here\'s exactly what happened — which platforms drove traffic, what the AI kit looked like, and what I\'d do differently.',
+    read:'8 min read'
+  },
+  {
+    type:'blog',
+    date:'Mar 10, 2025',
+    title:'WHY BOTS CAN\'T SUBMIT TO PRODUCT HUNT',
+    excerpt:'Product Hunt actively blocks automated submissions. Here\'s how we handle it — and why a guided human submission actually performs better anyway.',
+    read:'5 min read'
+  },
+  {
+    type:'changelog',
+    date:'Mar 8, 2025',
+    title:'V1.1 — AI LAUNCH KIT IMPROVEMENTS',
+    excerpt:'Faster generation, better Twitter threads, platform-specific HN posts, and two bug fixes that were driving us crazy.',
+    read:'2 min read'
+  },
+  {
+    type:'blog',
+    date:'Mar 6, 2025',
+    title:'THE VIBECODER DISTRIBUTION PROBLEM',
+    excerpt:'Cursor, Lovable, Bolt — the build side is solved. But nobody talks about what happens after you hit deploy. We do.',
+    read:'6 min read'
+  },
+  {
+    type:'story',
+    date:'Mar 3, 2025',
+    title:'HOW WE GOT ON PRODUCT HUNT\'S FRONT PAGE',
+    excerpt:'The exact timing, the maker comment, the preparation strategy. We launched at 12:01 AM PST on a Tuesday. Here\'s the full breakdown.',
+    read:'10 min read'
+  },
+  {
+    type:'blog',
+    date:'Feb 28, 2025',
+    title:'99+ PLATFORMS: HOW WE PICKED THEM',
+    excerpt:'Not all directories are equal. Here\'s our methodology for ranking platforms by traffic value, SEO value, and automation feasibility.',
+    read:'7 min read'
+  },
+  {
+    type:'blog',
+    date:'Feb 24, 2025',
+    title:'WHY PAY-PER-LAUNCH BEATS SUBSCRIPTION',
+    excerpt:'We tried subscription pricing. Users churned after their first launch. Pay-per-launch aligns our incentives with yours — you only pay when you ship.',
+    read:'4 min read'
+  },
+  {
+    type:'story',
+    date:'Feb 20, 2025',
+    title:'BUILDING LAUNCHFLOW WITH CURSOR',
+    excerpt:'The entire backend was built in 4 days with Cursor. Here\'s the exact prompts, the mistakes, and what I\'d do differently if I started today.',
+    read:'12 min read'
+  },
+  {
+    type:'blog',
+    date:'Feb 15, 2025',
+    title:'THE REAL ROI OF DIRECTORY SUBMISSIONS',
+    excerpt:'We analyzed 500+ launches. Average DR increase: +12 in 30 days. Average traffic: 2,400 referral visits. Here\'s the breakdown by tier.',
+    read:'9 min read'
+  },
+]
+
+const tagMap = {blog:'fp-tag-blog',changelog:'fp-tag-changelog',story:'fp-tag-story'}
+const tagLabel = {blog:'Blog',changelog:'Changelog',story:'Story'}
+
+function buildGrid(filter='all') {
+  const grid = document.getElementById('blog-grid')
+  grid.innerHTML = POSTS.map((p,i) => {
+    const hidden = filter !== 'all' && p.type !== filter ? 'hidden' : ''
+    return `
+      <div class="post-card ${hidden}" data-type="${p.type}">
+        <div class="pc-meta">
+          <span class="pc-tag pc-tag-${p.type}">${tagLabel[p.type]}</span>
+          <span class="pc-date">${p.date}</span>
+        </div>
+        <div class="pc-title">${p.title}</div>
+        <div class="pc-excerpt">${p.excerpt}</div>
+        <div class="pc-footer">
+          <span class="pc-read">${p.read}</span>
+          <span class="pc-arrow">→</span>
+        </div>
+      </div>
+    `
+  }).join('')
+}
+
+function filterPosts(type, btn) {
+  document.querySelectorAll('.bf-btn, .bh-tab').forEach(b=>b.classList.remove('active'))
+  document.querySelectorAll(`[onclick*="${type}"]`).forEach(b=>b.classList.add('active'))
+  document.querySelectorAll('.post-card').forEach(card=>{
+    card.classList.toggle('hidden', type !== 'all' && card.dataset.type !== type)
+  })
+}
+
+function subscribeNL() {
+  const input = document.getElementById('nl-email')
+  if(!input.value.includes('@')) return
+  input.value = ''
+  input.placeholder = 'You\'re subscribed!'
+}
+
+buildGrid()
+</script>
+</body>
+</html>

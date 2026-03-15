@@ -3,6 +3,7 @@ create table public.profiles (
   id uuid references auth.users on delete cascade primary key,
   email text,
   plan text default 'free' check (plan in ('free', 'indie', 'pro', 'agency')),
+  role text default 'user' check (role in ('user', 'admin')),
   submission_count integer default 0,
   created_at timestamp with time zone default timezone('utc', now())
 );

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Launch Started</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;--paper:#f5f2e8;--paper2:#ede9d8;--paper3:#e4e0ce;
+  --acid:#b8ff00;--acid-dark:#8acc00;--rust:#c94d1e;--green:#2a9d00;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;--body:'Bricolage Grotesque',sans-serif;--mono:'Azeret Mono',monospace;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;display:flex;flex-direction:column}
+
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper)}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.nav-tag{display:flex;align-items:center;padding:0 24px;border-left:var(--border);margin-left:auto;font-family:var(--mono);font-size:11px;color:#888;gap:8px}
+.nav-live{width:7px;height:7px;border-radius:50%;background:var(--green);animation:livepulse 1.8s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr;background:var(--ink)}
+.hero-left{border-right:2px solid rgba(255,255,255,.1);padding:64px 64px 64px 40px}
+.hl-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--acid);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hl-tag::before{content:'';width:24px;height:2px;background:var(--acid)}
+.hl-h1{font-family:var(--display);font-size:clamp(64px,8vw,104px);letter-spacing:2px;line-height:.88;color:var(--paper);margin-bottom:20px}
+.hl-h1 span{color:var(--acid)}
+.hl-sub{font-size:15px;color:rgba(245,242,232,.45);line-height:1.65;max-width:380px;margin-bottom:40px}
+.hl-project{font-family:var(--mono);font-size:13px;color:rgba(245,242,232,.6);padding:12px 16px;border:1px solid rgba(255,255,255,.1);display:inline-block}
+.hl-project strong{color:var(--paper)}
+
+.hero-right{display:flex;flex-direction:column}
+.hr-stat{flex:1;border-bottom:2px solid rgba(255,255,255,.08);padding:24px 32px;display:flex;flex-direction:column;justify-content:flex-end}
+.hr-stat:last-child{border-bottom:none}
+.hrs-num{font-family:var(--display);font-size:52px;letter-spacing:1px;line-height:.9;margin-bottom:6px;color:var(--paper)}
+.hrs-num.a{color:var(--acid)}
+.hrs-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,242,232,.3)}
+
+/* LIVE STATUS */
+.status-section{border-bottom:var(--border)}
+.status-header{border-bottom:var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.sh-title{font-family:var(--display);font-size:32px;letter-spacing:1px}
+.sh-sub{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.5px}
+
+.status-grid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--ink)}
+.sg-item{background:var(--paper);border-right:var(--border);padding:20px 24px}
+.sg-item:last-child{border-right:none}
+.sgi-num{font-family:var(--display);font-size:44px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.sgi-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+
+/* PLATFORM LIST */
+.plat-section{border-bottom:var(--border)}
+.ps-header{border-bottom:var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.psh-title{font-family:var(--display);font-size:24px;letter-spacing:1px}
+.plat-table{width:100%;border-collapse:collapse}
+.plat-table th{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;padding:9px 20px;text-align:left;background:var(--paper3);border-bottom:1px solid var(--paper3);border-right:1px solid var(--paper3)}
+.plat-table th:last-child{border-right:none}
+.plat-table td{padding:12px 20px;border-bottom:1px solid var(--paper2);border-right:1px solid var(--paper2);font-size:13px;vertical-align:middle}
+.plat-table td:last-child{border-right:none}
+.plat-table tr:last-child td{border-bottom:none}
+.plat-table tr:hover td{background:var(--paper2)}
+
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border:1.5px solid;display:inline-block}
+.b-approved{background:rgba(42,157,0,.08);color:var(--green);border-color:var(--green)}
+.b-submitted{background:#fffbe6;color:#8a6600;border-color:#d4b800}
+.b-queued{background:rgba(26,26,255,.06);color:#1a1aff;border-color:#1a1aff}
+.b-guided{background:rgba(201,77,30,.08);color:var(--rust);border-color:var(--rust)}
+
+/* GUIDED TASKS */
+.guided-section{border-bottom:var(--border)}
+.guided-header{border-bottom:var(--border);padding:20px 32px;display:grid;grid-template-columns:1fr auto;align-items:center}
+.gh-title{font-family:var(--display);font-size:24px;letter-spacing:1px}
+.gh-sub{font-family:var(--mono);font-size:11px;color:#888}
+.guided-tasks{display:flex;flex-direction:column}
+.guided-task{border-bottom:var(--border);padding:24px 32px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:start;transition:background .12s;cursor:pointer}
+.guided-task:last-child{border-bottom:none}
+.guided-task:hover{background:var(--paper2)}
+.gt-num{font-family:var(--display);font-size:32px;letter-spacing:1px;color:var(--paper3);width:36px;flex-shrink:0;line-height:1}
+.gt-platform{font-size:16px;font-weight:700;margin-bottom:4px}
+.gt-copy{font-size:13px;color:#666;line-height:1.6;margin-bottom:12px;font-family:var(--body)}
+.gt-steps{display:flex;flex-direction:column;gap:4px}
+.gt-step{font-family:var(--mono);font-size:11px;color:#888;display:flex;align-items:center;gap:8px}
+.gt-step::before{content:'';width:4px;height:4px;border-radius:50%;background:#ccc;flex-shrink:0}
+.gt-btn{font-family:var(--mono);font-size:11px;letter-spacing:.5px;padding:10px 20px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s;white-space:nowrap;align-self:start}
+.gt-btn:hover{background:var(--ink);color:var(--acid)}
+.gt-btn.done{background:var(--green);border-color:var(--green);color:white}
+
+/* SHARE */
+.share-section{border-bottom:var(--border);padding:32px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.ss-left{}
+.ss-title{font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:.9;margin-bottom:12px}
+.ss-sub{font-size:14px;color:#666;line-height:1.65}
+.ss-btns{display:flex;gap:10px;flex-wrap:wrap}
+.share-btn{font-family:var(--mono);font-size:11px;letter-spacing:.5px;padding:10px 20px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s;text-decoration:none;display:inline-block}
+.share-btn:hover{background:var(--ink);color:var(--acid)}
+.share-btn.twitter{background:var(--ink);color:var(--acid)}
+
+.tweet-preview{background:var(--paper2);border:var(--border);padding:20px}
+.tp-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px}
+.tp-text{font-size:14px;line-height:1.7;color:#444}
+.tp-copy{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;margin-top:12px;transition:all .12s}
+.tp-copy:hover{background:var(--ink);color:var(--acid)}
+
+footer{padding:20px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--display);font-size:20px;letter-spacing:1px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#aaa;text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <div class="nav-tag">
+    <div class="nav-live"></div>
+    Launch in progress
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hl-tag">Launch started</div>
+    <h1 class="hl-h1">YOU'RE<br><span>LIVE.</span></h1>
+    <p class="hl-sub">Submissions are queuing up. Auto platforms are running now. Guided platforms are waiting for you below.</p>
+    <div class="hl-project">Launching: <strong id="project-name">ShipStack</strong> &nbsp;·&nbsp; Full Launch — 49 platforms</div>
+  </div>
+  <div class="hero-right">
+    <div class="hr-stat"><div class="hrs-num a" id="stat-total">49</div><div class="hrs-label">Platforms queued</div></div>
+    <div class="hr-stat"><div class="hrs-num" id="stat-auto">32</div><div class="hrs-label">Auto-submitting</div></div>
+    <div class="hr-stat"><div class="hrs-num" id="stat-guided">17</div><div class="hrs-label">Awaiting your action</div></div>
+  </div>
+</div>
+
+<!-- LIVE STATUS -->
+<div class="status-section">
+  <div class="status-header">
+    <div class="sh-title">LIVE STATUS</div>
+    <div class="sh-sub" id="status-time">Updated just now</div>
+  </div>
+  <div class="status-grid">
+    <div class="sg-item"><div class="sgi-num" id="s-queued" style="color:#1a1aff">12</div><div class="sgi-label">Queued</div></div>
+    <div class="sg-item"><div class="sgi-num" id="s-submitted" style="color:#8a6600">8</div><div class="sgi-label">Submitted</div></div>
+    <div class="sg-item"><div class="sgi-num" id="s-approved" style="color:var(--green)">4</div><div class="sgi-label">Approved</div></div>
+    <div class="sg-item"><div class="sgi-num" id="s-guided" style="color:var(--rust)">17</div><div class="sgi-label">Guided pending</div></div>
+  </div>
+</div>
+
+<!-- PLATFORM LIST -->
+<div class="plat-section">
+  <div class="ps-header">
+    <div class="psh-title">SUBMISSION LOG</div>
+    <a href="launchflow-user-dashboard.html" style="font-family:var(--mono);font-size:11px;color:#888;text-decoration:none">View full dashboard →</a>
+  </div>
+  <table class="plat-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Category</th>
+        <th>Method</th>
+        <th>Status</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="plat-log"></tbody>
+  </table>
+</div>
+
+<!-- GUIDED TASKS -->
+<div class="guided-section">
+  <div class="guided-header">
+    <div>
+      <div class="gh-title">YOUR ACTION REQUIRED</div>
+      <div class="gh-sub">These platforms require human submission. We've written everything — just follow the steps.</div>
+    </div>
+  </div>
+  <div class="guided-tasks" id="guided-tasks"></div>
+</div>
+
+<!-- SHARE -->
+<div class="share-section">
+  <div class="ss-left">
+    <div class="ss-title">SHARE YOUR LAUNCH</div>
+    <p class="ss-sub" style="margin-bottom:20px">Tell the world. Your build-in-public audience is waiting.</p>
+    <div class="ss-btns">
+      <a href="#" class="share-btn twitter" onclick="shareTwitter()">Share on Twitter →</a>
+      <a href="#" class="share-btn" onclick="shareLI()">Share on LinkedIn</a>
+      <a href="launchflow-user-dashboard.html" class="share-btn">View Dashboard</a>
+    </div>
+  </div>
+  <div>
+    <div class="tweet-preview">
+      <div class="tp-label">Ready-to-post tweet</div>
+      <div class="tp-text" id="tweet-text">Just launched ShipStack to 49 platforms with @LaunchFlow 🚀<br><br>Auto-submitted to Product Hunt, Uneed, DevHunt, and 46 more in one click.<br><br>Took 2 minutes. Would've taken 3 hours manually.<br><br>#buildinpublic #indiemaker #saas</div>
+      <button class="tp-copy" onclick="copyTweet()">Copy tweet</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-links">
+    <a href="launchflow-user-dashboard.html">Dashboard</a>
+    <a href="launchflow-wizard.html">New launch</a>
+    <a href="launchflow-blog.html">Blog</a>
+  </div>
+</footer>
+
+<script>
+const PLATFORMS = [
+  {name:'Product Hunt',cat:'Launch',method:'guided',status:'guided',url:null},
+  {name:'Uneed',cat:'Launch',method:'auto',status:'approved',url:'uneed.best/p/shipstack'},
+  {name:'DevHunt',cat:'Launch',method:'auto',status:'approved',url:'devhunt.org/tool/shipstack'},
+  {name:'BetaList',cat:'Launch',method:'auto',status:'submitted',url:null},
+  {name:'Microlaunch',cat:'Launch',method:'auto',status:'approved',url:'microlaunch.net/p/shipstack'},
+  {name:'Fazier',cat:'Launch',method:'auto',status:'submitted',url:null},
+  {name:'SaaSHub',cat:'SaaS Dir',method:'auto',status:'queued',url:null},
+  {name:'AlternativeTo',cat:'SaaS Dir',method:'guided',status:'guided',url:null},
+  {name:'Futurepedia',cat:'AI Dir',method:'auto',status:'queued',url:null},
+  {name:"There's an AI for That",cat:'AI Dir',method:'auto',status:'queued',url:null},
+  {name:'Indie Hackers',cat:'Community',method:'guided',status:'guided',url:null},
+  {name:'Hacker News',cat:'Community',method:'guided',status:'guided',url:null},
+]
+
+const GUIDED = [
+  {
+    platform:'Product Hunt',
+    copy:'ShipStack — Automate your startup launch to 49+ platforms with one click.\n\nHi Product Hunt! 👋 I built ShipStack because every time I shipped something, I spent hours manually submitting. No more.\n\nBuilt with Cursor + Supabase in 3 weeks.',
+    steps:['Go to producthunt.com/posts/new','Paste the tagline above','Add screenshots','Click Launch']
+  },
+  {
+    platform:'Indie Hackers',
+    copy:'Just launched ShipStack — a tool that submits your startup to 49+ platforms automatically. Built it because I was tired of the manual submission grind. Would love feedback from the IH community.',
+    steps:['Go to indiehackers.com/products','Click "Add your product"','Paste the description above','Submit for review']
+  },
+  {
+    platform:'Hacker News',
+    copy:'Show HN: ShipStack – Submit your startup to 49+ directories automatically\n\nBuilt because I kept spending 3+ hours per launch manually filling forms. Tech: Next.js, Supabase, Playwright.',
+    steps:['Go to news.ycombinator.com/submit','Title: paste "Show HN: ShipStack..."','URL: shipstack.io','Submit']
+  },
+  {
+    platform:'AlternativeTo',
+    copy:'ShipStack is an automated startup launch tool that submits your product to 49+ platforms in one click. Saves 3+ hours per launch. Alternative to manual directory submission.',
+    steps:['Go to alternativeto.net','Click "Add application"','Fill in product details','Paste description above']
+  },
+]
+
+// Build platform log
+const log = document.getElementById('plat-log')
+PLATFORMS.forEach(p => {
+  const statusMap = {
+    approved:`<span class="badge b-approved">Approved</span>`,
+    submitted:`<span class="badge b-submitted">Submitted</span>`,
+    queued:`<span class="badge b-queued">Queued</span>`,
+    guided:`<span class="badge b-guided">Your action</span>`
+  }
+  log.innerHTML += `<tr>
+    <td style="font-weight:600">${p.name}</td>
+    <td style="font-family:var(--mono);font-size:10px;color:#888">${p.cat}</td>
+    <td><span style="font-family:var(--mono);font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.5px">${p.method}</span></td>
+    <td>${statusMap[p.status]}</td>
+    <td style="font-family:var(--mono);font-size:10px;color:${p.url?'#1a1aff':'#aaa'}">${p.url?`<a href="https://${p.url}" style="color:inherit;text-decoration:none">${p.url} →</a>`:'—'}</td>
+  </tr>`
+})
+
+// Build guided tasks
+const tasks = document.getElementById('guided-tasks')
+GUIDED.forEach((g, i) => {
+  tasks.innerHTML += `
+    <div class="guided-task" id="gt-${i}">
+      <div class="gt-num">${String(i+1).padStart(2,'0')}</div>
+      <div>
+        <div class="gt-platform">${g.platform}</div>
+        <div class="gt-copy" id="gt-copy-${i}">${g.copy.replace(/\n/g,'<br>')}</div>
+        <div class="gt-steps">
+          ${g.steps.map(s=>`<div class="gt-step">${s}</div>`).join('')}
+        </div>
+      </div>
+      <button class="gt-btn" id="gt-btn-${i}" onclick="markDone(${i})">
+        Mark as done
+      </button>
+    </div>
+  `
+})
+
+function markDone(i) {
+  const btn = document.getElementById('gt-btn-'+i)
+  btn.textContent = '✓ Done'
+  btn.classList.add('done')
+  const guided = parseInt(document.getElementById('s-guided').textContent) - 1
+  document.getElementById('s-guided').textContent = guided
+  const approved = parseInt(document.getElementById('s-approved').textContent) + 1
+  document.getElementById('s-approved').textContent = approved
+}
+
+function copyTweet() {
+  navigator.clipboard.writeText(document.getElementById('tweet-text').innerText).catch(()=>{})
+}
+function shareTwitter() {
+  const text = encodeURIComponent(document.getElementById('tweet-text').innerText)
+  window.open('https://twitter.com/intent/tweet?text='+text,'_blank')
+}
+function shareLI() {
+  window.open('https://linkedin.com/sharing/share-offsite/?url=https://launchflow.io','_blank')
+}
+
+// Simulate live updates
+let submitted = 8, approved = 4
+setInterval(() => {
+  if(submitted < 32) {
+    submitted++
+    approved = Math.min(approved + (Math.random() > .6 ? 1 : 0), submitted)
+    document.getElementById('s-submitted').textContent = submitted
+    document.getElementById('s-approved').textContent = approved
+    document.getElementById('s-queued').textContent = Math.max(0, 49 - submitted - 17)
+    document.getElementById('status-time').textContent = 'Updated just now'
+  }
+}, 4000)
+</script>
+</body>
+</html>

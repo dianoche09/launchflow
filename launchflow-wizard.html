@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — New Launch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --blue:#1a1aff;
+  --green:#2a9d00;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;overflow-x:hidden;display:flex;flex-direction:column}
+
+/* TOPBAR */
+.topbar{border-bottom:var(--border);display:flex;align-items:stretch;height:56px;background:var(--paper);flex-shrink:0;position:sticky;top:0;z-index:100}
+.tb-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding:0 24px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.tb-title{display:flex;align-items:center;padding:0 24px;font-family:var(--mono);font-size:12px;color:#888;gap:10px;letter-spacing:.5px}
+.tb-sep{color:var(--paper3)}
+.tb-current{color:var(--ink)}
+.tb-credits{margin-left:auto;display:flex;align-items:center;padding:0 24px;border-left:var(--border);font-family:var(--mono);font-size:12px;gap:8px}
+.tb-credit-num{font-family:var(--display);font-size:20px;letter-spacing:1px;color:var(--ink)}
+.tb-credit-label{color:#888;letter-spacing:.5px}
+
+/* STEP INDICATOR */
+.step-bar{border-bottom:var(--border);display:flex;background:var(--paper2)}
+.step-item{flex:1;padding:0 24px;height:44px;display:flex;align-items:center;gap:12px;border-right:var(--border);font-family:var(--mono);font-size:11px;color:#aaa;letter-spacing:.5px;transition:all .15s}
+.step-item:last-child{border-right:none}
+.step-item.active{background:var(--paper);color:var(--ink)}
+.step-item.done{background:var(--ink);color:var(--acid)}
+.step-num{width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.step-item.done .step-num{background:var(--acid);border-color:var(--acid);color:var(--ink)}
+
+/* MAIN CONTENT */
+.wizard-main{flex:1;display:grid;grid-template-columns:360px 1fr;overflow:hidden}
+
+/* LEFT PANEL */
+.wizard-left{border-right:var(--border);display:flex;flex-direction:column;overflow-y:auto;background:var(--paper)}
+.wizard-left::-webkit-scrollbar{width:0}
+
+.wl-section{border-bottom:var(--border);padding:28px 28px}
+.wl-section-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:16px}
+
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.field-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:7px;display:flex;justify-content:space-between}
+.field-opt{color:#bbb}
+.field-input{width:100%;padding:11px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;color:var(--ink);outline:none;transition:background .12s}
+.field-input:focus{background:var(--paper2)}
+.field-input::placeholder{color:#ccc}
+.field-textarea{width:100%;padding:11px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;color:var(--ink);outline:none;resize:vertical;min-height:80px;transition:background .12s}
+.field-textarea:focus{background:var(--paper2)}
+.field-select{width:100%;padding:11px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;color:var(--ink);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%230c0c0a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.field-hint{font-family:var(--mono);font-size:10px;color:#aaa;margin-top:5px;line-height:1.5}
+.field-error{font-family:var(--mono);font-size:10px;color:var(--rust);margin-top:5px;display:none}
+.field-input.err{border-color:var(--rust)}
+
+.logo-upload{width:100%;height:80px;border:1.5px dashed var(--paper3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;gap:12px;font-family:var(--mono);font-size:11px;color:#aaa}
+.logo-upload:hover{border-color:var(--ink);background:var(--paper2);color:var(--ink)}
+
+/* RIGHT PANEL */
+.wizard-right{overflow-y:auto;background:var(--paper2)}
+.wizard-right::-webkit-scrollbar{width:4px}
+.wizard-right::-webkit-scrollbar-thumb{background:var(--paper3)}
+
+/* STEP PANELS */
+.step-panel{display:none;padding:0}
+.step-panel.active{display:block}
+
+/* STEP 1 — Preview */
+.preview-split{display:grid;grid-template-columns:1fr 1fr;border-bottom:var(--border)}
+.ps-panel{padding:32px}
+.ps-panel:first-child{border-right:var(--border);background:var(--paper)}
+.ps-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:16px}
+.preview-card{border:var(--border);padding:24px;background:var(--paper)}
+.prev-name{font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:.9;margin-bottom:8px}
+.prev-url{font-family:var(--mono);font-size:11px;color:#888;margin-bottom:14px}
+.prev-desc{font-size:14px;color:#555;line-height:1.6;margin-bottom:14px}
+.prev-tags{display:flex;gap:6px;flex-wrap:wrap}
+.prev-tag{font-family:var(--mono);font-size:10px;padding:3px 8px;background:var(--ink);color:var(--acid)}
+
+.platform-preview-mini{display:flex;flex-direction:column;gap:8px}
+.ppm-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--paper);border:1px solid var(--paper3)}
+.ppm-name{font-size:13px;font-weight:500}
+.ppm-badge{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:3px 7px;border:1.5px solid}
+.ppm-auto{background:rgba(184,255,0,.1);color:var(--acid-dark);border-color:var(--acid-dark)}
+.ppm-guided{background:rgba(201,77,30,.08);color:var(--rust);border-color:var(--rust)}
+
+/* STEP 2 — AI Kit */
+.kit-nav{border-bottom:var(--border);display:flex;background:var(--paper)}
+.kit-nav-btn{height:48px;padding:0 24px;font-family:var(--mono);font-size:11px;letter-spacing:.5px;border:none;border-right:var(--border);background:transparent;cursor:pointer;color:#888;transition:all .12s}
+.kit-nav-btn:hover{background:var(--paper2);color:var(--ink)}
+.kit-nav-btn.active{background:var(--ink);color:var(--acid)}
+
+.kit-view{padding:32px}
+.kit-platform-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px}
+.kit-textarea{width:100%;padding:16px;border:var(--border);background:var(--paper);font-family:var(--body);font-size:14px;color:var(--ink);outline:none;resize:vertical;min-height:200px;line-height:1.7}
+.kit-textarea:focus{background:var(--paper2)}
+.kit-tags-editor{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.kit-tag-item{font-family:var(--mono);font-size:10px;padding:4px 10px;background:var(--ink);color:var(--acid);display:flex;align-items:center;gap:6px}
+.kit-tag-remove{cursor:pointer;opacity:.5;transition:opacity .1s}
+.kit-tag-remove:hover{opacity:1}
+.kit-actions{display:flex;gap:8px;margin-top:16px}
+.kit-btn{font-family:var(--mono);font-size:11px;letter-spacing:.5px;padding:9px 18px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s}
+.kit-btn:hover{background:var(--ink);color:var(--acid)}
+.kit-btn.primary{background:var(--ink);color:var(--acid)}
+
+/* STEP 3 — Package */
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:var(--border);background:var(--ink)}
+.pkg-option{background:var(--paper);border-right:var(--border);padding:28px 24px;cursor:pointer;transition:all .15s;position:relative}
+.pkg-option:last-child{border-right:none}
+.pkg-option:hover{background:var(--paper2)}
+.pkg-option.selected{background:var(--ink);color:var(--paper)}
+.pkg-option.selected .pkg-opt-price{color:var(--acid)}
+.pkg-option.selected .pkg-opt-feat{color:rgba(245,242,232,.6);border-color:rgba(255,255,255,.08)}
+.pkg-opt-tier{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;margin-bottom:12px}
+.pkg-option.selected .pkg-opt-tier{color:rgba(245,242,232,.35)}
+.pkg-opt-price{font-family:var(--display);font-size:52px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.pkg-opt-count{font-family:var(--mono);font-size:12px;color:#888;margin-bottom:20px}
+.pkg-option.selected .pkg-opt-count{color:rgba(245,242,232,.4)}
+.pkg-opt-feats{display:flex;flex-direction:column;gap:0;margin-bottom:20px}
+.pkg-opt-feat{font-family:var(--mono);font-size:10px;color:#666;padding:7px 0;border-bottom:1px solid var(--paper3);display:flex;align-items:center;gap:8px}
+.pkg-opt-feat:last-child{border-bottom:none}
+.pkg-opt-feat::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pkg-check{position:absolute;top:16px;right:16px;width:20px;height:20px;border-radius:50%;border:2px solid var(--paper3);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.pkg-option.selected .pkg-check{background:var(--acid);border-color:var(--acid)}
+.pkg-check-inner{width:8px;height:8px;border-radius:50%;background:var(--ink);display:none}
+.pkg-option.selected .pkg-check-inner{display:block}
+
+.pkg-credits-note{padding:20px 32px;border-bottom:var(--border);background:var(--paper);display:flex;align-items:center;justify-content:space-between}
+.pcn-text{font-family:var(--mono);font-size:12px;color:#888}
+.pcn-balance{font-family:var(--mono);font-size:12px;color:var(--ink);display:flex;align-items:center;gap:6px}
+.pcn-num{font-family:var(--display);font-size:24px;letter-spacing:1px;color:var(--rust)}
+
+/* LAUNCH CONFIRM */
+.launch-confirm{padding:32px}
+.lc-summary{border:var(--border);margin-bottom:24px}
+.lc-sum-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--paper2)}
+.lc-sum-row:last-child{border-bottom:none}
+.lc-sum-label{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.5px}
+.lc-sum-value{font-size:14px;font-weight:600}
+
+.guided-warning{background:rgba(201,77,30,.06);border:1.5px solid var(--rust);padding:16px 20px;margin-bottom:24px}
+.gw-title{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+.gw-text{font-size:13px;color:#666;line-height:1.6}
+
+.launch-big-btn{width:100%;padding:20px;background:var(--ink);color:var(--acid);font-family:var(--display);font-size:28px;letter-spacing:2px;border:var(--border);cursor:pointer;transition:all .15s;text-align:center}
+.launch-big-btn:hover{background:#222}
+.launch-big-btn:disabled{background:#888;border-color:#888;cursor:not-allowed}
+
+/* BOTTOM BAR */
+.wizard-bottom{border-top:var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:var(--paper);flex-shrink:0}
+.wb-left{display:flex;gap:12px}
+.wb-btn{font-family:var(--mono);font-size:12px;letter-spacing:.5px;padding:10px 22px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s}
+.wb-btn:hover{background:var(--paper2)}
+.wb-btn.primary{background:var(--ink);color:var(--acid)}
+.wb-btn.primary:hover{background:#222}
+.wb-btn:disabled{opacity:.3;cursor:not-allowed}
+.wb-step-info{font-family:var(--mono);font-size:11px;color:#888}
+
+/* GENERATING */
+.generating{display:none;padding:48px;text-align:center}
+.generating.active{display:block}
+.gen-h{font-family:var(--display);font-size:48px;letter-spacing:2px;color:var(--ink);margin-bottom:16px}
+.gen-sub{font-family:var(--mono);font-size:12px;color:#888;margin-bottom:32px}
+.gen-bar{height:4px;background:var(--paper3);max-width:400px;margin:0 auto 16px;position:relative;overflow:hidden}
+.gen-bar-fill{height:100%;background:var(--acid-dark);width:0%;transition:width .4s}
+.gen-status{font-family:var(--mono);font-size:11px;color:var(--rust);animation:textblink 1s ease-in-out infinite}
+@keyframes textblink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* LAUNCHING STATE */
+.launching{display:none;padding:48px}
+.launching.active{display:block}
+.la-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.la-stat{border:var(--border);padding:20px;background:var(--paper)}
+.la-num{font-family:var(--display);font-size:44px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.la-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+
+.la-queue{border:var(--border)}
+.la-queue-head{border-bottom:var(--border);padding:12px 20px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;background:var(--paper3)}
+.la-queue-row{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid var(--paper2);font-size:13px;transition:background .1s}
+.la-queue-row:last-child{border-bottom:none}
+.la-queue-row:hover{background:var(--paper2)}
+.lq-name{font-weight:500}
+.lq-badge{font-family:var(--mono);font-size:9px;padding:3px 7px;letter-spacing:.5px;border:1.5px solid}
+.lqb-queued{background:rgba(26,26,255,.06);color:var(--blue);border-color:var(--blue)}
+.lqb-submitted{background:#fffbe6;color:#8a6600;border-color:#d4b800}
+.lqb-approved{background:rgba(42,157,0,.08);color:var(--green);border-color:var(--green)}
+.lqb-guided{background:rgba(201,77,30,.08);color:var(--rust);border-color:var(--rust)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="launchflow-user-dashboard.html" class="tb-logo">LAUNCHFLOW</a>
+  <div class="tb-title">
+    <span>Dashboard</span>
+    <span class="tb-sep">/</span>
+    <span class="tb-current" id="topbar-title">New Launch</span>
+  </div>
+  <div class="tb-credits">
+    <span class="tb-credit-num" id="credit-display">32</span>
+    <span class="tb-credit-label">credits remaining</span>
+  </div>
+</div>
+
+<!-- STEP INDICATOR -->
+<div class="step-bar">
+  <div class="step-item active" id="step-ind-1">
+    <div class="step-num">1</div>
+    Project Info
+  </div>
+  <div class="step-item" id="step-ind-2">
+    <div class="step-num">2</div>
+    AI Launch Kit
+  </div>
+  <div class="step-item" id="step-ind-3">
+    <div class="step-num">3</div>
+    Choose Package
+  </div>
+  <div class="step-item" id="step-ind-4">
+    <div class="step-num">4</div>
+    Launch
+  </div>
+</div>
+
+<!-- WIZARD BODY -->
+<div class="wizard-main">
+
+  <!-- LEFT — FORM -->
+  <div class="wizard-left">
+
+    <div class="wl-section">
+      <div class="wl-section-title">Project</div>
+      <div class="field">
+        <div class="field-label">Project name <span class="field-opt">required</span></div>
+        <input class="field-input" type="text" id="f-name" placeholder="ShipStack" oninput="updatePreview()">
+        <div class="field-error" id="err-name">Project name is required.</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Website URL <span class="field-opt">required</span></div>
+        <input class="field-input" type="url" id="f-url" placeholder="https://shipstack.io" oninput="updatePreview()">
+        <div class="field-error" id="err-url">Enter a valid URL.</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Tagline <span class="field-opt">max 60 chars</span></div>
+        <input class="field-input" type="text" id="f-tagline" placeholder="Automate your startup launch in one click" maxlength="60" oninput="updatePreview()">
+      </div>
+      <div class="field">
+        <div class="field-label">Description <span class="field-opt">required</span></div>
+        <textarea class="field-textarea" id="f-desc" placeholder="What does your app do? Who is it for? What problem does it solve?" rows="4" oninput="updatePreview()"></textarea>
+        <div class="field-error" id="err-desc">Description is required.</div>
+      </div>
+    </div>
+
+    <div class="wl-section">
+      <div class="wl-section-title">Category & Pricing</div>
+      <div class="field">
+        <div class="field-label">Category</div>
+        <select class="field-select" id="f-category" onchange="updatePreview()">
+          <option value="">Select category...</option>
+          <option>SaaS</option>
+          <option>AI Tool</option>
+          <option>Developer Tool</option>
+          <option>No-code Tool</option>
+          <option>Productivity</option>
+          <option>Marketing</option>
+          <option>Analytics</option>
+          <option>Design</option>
+          <option>Finance</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="field-label">Pricing model</div>
+        <select class="field-select" id="f-pricing">
+          <option value="">Select pricing...</option>
+          <option>Free</option>
+          <option>Freemium</option>
+          <option>Paid</option>
+          <option>One-time payment</option>
+          <option>Open source</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="wl-section">
+      <div class="wl-section-title">Founder info</div>
+      <div class="field">
+        <div class="field-label">Your name</div>
+        <input class="field-input" type="text" id="f-founder" placeholder="Gürkan Keşaplı">
+      </div>
+      <div class="field">
+        <div class="field-label">Twitter / X handle</div>
+        <input class="field-input" type="text" id="f-twitter" placeholder="@gurkan">
+      </div>
+      <div class="field">
+        <div class="field-label">Email <span class="field-opt">for directory accounts</span></div>
+        <input class="field-input" type="email" id="f-email" placeholder="founder@example.com">
+        <div class="field-hint">Used for creating accounts on platforms that require registration.</div>
+      </div>
+    </div>
+
+    <div class="wl-section">
+      <div class="wl-section-title">Assets</div>
+      <div class="field">
+        <div class="field-label">Logo</div>
+        <div class="logo-upload" onclick="document.getElementById('logo-file').click()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Upload logo (PNG, min 200x200)
+          <input type="file" id="logo-file" style="display:none" accept="image/*" onchange="handleLogo(this)">
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Screenshots <span class="field-opt">optional</span></div>
+        <div class="logo-upload" onclick="document.getElementById('ss-file').click()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Upload screenshots (up to 5)
+          <input type="file" id="ss-file" style="display:none" accept="image/*" multiple>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT — STEPS -->
+  <div class="wizard-right">
+
+    <!-- STEP 1: Preview -->
+    <div class="step-panel active" id="panel-1">
+      <div class="preview-split">
+        <div class="ps-panel">
+          <div class="ps-title">Project preview</div>
+          <div class="preview-card">
+            <div class="prev-name" id="prev-name">Your project</div>
+            <div class="prev-url" id="prev-url">yourproject.com</div>
+            <div class="prev-desc" id="prev-desc">Your description will appear here. Fill in the form on the left to preview.</div>
+            <div class="prev-tags" id="prev-tags">
+              <span class="prev-tag">SaaS</span>
+            </div>
+          </div>
+        </div>
+        <div class="ps-panel">
+          <div class="ps-title">What gets submitted</div>
+          <div class="platform-preview-mini">
+            <div class="ppm-item"><span class="ppm-name">Product Hunt</span><span class="ppm-badge ppm-guided">Guided</span></div>
+            <div class="ppm-item"><span class="ppm-name">Uneed</span><span class="ppm-badge ppm-auto">Auto</span></div>
+            <div class="ppm-item"><span class="ppm-name">DevHunt</span><span class="ppm-badge ppm-auto">Auto</span></div>
+            <div class="ppm-item"><span class="ppm-name">BetaList</span><span class="ppm-badge ppm-auto">Auto</span></div>
+            <div class="ppm-item"><span class="ppm-name">Indie Hackers</span><span class="ppm-badge ppm-guided">Guided</span></div>
+            <div style="padding:10px 14px;font-family:var(--mono);font-size:10px;color:#aaa;background:var(--paper2);text-align:center">+more depending on package</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:24px 28px;background:var(--paper2);border-top:var(--border)">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px">Next step</div>
+        <p style="font-size:14px;color:#555;line-height:1.65">Fill in your project info on the left, then click <strong>Generate AI Kit</strong> to auto-write your launch copy for every platform.</p>
+      </div>
+    </div>
+
+    <!-- STEP 2: AI Kit -->
+    <div class="step-panel" id="panel-2">
+      <div class="generating" id="generating-state">
+        <div class="gen-h">WRITING<br>YOUR KIT</div>
+        <div class="gen-sub" id="gen-sub-text">Analyzing your project...</div>
+        <div class="gen-bar"><div class="gen-bar-fill" id="gen-bar"></div></div>
+        <div class="gen-status" id="gen-status">●</div>
+      </div>
+      <div id="kit-ready" style="display:none">
+        <div class="kit-nav">
+          <button class="kit-nav-btn active" onclick="switchKit('ph',this)">Product Hunt</button>
+          <button class="kit-nav-btn" onclick="switchKit('reddit',this)">Reddit</button>
+          <button class="kit-nav-btn" onclick="switchKit('hn',this)">Hacker News</button>
+          <button class="kit-nav-btn" onclick="switchKit('twitter',this)">Twitter</button>
+        </div>
+        <div class="kit-view">
+          <div class="kit-platform-label" id="kit-plat-label">Product Hunt — Tagline + Maker Comment</div>
+          <textarea class="kit-textarea" id="kit-text"></textarea>
+          <div class="kit-tags-editor" id="kit-tags"></div>
+          <div class="kit-actions">
+            <button class="kit-btn primary" onclick="copyKitText()">Copy content</button>
+            <button class="kit-btn" onclick="regenerateKit()">Regenerate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Package -->
+    <div class="step-panel" id="panel-3">
+      <div class="pkg-grid">
+        <div class="pkg-option selected" onclick="selectPkg(this,'starter',19)" data-pkg="starter" data-credits="19">
+          <div class="pkg-check"><div class="pkg-check-inner"></div></div>
+          <div class="pkg-opt-tier">Starter</div>
+          <div class="pkg-opt-price">$9</div>
+          <div class="pkg-opt-count">19 platforms · 19 credits</div>
+          <div class="pkg-opt-feats">
+            <div class="pkg-opt-feat">Tier 1 launch sites</div>
+            <div class="pkg-opt-feat">Basic AI kit</div>
+            <div class="pkg-opt-feat">Dashboard + report</div>
+          </div>
+        </div>
+        <div class="pkg-option" onclick="selectPkg(this,'launch',49)" data-pkg="launch" data-credits="49">
+          <div class="pkg-check"><div class="pkg-check-inner"></div></div>
+          <div class="pkg-opt-tier">Full Launch — Popular</div>
+          <div class="pkg-opt-price">$19</div>
+          <div class="pkg-opt-count">49 platforms · 49 credits</div>
+          <div class="pkg-opt-feats">
+            <div class="pkg-opt-feat">Tier 1 + 2 platforms</div>
+            <div class="pkg-opt-feat">AI dirs + SaaS dirs</div>
+            <div class="pkg-opt-feat">G2 + Capterra guided</div>
+            <div class="pkg-opt-feat">Full AI kit</div>
+          </div>
+        </div>
+        <div class="pkg-option" onclick="selectPkg(this,'pro',99)" data-pkg="pro" data-credits="99">
+          <div class="pkg-check"><div class="pkg-check-inner"></div></div>
+          <div class="pkg-opt-tier">Launch Pro</div>
+          <div class="pkg-opt-price">$29</div>
+          <div class="pkg-opt-count">99+ platforms · 99 credits</div>
+          <div class="pkg-opt-feats">
+            <div class="pkg-opt-feat">All tiers included</div>
+            <div class="pkg-opt-feat">Reddit copy (5 subs)</div>
+            <div class="pkg-opt-feat">Deal platforms</div>
+            <div class="pkg-opt-feat">Priority queue</div>
+          </div>
+        </div>
+      </div>
+      <div class="pkg-credits-note">
+        <div class="pcn-text">You have <span id="pcn-balance">32</span> credits. This package costs <span id="pcn-cost">19</span> credits.</div>
+        <div class="pcn-balance">Remaining after: <span class="pcn-num" id="pcn-remaining">13</span></div>
+      </div>
+      <div style="padding:20px 32px;background:var(--paper)">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#888;margin-bottom:8px">Don't have enough credits?</div>
+        <div style="display:flex;gap:8px">
+          <button style="font-family:var(--mono);font-size:11px;padding:8px 16px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;transition:all .12s" onmouseover="this.style.background='var(--ink)';this.style.color='var(--acid)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">Buy 19 credits — $9</button>
+          <button style="font-family:var(--mono);font-size:11px;padding:8px 16px;border:1.5px solid var(--ink);background:var(--ink);color:var(--acid);cursor:pointer" onmouseover="this.style.background='#222'" onmouseout="this.style.background='var(--ink)'">Buy 49 credits — $19</button>
+          <button style="font-family:var(--mono);font-size:11px;padding:8px 16px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;transition:all .12s" onmouseover="this.style.background='var(--ink)';this.style.color='var(--acid)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">Buy 120 credits — $39</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Launch -->
+    <div class="step-panel" id="panel-4">
+      <div class="launch-confirm">
+        <div class="lc-summary">
+          <div class="lc-sum-row"><span class="lc-sum-label">Project</span><span class="lc-sum-value" id="lc-name">—</span></div>
+          <div class="lc-sum-row"><span class="lc-sum-label">Package</span><span class="lc-sum-value" id="lc-pkg">—</span></div>
+          <div class="lc-sum-row"><span class="lc-sum-label">Platforms</span><span class="lc-sum-value" id="lc-plat">—</span></div>
+          <div class="lc-sum-row"><span class="lc-sum-label">Credits used</span><span class="lc-sum-value" id="lc-credits">—</span></div>
+          <div class="lc-sum-row"><span class="lc-sum-label">Credits remaining</span><span class="lc-sum-value" id="lc-remaining">—</span></div>
+        </div>
+        <div class="guided-warning">
+          <div class="gw-title">Guided platforms included</div>
+          <div class="gw-text">Some platforms (Product Hunt, Reddit, G2) require human submission due to community rules. After launching, you'll see step-by-step instructions for each — we've written all the copy. Takes 2–5 minutes per platform.</div>
+        </div>
+        <button class="launch-big-btn" id="launch-btn" onclick="doLaunch()">LAUNCH MY APP →</button>
+      </div>
+    </div>
+
+    <!-- LAUNCHING STATE -->
+    <div class="launching" id="launching-state">
+      <div style="font-family:var(--display);font-size:48px;letter-spacing:2px;margin-bottom:8px">LAUNCHING</div>
+      <div style="font-family:var(--mono);font-size:12px;color:#888;margin-bottom:32px" id="launch-status-text">Starting submission queue...</div>
+      <div class="la-grid">
+        <div class="la-stat"><div class="la-num" id="la-queued">0</div><div class="la-label">Queued</div></div>
+        <div class="la-stat"><div class="la-num" id="la-submitted" style="color:var(--rust)">0</div><div class="la-label">Submitted</div></div>
+      </div>
+      <div class="la-queue">
+        <div class="la-queue-head">Live submission queue</div>
+        <div id="la-queue-rows"></div>
+      </div>
+      <div style="margin-top:20px;text-align:center">
+        <a href="launchflow-user-dashboard.html" style="font-family:var(--mono);font-size:12px;color:var(--blue);text-decoration:none">View full dashboard →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="wizard-bottom">
+  <div class="wb-left">
+    <button class="wb-btn" id="btn-back" onclick="prevStep()" disabled>← Back</button>
+    <button class="wb-btn primary" id="btn-next" onclick="nextStep()">Generate AI Kit →</button>
+  </div>
+  <div class="wb-step-info" id="step-info">Step 1 of 4 — Project info</div>
+</div>
+
+<script>
+let currentStep = 1
+let selectedPkg = {slug:'starter', credits:19, price:'$9', name:'Starter', platforms:19}
+let userCredits = 32
+let kitData = {}
+
+const KIT_CONTENT = {
+  ph: {
+    label:'Product Hunt — Tagline + Maker Comment',
+    getContent: (name,url,desc) => `${name} — ${desc}\n\nHi Product Hunt! 👋\n\nI built ${name} because I was tired of spending hours on manual submissions after every launch.\n\n${desc}.\n\nBuilt with Cursor + Supabase. Would love your feedback!\n\n👉 ${url}`,
+    tags:['#launch','#saas','#buildinpublic','#indiemaker']
+  },
+  reddit: {
+    label:'Reddit · r/sideproject — Post',
+    getContent: (name,url,desc) => `I built ${name} to solve my own problem — [feedback welcome]\n\nHey r/sideproject,\n\n${desc}.\n\nBuilt it because I was personally frustrated with this. Would love brutal honest feedback — what's missing, what's broken?\n\n👉 ${url}`,
+    tags:['sideproject','buildinpublic','saas','feedback']
+  },
+  hn: {
+    label:'Hacker News — Show HN',
+    getContent: (name,url,desc) => `Show HN: ${name} – ${desc}\n\nHi HN. I built this because I kept running into this problem myself.\n\nThe core insight: ${desc.toLowerCase()}.\n\nTech: Next.js, Supabase, Playwright. Happy to answer questions.\n\n${url}`,
+    tags:[]
+  },
+  twitter: {
+    label:'Twitter / X — Launch Thread',
+    getContent: (name,url,desc) => `Just launched ${name} 🚀\n\n${desc}.\n\nHere's what I built and why 🧵\n\n1/ The problem...\n2/ The solution...\n3/ How it works...\n\n👉 ${url}\n\n#buildinpublic #indiehacker #saas #vibecoding`,
+    tags:['#buildinpublic','#indiehacker','#saas','#vibecoding']
+  }
+}
+
+let activeKit = 'ph'
+
+function updatePreview() {
+  const name = document.getElementById('f-name').value || 'Your project'
+  const url = document.getElementById('f-url').value || 'yourproject.com'
+  const desc = document.getElementById('f-desc').value || 'Your description will appear here.'
+  const cat = document.getElementById('f-category').value || 'SaaS'
+  document.getElementById('prev-name').textContent = name
+  document.getElementById('prev-url').textContent = url.replace('https://','')
+  document.getElementById('prev-desc').textContent = desc.slice(0,140) + (desc.length>140?'...':'')
+  document.getElementById('prev-tags').innerHTML = `<span class="prev-tag">${cat}</span>`
+}
+
+function validateStep1() {
+  let ok = true
+  const name = document.getElementById('f-name').value.trim()
+  const url = document.getElementById('f-url').value.trim()
+  const desc = document.getElementById('f-desc').value.trim()
+  if(!name){ document.getElementById('err-name').style.display='block'; document.getElementById('f-name').classList.add('err'); ok=false }
+  else{ document.getElementById('err-name').style.display='none'; document.getElementById('f-name').classList.remove('err') }
+  if(!url){ document.getElementById('err-url').style.display='block'; document.getElementById('f-url').classList.add('err'); ok=false }
+  else{ document.getElementById('err-url').style.display='none'; document.getElementById('f-url').classList.remove('err') }
+  if(!desc){ document.getElementById('err-desc').style.display='block'; document.getElementById('f-desc').classList.add('err'); ok=false }
+  else{ document.getElementById('err-desc').style.display='none'; document.getElementById('f-desc').classList.remove('err') }
+  return ok
+}
+
+function nextStep() {
+  if(currentStep === 1 && !validateStep1()) return
+  if(currentStep === 1) {
+    goToStep(2)
+    startGenerating()
+    return
+  }
+  if(currentStep === 2) { goToStep(3); return }
+  if(currentStep === 3) {
+    goToStep(4)
+    updateSummary()
+    return
+  }
+}
+
+function prevStep() {
+  if(currentStep > 1) goToStep(currentStep - 1)
+}
+
+function goToStep(n) {
+  currentStep = n
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'))
+  document.getElementById('panel-'+n).classList.add('active')
+
+  for(let i=1;i<=4;i++){
+    const ind = document.getElementById('step-ind-'+i)
+    ind.classList.remove('active','done')
+    if(i < n) ind.classList.add('done')
+    else if(i === n) ind.classList.add('active')
+  }
+
+  const nextBtn = document.getElementById('btn-next')
+  const backBtn = document.getElementById('btn-back')
+  const stepInfo = document.getElementById('step-info')
+  const labels = ['Project info','AI Launch Kit','Choose Package','Confirm & Launch']
+
+  backBtn.disabled = n === 1
+  stepInfo.textContent = `Step ${n} of 4 — ${labels[n-1]}`
+
+  if(n===1){ nextBtn.textContent='Generate AI Kit →'; nextBtn.disabled=false }
+  else if(n===2){ nextBtn.textContent='Choose Package →'; nextBtn.disabled=true }
+  else if(n===3){ nextBtn.textContent='Review & Launch →'; nextBtn.disabled=false }
+  else if(n===4){ nextBtn.style.display='none' }
+  else{ nextBtn.style.display='block' }
+
+  document.getElementById('topbar-title').textContent = ['New Launch','AI Launch Kit','Choose Package','Confirm & Launch'][n-1]
+}
+
+function startGenerating() {
+  document.getElementById('generating-state').classList.add('active')
+  document.getElementById('kit-ready').style.display='none'
+
+  const steps = [
+    {pct:20, text:'Analyzing your project...', delay:0},
+    {pct:45, text:'Writing Product Hunt copy...', delay:800},
+    {pct:65, text:'Writing Reddit post...', delay:1600},
+    {pct:80, text:'Writing Show HN post...', delay:2200},
+    {pct:95, text:'Writing Twitter thread...', delay:2800},
+    {pct:100, text:'Kit ready!', delay:3400},
+  ]
+
+  steps.forEach(s => {
+    setTimeout(() => {
+      document.getElementById('gen-bar').style.width = s.pct+'%'
+      document.getElementById('gen-sub-text').textContent = s.text
+    }, s.delay)
+  })
+
+  setTimeout(() => {
+    document.getElementById('generating-state').classList.remove('active')
+    document.getElementById('kit-ready').style.display='block'
+    document.getElementById('btn-next').disabled = false
+
+    const name = document.getElementById('f-name').value || 'YourApp'
+    const url = document.getElementById('f-url').value || 'yourapp.io'
+    const desc = document.getElementById('f-desc').value || 'An awesome tool for makers'
+
+    kitData = {}
+    Object.keys(KIT_CONTENT).forEach(k => {
+      kitData[k] = {
+        content: KIT_CONTENT[k].getContent(name, url, desc),
+        tags: [...KIT_CONTENT[k].tags]
+      }
+    })
+
+    switchKit('ph', document.querySelector('.kit-nav-btn'))
+  }, 3800)
+}
+
+function switchKit(key, btn) {
+  activeKit = key
+  document.querySelectorAll('.kit-nav-btn').forEach(b=>b.classList.remove('active'))
+  if(btn) btn.classList.add('active')
+  document.getElementById('kit-plat-label').textContent = KIT_CONTENT[key].label
+  document.getElementById('kit-text').value = kitData[key]?.content || ''
+  const tagsEl = document.getElementById('kit-tags')
+  tagsEl.innerHTML = (kitData[key]?.tags||[]).map(t=>`<span class="kit-tag-item">${t}<span class="kit-tag-remove" onclick="removeTag('${key}','${t}')">✕</span></span>`).join('')
+}
+
+function removeTag(key, tag) {
+  kitData[key].tags = kitData[key].tags.filter(t=>t!==tag)
+  switchKit(key, null)
+}
+
+function copyKitText() {
+  const text = document.getElementById('kit-text').value
+  navigator.clipboard.writeText(text).catch(()=>{})
+}
+
+function regenerateKit() {
+  const name = document.getElementById('f-name').value || 'YourApp'
+  const url = document.getElementById('f-url').value || 'yourapp.io'
+  const desc = document.getElementById('f-desc').value || 'An awesome tool'
+  kitData[activeKit] = {
+    content: KIT_CONTENT[activeKit].getContent(name, url, desc),
+    tags: [...KIT_CONTENT[activeKit].tags]
+  }
+  switchKit(activeKit, null)
+}
+
+function selectPkg(el, slug, credits) {
+  document.querySelectorAll('.pkg-option').forEach(p=>p.classList.remove('selected'))
+  el.classList.add('selected')
+  const prices = {starter:'$9',launch:'$19',pro:'$29'}
+  const names = {starter:'Starter',launch:'Full Launch',pro:'Launch Pro'}
+  const platforms = {starter:19,launch:49,pro:99}
+  selectedPkg = {slug, credits, price:prices[slug], name:names[slug], platforms:platforms[slug]}
+  document.getElementById('pcn-cost').textContent = credits
+  const remaining = userCredits - credits
+  document.getElementById('pcn-remaining').textContent = remaining
+  document.getElementById('pcn-remaining').style.color = remaining < 0 ? 'var(--rust)' : 'var(--rust)'
+  document.getElementById('pcn-balance').textContent = userCredits
+}
+
+function updateSummary() {
+  const name = document.getElementById('f-name').value || '—'
+  document.getElementById('lc-name').textContent = name
+  document.getElementById('lc-pkg').textContent = selectedPkg.name + ' (' + selectedPkg.price + ')'
+  document.getElementById('lc-plat').textContent = selectedPkg.platforms + '+ platforms'
+  document.getElementById('lc-credits').textContent = selectedPkg.credits + ' credits'
+  document.getElementById('lc-remaining').textContent = (userCredits - selectedPkg.credits) + ' credits'
+}
+
+function doLaunch() {
+  const btn = document.getElementById('launch-btn')
+  btn.disabled = true
+  btn.textContent = 'LAUNCHING...'
+
+  document.querySelector('.launch-confirm').style.display = 'none'
+  document.getElementById('launching-state').classList.add('active')
+
+  const platforms = [
+    {name:'Product Hunt', type:'guided'},
+    {name:'Uneed', type:'auto'},
+    {name:'DevHunt', type:'auto'},
+    {name:'BetaList', type:'auto'},
+    {name:'Microlaunch', type:'auto'},
+    {name:'Indie Hackers', type:'guided'},
+    {name:'SideProjectors', type:'auto'},
+    {name:'StartupBase', type:'auto'},
+  ]
+
+  let queued = 0, submitted = 0
+  const rowsEl = document.getElementById('la-queue-rows')
+
+  platforms.slice(0, selectedPkg.platforms > 8 ? 8 : selectedPkg.platforms).forEach((p, i) => {
+    setTimeout(() => {
+      queued++
+      document.getElementById('la-queued').textContent = queued
+      rowsEl.innerHTML += `<div class="la-queue-row" id="lq-${i}"><span class="lq-name">${p.name}</span><span class="lq-badge ${p.type==='guided'?'lqb-guided':'lqb-queued'}">${p.type==='guided'?'guided':'queued'}</span></div>`
+
+      if(p.type === 'auto') {
+        setTimeout(() => {
+          submitted++
+          document.getElementById('la-submitted').textContent = submitted
+          const row = document.getElementById('lq-'+i)
+          if(row) row.querySelector('.lq-badge').className = 'lq-badge lqb-submitted'
+          row.querySelector('.lq-badge').textContent = 'submitted'
+          document.getElementById('launch-status-text').textContent = `Submitting to ${p.name}...`
+        }, 1200 + i * 600)
+      }
+    }, i * 400)
+  })
+
+  document.getElementById('pcn-balance') && (document.getElementById('credit-display').textContent = userCredits - selectedPkg.credits)
+}
+
+function handleLogo(input) {
+  if(input.files && input.files[0]) {
+    const upload = input.closest('.logo-upload')
+    upload.textContent = '✓ ' + input.files[0].name
+  }
+}
+
+// Init
+document.getElementById('pcn-balance').textContent = userCredits
+</script>
+</body>
+</html>

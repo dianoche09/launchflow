@@ -188,6 +188,122 @@
 - Used `framer-motion` for staggered entrances to reduce perceived cognitive load while maintaining high visual tension.
 
 ### Next step
-- Final check and handover.
+- Integrate with production keys and perform live launch test.
 
 ---
+
+## 2026-03-14 — Dev Server Deployment
+**Phase:** 6.1 — Verification
+**Task:** Start dev server on custom port
+**Status:** Done
+
+### What was done
+- Successfully launched the Next.js development server on `localhost:4444`.
+- Resolved CSS compilation issues related to `@apply` rules and custom design tokens.
+- Fixed font configuration by switching to local Geist fonts for guaranteed compatibility.
+- Verified visual fidelity on `localhost:4444` via browser subagent.
+
+### Next step
+- Production validation and final feature audit.
+
+---
+
+## 2026-03-14 — Design Pivot: Industrial Utilitarian (Precision Focused)
+**Phase:** 4.2 — Visual Refinement
+**Task:** Pivot design from Brutalist to Utilitarian
+**Status:** Done
+
+### What was done
+- Abandoned "Technical Brutalism" in favor of **"Industrial Utilitarian"** to reduce visual noise and focus on direct user action.
+- Switched to a professional **Electric Blue (`oklch(0.65 0.18 250)`)** primary color.
+- Implemented **12px (0.75rem) precision rounding** on all core components (cards, buttons, inputs).
+- Redesigned Landing Page with a centered, high-conversion hero layout focusing on "100+ sites" value prop.
+- Redesigned Dashboard and Project Detail pages as professional, high-precision tools (SaaS Standard).
+- Fixed font inheritance issues in the layout layer.
+
+### Files created/modified
+- `src/app/globals.css` — Modernized design tokens and rounding constants.
+- `src/app/page.tsx` — Balanced, high-conversion Landing Page.
+- `src/app/dashboard/page.tsx` — Clean, utility-focused Control Panel.
+- `src/app/dashboard/[id]/page.tsx` — Distribution registry view with high-readability tables.
+- `src/app/(auth)/login/page.tsx` — Frictionless, centered Login Sequence.
+- `src/components/dashboard/submission-status-badge.tsx` — Transitioned to professional pill-style badges.
+
+### Decisions made
+- Removed "visual show" elements to ensure the user is pulled directly into the core workflow ("amaç belli, hedef belli").
+- Prioritized white space and layout balance over asymmetric tension.
+
+### Next step
+- Final UI audit and verification.
+
+---
+---
+
+## 2026-03-14 — Swiss-Punk Refactor & Infrastructure
+**Phase:** 6 & 7 — Aesthetic Refactor & Integration
+**Task:** Fix CSS, Update Landing, Configure Services
+**Status:** In Progress
+
+### What was done
+- **Aesthetic Pivot:** Switched to "Swiss-Punk" design system (Bebas Neue, Paper Background, High Contrast).
+- **CSS Crash Fix:** Resolved critical 500 error caused by spaces in Tailwind arbitrary values within `@apply`.
+- **Logic Cleanup:** Extracted core types to `src/types/index.ts` for project-wide consistency.
+- **Home Page:** Completely rebuilt the landing page with the new Swiss-Punk structure and marquee.
+- **Navigation:** Created a reusable `Nav` component with active route detection.
+- **Routing:** Removed redundant `src/app/login` to fix duplicate route conflict with `src/app/(auth)/login`.
+- **Infrastructure:**
+  - Configured PostHog analytics integration.
+  - Added OpenAI API key to `.env.local`.
+  - Optimized `.gitignore` for security and environment variables.
+  - Created custom 404 error page.
+
+### Files created/modified
+- `src/app/globals.css` — Swiss-Punk tokens & badge fixes.
+- `src/app/page.tsx` — New landing page.
+- `src/components/nav.tsx` — New navigation component.
+- `src/app/not-found.tsx` — Custom error page.
+- `src/types/index.ts` — Centralized TS types.
+- `.env.local` — Keys for PostHog & OpenAI.
+- `.gitignore` — Security rules.
+
+### Decisions made
+- Removed spaces in `rgba()` values within CSS files as Tailwind's JIT @apply is strict about whitespace in square brackets.
+- Standardized font-display as 'Bebas Neue' for all high-level headers.
+
+### Issues / Notes
+- Server restart needed to clear build cache after path changes.
+- Duplicate routes (login/platforms) are being resolved directory by directory.
+
+### Next step
+- Implement Swiss-Punk versions of Pricing and Platforms pages.
+
+---
+
+## 2026-03-14 — Service Integration & Content System (Phase 7)
+**Phase:** 7.2 - 7.8 — Service Integration & Polish
+**Task:** Resend, Blog (MDX), Sentry, Axiom, OG params, DEPLOY.md
+**Status:** Done
+
+### What was done
+- **Email System:** Created email templates (`templates.ts`) for Welcome, Launch Started, Launch Done, Low Credits. Integrated via Resend.
+- **Content System:** Installed `next-mdx-remote` and `gray-matter`. Built `/blog`, `/blog/[slug]`, and `/changelog`. Populated 3 sample blog posts and 3 changelog releases.
+- **Monitoring & Logging:** Configured Sentry client/server/edge mappings and `@sentry/node` for the Playwright worker. Configured Axiom logging and replaced server-side `console.logs`.
+- **SEO & Social:** Generated static dynamic Open Graph (`/api/og`, `/api/og/blog`) endpoints. Fully mapped `sitemap.ts` and `robots.ts`.
+- **Deployment:** Compiled `DEPLOY.md` architecture guide. Created Vercel security headers (`vercel.json`) and Railway Playwright `Dockerfile` for worker processes.
+
+### Files created/modified
+- `src/lib/email/templates.ts`, `route.ts` (API Webhooks/Internal)
+- `content/blog/*.mdx`, `content/changelog/*.mdx`
+- `src/lib/blog/posts.ts`, `app/blog/page.tsx`, `app/changelog/page.tsx`
+- `sentry.client.config.ts`, `sentry.server.config.ts`, `worker/index.ts`
+- `src/lib/logger.ts`, `next.config.mjs`
+- `src/app/api/og/route.tsx`
+- `src/app/sitemap.ts`, `src/app/robots.ts`
+- `vercel.json`, `DEPLOY.md`, `worker/Dockerfile`
+
+### Decisions made
+- We strictly adhere to Swiss-Punk logic for generated OG images using native Next.js `ImageResponse` with absolute hardcoded styling due to standard layout limitations.
+- Switched to the newer `@axiomhq/nextjs` SDK in the configuration, maintaining `withAxiom` wrappers in `next.config.mjs`.
+
+### Next step
+- Phase 8: Data Wiring & Dashboard Integration. Migrate frontend static UI to consume real Supabase tables.

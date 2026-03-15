@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dim:rgba(184,255,0,.12);
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --rust-dim:rgba(201,77,30,.1);
+  --blue:#1a1aff;
+  --blue-dim:rgba(26,26,255,.08);
+  --green:#2a9d00;
+  --green-dim:rgba(42,157,0,.1);
+  --border:2px solid var(--ink);
+  --border1:1px solid var(--paper3);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+  --sidebar:220px;
+  --topbar:52px;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5;overflow:hidden;display:grid;grid-template-columns:var(--sidebar) 1fr;grid-template-rows:var(--topbar) 1fr}
+
+/* TOPBAR */
+.topbar{
+  grid-column:1/-1;
+  border-bottom:var(--border);
+  display:flex;align-items:stretch;height:var(--topbar);
+  background:var(--paper);z-index:100;
+}
+.tb-logo{font-family:var(--display);font-size:24px;letter-spacing:1px;line-height:var(--topbar);padding:0 20px;border-right:var(--border);text-decoration:none;color:var(--ink);white-space:nowrap}
+.tb-breadcrumb{display:flex;align-items:center;padding:0 20px;gap:10px;border-right:var(--border);font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.5px}
+.tb-crumb-sep{color:var(--paper3)}
+.tb-crumb-active{color:var(--ink)}
+.tb-right{margin-left:auto;display:flex;align-items:stretch}
+.tb-plan{display:flex;align-items:center;padding:0 20px;border-left:var(--border);gap:10px;font-family:var(--mono);font-size:11px;color:#888}
+.tb-plan-badge{background:var(--ink);color:var(--acid);padding:3px 9px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.tb-notif{display:flex;align-items:center;padding:0 18px;border-left:var(--border);cursor:pointer;transition:background .12s;position:relative}
+.tb-notif:hover{background:var(--paper2)}
+.tb-notif-dot{position:absolute;top:10px;right:12px;width:6px;height:6px;border-radius:50%;background:var(--rust)}
+.tb-user{display:flex;align-items:center;padding:0 20px;border-left:var(--border);gap:10px;cursor:pointer;transition:background .12s}
+.tb-user:hover{background:var(--paper2)}
+.tb-avatar{width:28px;height:28px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;color:var(--acid);flex-shrink:0}
+.tb-username{font-family:var(--mono);font-size:11px;letter-spacing:.5px}
+
+/* SIDEBAR */
+.sidebar{
+  border-right:var(--border);
+  overflow-y:auto;
+  background:var(--paper);
+  display:flex;flex-direction:column;
+}
+.sidebar::-webkit-scrollbar{width:0}
+.sb-section{border-bottom:var(--border1);padding:8px 0}
+.sb-section-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#bbb;padding:8px 20px 4px}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;letter-spacing:.3px;color:#666;
+  transition:all .1s;border-left:3px solid transparent;
+}
+.sb-item:hover{background:var(--paper2);color:var(--ink)}
+.sb-item.active{background:var(--acid-dim);color:var(--ink);border-left-color:var(--acid-dark);font-weight:500}
+.sb-icon{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.sb-item.active .sb-icon{opacity:1}
+.sb-badge{margin-left:auto;background:var(--rust);color:white;font-size:9px;padding:1px 5px;border-radius:0;min-width:16px;text-align:center}
+.sb-bottom{margin-top:auto;border-top:var(--border1);padding:8px 0}
+
+/* MAIN */
+.main{overflow-y:auto;background:var(--paper2)}
+.main::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-thumb{background:var(--paper3)}
+
+/* PAGE SECTIONS */
+.page{display:none}
+.page.active{display:block}
+
+/* SHARED */
+.page-header{padding:32px 32px 0;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.page-h1{font-family:var(--display);font-size:48px;letter-spacing:2px;line-height:.9}
+.page-sub{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.5px;margin-top:6px}
+.page-actions{display:flex;gap:8px}
+.btn{font-family:var(--mono);font-size:11px;letter-spacing:.5px;padding:9px 18px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s;white-space:nowrap}
+.btn:hover{background:var(--ink);color:var(--acid)}
+.btn-primary{background:var(--ink);color:var(--acid)}
+.btn-primary:hover{background:#222}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--border);background:var(--ink)}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:var(--border);background:var(--ink)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:var(--border);background:var(--ink)}
+.kpi{background:var(--paper);padding:24px;display:flex;flex-direction:column;justify-content:flex-end}
+.kpi-num{font-family:var(--display);font-size:44px;letter-spacing:1px;line-height:.9;margin-bottom:6px}
+.kpi-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+.kpi-delta{font-family:var(--mono);font-size:10px;margin-top:6px}
+.delta-up{color:var(--green)}
+.delta-down{color:var(--rust)}
+
+.section{margin:24px 32px;border:var(--border)}
+.section-head{border-bottom:var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:var(--paper)}
+.section-title{font-family:var(--display);font-size:22px;letter-spacing:1px}
+.section-body{background:var(--paper)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;padding:10px 20px;text-align:left;background:var(--paper3);border-bottom:var(--border1)}
+.tbl td{padding:13px 20px;border-bottom:var(--border1);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--paper2)}
+
+/* STATUS BADGES */
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border:1.5px solid}
+.b-approved{background:var(--green-dim);color:var(--green);border-color:var(--green)}
+.b-pending{background:#fffbe6;color:#8a6600;border-color:#d4b800}
+.b-queued{background:var(--blue-dim);color:var(--blue);border-color:var(--blue)}
+.b-failed{background:var(--rust-dim);color:var(--rust);border-color:var(--rust)}
+.b-draft{background:var(--paper3);color:#888;border-color:#ccc}
+.b-pro{background:var(--acid-dim);color:var(--acid-dark);border-color:var(--acid-dark)}
+.b-free{background:var(--paper3);color:#888;border-color:#ccc}
+
+/* PROGRESS BAR INLINE */
+.prog-inline{height:4px;background:var(--paper3);margin-top:6px;position:relative}
+.prog-inline-fill{height:100%;background:var(--acid-dark);transition:width .4s}
+
+/* PLATFORM DOTS */
+.dot-grid{display:flex;flex-wrap:wrap;gap:4px;padding:16px 20px}
+.dot{width:10px;height:10px;background:var(--paper3);border:1px solid #ddd;cursor:default;transition:background .1s}
+.dot:hover{background:var(--paper3)}
+.dot.d-ok{background:var(--ink)}
+.dot.d-live{background:var(--acid-dark)}
+.dot.d-err{background:var(--rust)}
+.dot.d-pend{background:#d4b800}
+
+/* CHART PLACEHOLDER */
+.chart-area{height:140px;padding:20px;display:flex;align-items:flex-end;gap:6px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{background:var(--ink);width:100%;transition:height .3s}
+.bar-fill.accent{background:var(--acid-dark)}
+.bar-label{font-family:var(--mono);font-size:8px;color:#aaa;letter-spacing:.5px}
+
+/* KIT VIEWER */
+.kit-viewer{display:grid;grid-template-columns:180px 1fr}
+.kit-nav{border-right:var(--border);background:var(--paper)}
+.kit-nav-item{padding:14px 20px;border-bottom:var(--border1);font-family:var(--mono);font-size:11px;color:#888;cursor:pointer;transition:all .1s;display:flex;align-items:center;gap:10px;letter-spacing:.3px}
+.kit-nav-item:hover{background:var(--paper2);color:var(--ink)}
+.kit-nav-item.active{background:var(--ink);color:var(--acid)}
+.kit-nav-icon{width:26px;height:26px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.kit-nav-item:not(.active) .kit-nav-icon{background:var(--paper3);color:var(--ink)}
+.kit-content-area{padding:24px}
+.kit-content-text{font-size:14px;line-height:1.75;color:var(--ink);background:var(--paper2);padding:20px;border:var(--border1);font-family:var(--body);white-space:pre-wrap;word-break:break-word}
+.kit-tags-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.kit-tag{font-family:var(--mono);font-size:10px;padding:3px 9px;background:var(--ink);color:var(--acid)}
+.kit-actions{display:flex;gap:8px;margin-top:14px}
+
+/* PLAN CARD */
+.plan-card{margin:24px 32px;border:var(--border);display:grid;grid-template-columns:1fr 1fr}
+.plan-left{padding:32px;border-right:var(--border)}
+.plan-right{padding:32px}
+.plan-name{font-family:var(--display);font-size:40px;letter-spacing:2px;margin-bottom:4px}
+.plan-price{font-family:var(--display);font-size:32px;letter-spacing:1px;color:var(--rust)}
+.plan-features{margin-top:20px;display:flex;flex-direction:column;gap:0}
+.plan-feat{padding:10px 0;border-bottom:var(--border1);font-family:var(--mono);font-size:11px;color:#666;display:flex;align-items:center;gap:10px}
+.plan-feat:last-child{border-bottom:none}
+.plan-feat::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ink);flex-shrink:0}
+.plan-usage{display:flex;flex-direction:column;gap:20px}
+.usage-item{}
+.usage-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:8px;display:flex;justify-content:space-between}
+.usage-bar{height:6px;background:var(--paper3);position:relative}
+.usage-fill{height:100%;background:var(--ink);transition:width .4s}
+.usage-fill.warn{background:var(--rust)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="launchflow-v2.html" class="tb-logo">LAUNCHFLOW</a>
+  <div class="tb-breadcrumb">
+    <span>Dashboard</span>
+    <span class="tb-crumb-sep">/</span>
+    <span class="tb-crumb-active" id="tb-current">Overview</span>
+  </div>
+  <div class="tb-right">
+    <div class="tb-plan">
+      <span>Credits</span>
+      <span class="tb-plan-badge">32</span>
+    </div>
+    <div class="tb-notif" onclick="nav('notif')">
+      <svg class="tb-notif-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1a5 5 0 0 1 5 5v2.5l1 2H2l1-2V6a5 5 0 0 1 5-5zM6.5 13a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <div class="tb-notif-dot"></div>
+    </div>
+    <div class="tb-user">
+      <div class="tb-avatar">GK</div>
+      <span class="tb-username">Gürkan</span>
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-section">
+    <div class="sb-section-label">Main</div>
+    <div class="sb-item active" onclick="nav('overview')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/></svg>
+      Overview
+    </div>
+    <div class="sb-item" onclick="nav('projects')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" stroke-width="1.2"/><path d="M5 2v10M2 6h8" stroke="currentColor" stroke-width="1.2"/></svg>
+      Projects
+      <span class="sb-badge">3</span>
+    </div>
+    <div class="sb-item" onclick="nav('launch')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4l-3.2 2.3 1.2 4L7 9l-3.5 2.3 1.2-4L1.5 5h4z" stroke="currentColor" stroke-width="1.2"/></svg>
+      Launch Status
+    </div>
+    <div class="sb-item" onclick="nav('kit')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M2 7h7M2 11h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      AI Launch Kit
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Analytics</div>
+    <div class="sb-item" onclick="nav('analytics')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M1 10l3-4 3 2 3-5 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Traffic & Backlinks
+    </div>
+    <div class="sb-item" onclick="nav('submissions')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      All Submissions
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Account</div>
+    <div class="sb-item" onclick="nav('plan')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1l1 3h3l-2.5 2 1 3L7 7.5 4.5 9l1-3L3 4h3z" stroke="currentColor" stroke-width="1.2"/></svg>
+      Plan & Billing
+    </div>
+    <div class="sb-item" onclick="nav('settings')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.9 2.9l1.4 1.4M9.7 9.7l1.4 1.4M2.9 11.1l1.4-1.4M9.7 4.3l1.4-1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Settings
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-item" onclick="window.location='launchflow-v2.html'">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M5 7H1M1 7l3-3M1 7l3 3M9 2h3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Sign out
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <div><div class="page-h1">OVERVIEW</div><div class="page-sub">Welcome back, Gürkan. Here's what's happening.</div></div>
+      <div class="page-actions">
+        <button class="btn btn-primary" onclick="nav('projects')">+ New Project</button>
+      </div>
+    </div>
+
+    <div style="padding:0 32px">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num">3</div><div class="kpi-label">Active Projects</div><div class="kpi-delta delta-up">+1 this month</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">127</div><div class="kpi-label">Total Submissions</div><div class="kpi-delta delta-up">+48 this week</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">89</div><div class="kpi-label">Approved Listings</div><div class="kpi-delta">70% approval rate</div></div>
+        <div class="kpi"><div class="kpi-num">2.4k</div><div class="kpi-label">Backlinks Generated</div><div class="kpi-delta delta-up">+340 this week</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">RECENT PROJECTS</div>
+        <button class="btn" onclick="nav('projects')">View all</button>
+      </div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Project</th><th>Status</th><th>Platforms</th><th>Backlinks</th><th>Launched</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:600">ShipStack</div><div style="font-family:var(--mono);font-size:10px;color:#888">shipstack.io</div></td>
+              <td><span class="badge b-approved">Live</span></td>
+              <td>
+                <div style="font-family:var(--mono);font-size:11px">62 / 80</div>
+                <div class="prog-inline"><div class="prog-inline-fill" style="width:77%"></div></div>
+              </td>
+              <td style="font-family:var(--mono);font-size:12px">1,240</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">Mar 10</td>
+              <td><button class="btn" style="padding:6px 12px;font-size:10px" onclick="nav('launch')">View</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">Negolio</div><div style="font-family:var(--mono);font-size:10px;color:#888">negolio.com</div></td>
+              <td><span class="badge b-queued">Launching</span></td>
+              <td>
+                <div style="font-family:var(--mono);font-size:11px">28 / 80</div>
+                <div class="prog-inline"><div class="prog-inline-fill" style="width:35%"></div></div>
+              </td>
+              <td style="font-family:var(--mono);font-size:12px">560</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">Mar 14</td>
+              <td><button class="btn" style="padding:6px 12px;font-size:10px" onclick="nav('launch')">View</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">Kolayimar</div><div style="font-family:var(--mono);font-size:10px;color:#888">kolayimar.com</div></td>
+              <td><span class="badge b-draft">Draft</span></td>
+              <td><div style="font-family:var(--mono);font-size:11px;color:#aaa">—</div></td>
+              <td style="font-family:var(--mono);font-size:12px;color:#aaa">—</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">—</td>
+              <td><button class="btn btn-primary" style="padding:6px 12px;font-size:10px">Launch</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--border);margin-bottom:24px;background:var(--ink)">
+      <div style="background:var(--paper);border-right:var(--border)">
+        <div class="section-head"><div class="section-title">PLATFORM COVERAGE</div></div>
+        <div class="dot-grid" id="overview-dots"></div>
+        <div style="display:flex;gap:16px;padding:12px 20px;border-top:var(--border1)">
+          <span style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:#666"><span class="dot d-live"></span>Live</span>
+          <span style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:#666"><span class="dot d-ok"></span>Submitted</span>
+          <span style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:#666"><span class="dot d-pend"></span>Pending</span>
+          <span style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:#666"><span class="dot" style="background:var(--paper3)"></span>Queued</span>
+        </div>
+      </div>
+      <div style="background:var(--paper)">
+        <div class="section-head"><div class="section-title">WEEKLY TRAFFIC</div></div>
+        <div class="chart-area" id="weekly-chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="page" id="page-projects">
+    <div class="page-header">
+      <div><div class="page-h1">PROJECTS</div><div class="page-sub">All your vibe-coded apps in one place.</div></div>
+      <div class="page-actions"><button class="btn btn-primary">+ New Project</button></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">ALL PROJECTS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>URL</th><th>Status</th><th>Submissions</th><th>Backlinks</th><th>Plan</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">ShipStack</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">shipstack.io</td>
+              <td><span class="badge b-approved">Live</span></td>
+              <td style="font-family:var(--mono);font-size:12px">62 / 80</td>
+              <td style="font-family:var(--mono);font-size:12px">1,240</td>
+              <td><span class="badge b-pro">Pro</span></td>
+              <td style="display:flex;gap:6px">
+                <button class="btn" style="padding:5px 10px;font-size:10px" onclick="nav('launch')">Status</button>
+                <button class="btn" style="padding:5px 10px;font-size:10px" onclick="nav('kit')">Kit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Negolio</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">negolio.com</td>
+              <td><span class="badge b-queued">Launching</span></td>
+              <td style="font-family:var(--mono);font-size:12px">28 / 80</td>
+              <td style="font-family:var(--mono);font-size:12px">560</td>
+              <td><span class="badge b-pro">Pro</span></td>
+              <td style="display:flex;gap:6px">
+                <button class="btn" style="padding:5px 10px;font-size:10px" onclick="nav('launch')">Status</button>
+                <button class="btn" style="padding:5px 10px;font-size:10px" onclick="nav('kit')">Kit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Kolayimar</td>
+              <td style="font-family:var(--mono);font-size:11px;color:#888">kolayimar.com</td>
+              <td><span class="badge b-draft">Draft</span></td>
+              <td style="font-family:var(--mono);font-size:12px;color:#aaa">—</td>
+              <td style="font-family:var(--mono);font-size:12px;color:#aaa">—</td>
+              <td><span class="badge b-free">Free</span></td>
+              <td><button class="btn btn-primary" style="padding:5px 10px;font-size:10px">Launch now</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNCH STATUS -->
+  <div class="page" id="page-launch">
+    <div class="page-header">
+      <div><div class="page-h1">LAUNCH STATUS</div><div class="page-sub">ShipStack — 62 of 80 platforms submitted</div></div>
+      <div class="page-actions">
+        <select style="font-family:var(--mono);font-size:11px;padding:8px 14px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer">
+          <option>ShipStack</option><option>Negolio</option><option>Kolayimar</option>
+        </select>
+      </div>
+    </div>
+    <div style="padding:0 32px">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">42</div><div class="kpi-label">Approved</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:#d4b800">12</div><div class="kpi-label">Pending</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--blue)">6</div><div class="kpi-label">Queued</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">2</div><div class="kpi-label">Failed</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">ALL SUBMISSIONS</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" style="font-size:10px;padding:6px 12px">Filter</button>
+          <button class="btn" style="font-size:10px;padding:6px 12px">Export</button>
+        </div>
+      </div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Platform</th><th>Category</th><th>Submitted</th><th>Status</th><th>URL</th></tr></thead>
+          <tbody id="submissions-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI LAUNCH KIT -->
+  <div class="page" id="page-kit">
+    <div class="page-header">
+      <div><div class="page-h1">AI LAUNCH KIT</div><div class="page-sub">ShipStack — Generated Mar 10, 2025</div></div>
+      <div class="page-actions">
+        <button class="btn">Regenerate</button>
+        <button class="btn btn-primary">Copy all</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">LAUNCH CONTENT</div></div>
+      <div class="section-body">
+        <div class="kit-viewer">
+          <div class="kit-nav">
+            <div class="kit-nav-item active" onclick="switchKit(this,'ph')">
+              <div class="kit-nav-icon">PH</div>Product Hunt
+            </div>
+            <div class="kit-nav-item" onclick="switchKit(this,'reddit')">
+              <div class="kit-nav-icon">RDT</div>Reddit
+            </div>
+            <div class="kit-nav-item" onclick="switchKit(this,'hn')">
+              <div class="kit-nav-icon">HN</div>Hacker News
+            </div>
+            <div class="kit-nav-item" onclick="switchKit(this,'twitter')">
+              <div class="kit-nav-icon">X</div>Twitter
+            </div>
+          </div>
+          <div class="kit-content-area" id="kit-content-area">
+            <div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:12px">Product Hunt — Tagline + Maker Comment</div>
+            <div class="kit-content-text" id="kit-text">ShipStack — Automate your startup launch to 80+ platforms with one click.
+
+Hi Product Hunt! 👋
+
+I built ShipStack because every time I shipped a new project, I had to manually submit to Product Hunt, Uneed, DevHunt, SaaSHub, and 50+ other platforms. It was killing my momentum.
+
+ShipStack does it all automatically. You enter your project once, and it submits everywhere — AI writes platform-specific copy, a smart queue handles the timing, and a live dashboard tracks every submission.
+
+Built with Cursor + Supabase in 3 weeks. Would love your feedback!</div>
+            <div class="kit-tags-row">
+              <span class="kit-tag">#launch</span>
+              <span class="kit-tag">#saas</span>
+              <span class="kit-tag">#buildinpublic</span>
+              <span class="kit-tag">#indiemaker</span>
+            </div>
+            <div class="kit-actions">
+              <button class="btn btn-primary" onclick="copyKit(this)">Copy content</button>
+              <button class="btn">Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="page" id="page-analytics">
+    <div class="page-header">
+      <div><div class="page-h1">ANALYTICS</div><div class="page-sub">Traffic and backlinks across all projects.</div></div>
+    </div>
+    <div style="padding:0 32px">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num">2.4k</div><div class="kpi-label">Total Backlinks</div><div class="kpi-delta delta-up">+340 this week</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">18.2k</div><div class="kpi-label">Referral Visits</div><div class="kpi-delta delta-up">+2.1k this week</div></div>
+        <div class="kpi"><div class="kpi-num">DR 24</div><div class="kpi-label">Domain Rating</div><div class="kpi-delta delta-up">+8 this month</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">70%</div><div class="kpi-label">Approval Rate</div><div class="kpi-delta">89 / 127</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">TOP TRAFFIC SOURCES</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Platform</th><th>Visits</th><th>Backlinks</th><th>DR</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Product Hunt</td><td style="font-family:var(--mono)">8,400</td><td style="font-family:var(--mono)">1</td><td style="font-family:var(--mono)">93</td><td><span class="badge b-approved">Dofollow</span></td></tr>
+            <tr><td style="font-weight:600">Hacker News</td><td style="font-family:var(--mono)">3,200</td><td style="font-family:var(--mono)">1</td><td style="font-family:var(--mono)">91</td><td><span class="badge b-pending">Nofollow</span></td></tr>
+            <tr><td style="font-weight:600">SaaSHub</td><td style="font-family:var(--mono)">1,800</td><td style="font-family:var(--mono)">2</td><td style="font-family:var(--mono)">72</td><td><span class="badge b-approved">Dofollow</span></td></tr>
+            <tr><td style="font-weight:600">Futurepedia</td><td style="font-family:var(--mono)">1,200</td><td style="font-family:var(--mono)">1</td><td style="font-family:var(--mono)">68</td><td><span class="badge b-approved">Dofollow</span></td></tr>
+            <tr><td style="font-weight:600">Uneed</td><td style="font-family:var(--mono)">980</td><td style="font-family:var(--mono)">1</td><td style="font-family:var(--mono)">55</td><td><span class="badge b-approved">Dofollow</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL SUBMISSIONS -->
+  <div class="page" id="page-submissions">
+    <div class="page-header">
+      <div><div class="page-h1">ALL SUBMISSIONS</div><div class="page-sub">127 total across 3 projects.</div></div>
+      <div class="page-actions"><button class="btn">Export CSV</button></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">SUBMISSION LOG</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Project</th><th>Platform</th><th>Submitted</th><th>Status</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>ShipStack</td><td style="font-weight:600">Product Hunt</td><td style="font-family:var(--mono);font-size:11px">Mar 10</td><td><span class="badge b-approved">Approved</span></td><td style="font-family:var(--mono);font-size:10px;color:var(--blue)">view →</td></tr>
+            <tr><td>ShipStack</td><td style="font-weight:600">Uneed</td><td style="font-family:var(--mono);font-size:11px">Mar 11</td><td><span class="badge b-approved">Approved</span></td><td style="font-family:var(--mono);font-size:10px;color:var(--blue)">view →</td></tr>
+            <tr><td>Negolio</td><td style="font-weight:600">DevHunt</td><td style="font-family:var(--mono);font-size:11px">Mar 14</td><td><span class="badge b-pending">Pending</span></td><td style="font-family:var(--mono);font-size:10px;color:#aaa">—</td></tr>
+            <tr><td>ShipStack</td><td style="font-weight:600">Futurepedia</td><td style="font-family:var(--mono);font-size:11px">Mar 12</td><td><span class="badge b-approved">Approved</span></td><td style="font-family:var(--mono);font-size:10px;color:var(--blue)">view →</td></tr>
+            <tr><td>Negolio</td><td style="font-weight:600">BetaList</td><td style="font-family:var(--mono);font-size:11px">Mar 14</td><td><span class="badge b-queued">Queued</span></td><td style="font-family:var(--mono);font-size:10px;color:#aaa">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN & BILLING -->
+  <div class="page" id="page-plan">
+    <div class="page-header">
+      <div><div class="page-h1">PLAN & BILLING</div><div class="page-sub">Manage your subscription and usage.</div></div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-left">
+        <div class="plan-name">CREDIT WALLET</div>
+        <div class="plan-price">32 credits</div>
+        <div style="font-family:var(--mono);font-size:11px;color:#888;margin-top:4px">No expiry · No subscription · Pay per launch</div>
+        <div class="plan-features">
+          <div class="plan-feat">1 credit = 1 platform submission</div>
+          <div class="plan-feat">Credits never expire</div>
+          <div class="plan-feat">Use across all projects</div>
+          <div class="plan-feat">Buy more anytime</div>
+        </div>
+        <div style="margin-top:24px;border:var(--border);padding:16px;background:var(--paper2)">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:12px">Buy credits</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" style="flex:1">$9 — 25 credits</button>
+            <button class="btn btn-primary" style="flex:1">$19 — 80 credits</button>
+            <button class="btn" style="flex:1">$39 — 200 credits</button>
+          </div>
+        </div>
+      </div>
+      <div class="plan-right">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:24px">Credit usage this month</div>
+        <div class="plan-usage">
+          <div class="usage-item">
+            <div class="usage-label"><span>Credits used</span><span>48 / 80</span></div>
+            <div class="usage-bar"><div class="usage-fill" style="width:60%"></div></div>
+          </div>
+          <div class="usage-item">
+            <div class="usage-label"><span>Remaining</span><span>32 credits</span></div>
+            <div class="usage-bar"><div class="usage-fill" style="width:40%"></div></div>
+          </div>
+          <div class="usage-item">
+            <div class="usage-label"><span>Projects launched</span><span>2</span></div>
+            <div class="usage-bar"><div class="usage-fill" style="width:25%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="page-header">
+      <div><div class="page-h1">SETTINGS</div><div class="page-sub">Account and notification preferences.</div></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">PROFILE</div></div>
+      <div class="section-body" style="padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:8px">Full name</div><input style="width:100%;padding:12px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;outline:none" value="Gürkan Keşaplı"></div>
+        <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:8px">Email</div><input style="width:100%;padding:12px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;outline:none" value="gurkan@launchflow.io"></div>
+        <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:8px">Twitter handle</div><input style="width:100%;padding:12px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;outline:none" value="@gurkan"></div>
+        <div><div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:8px">Default category</div>
+        <select style="width:100%;padding:12px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:14px;outline:none"><option>SaaS</option><option>AI Tool</option><option>Developer Tool</option></select></div>
+      </div>
+      <div style="padding:16px 24px;border-top:var(--border1)"><button class="btn btn-primary">Save changes</button></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const KIT_CONTENT = {
+  ph: {label:'Product Hunt — Tagline + Maker Comment', text:`ShipStack — Automate your startup launch to 80+ platforms with one click.\n\nHi Product Hunt! 👋\n\nI built ShipStack because every time I shipped a new project, I had to manually submit to 50+ platforms. It was killing my momentum.\n\nShipStack does it all automatically. AI writes platform-specific copy, a smart queue handles timing, and a live dashboard tracks every submission.\n\nBuilt with Cursor + Supabase in 3 weeks. Would love your feedback!`, tags:['#launch','#saas','#buildinpublic','#indiemaker']},
+  reddit: {label:'Reddit · r/sideproject', text:`I built ShipStack to solve my own launch problem — [feedback welcome]\n\nHey r/sideproject,\n\nEvery time I ship a new project, I spend hours submitting to Product Hunt, Uneed, DevHunt, SaaSHub, and 50+ other platforms. I got tired of it.\n\nSo I built ShipStack — it does all the submissions automatically. You enter your project once, AI writes the copy, and it queues up submissions across 80+ platforms.\n\nWould love brutal honest feedback. What's missing, what's broken, what would make you actually use it?`, tags:['sideproject','buildinpublic','saas','feedback']},
+  hn: {label:'Hacker News — Show HN', text:`Show HN: ShipStack – Submit your startup to 80+ directories automatically\n\nHi HN. I built ShipStack because I kept running into this problem myself.\n\nEvery time I launched a project, I had to manually submit to Product Hunt, Uneed, DevHunt, SaaSHub, AI directories, and dozens of other platforms. Each one has a different form, different requirements, different account.\n\nShipStack automates this. You fill in your project once, and the system handles the rest — AI writes platform-specific copy, a queue manages the timing, and a dashboard tracks approvals.\n\nTech: Next.js, Supabase, Playwright, OpenAI. Happy to answer questions.`, tags:[]},
+  twitter: {label:'Twitter / X — Launch Thread', text:`Just launched ShipStack 🚀\n\nAutomate your startup launch to 80+ platforms with one click.\n\nHere's what I built and why 🧵\n\n1/ The problem: every time I shipped something, I had to submit to 50+ platforms manually. Hours of copy-pasting.\n\n2/ The solution: ShipStack submits everywhere automatically. AI writes the copy, a queue handles the timing.\n\n3/ How it works: enter your URL → AI generates your launch kit → 80+ platforms are queued → live dashboard tracks everything.\n\n👉 shipstack.io\n\nBuilt with Cursor + Supabase in 3 weeks. RT if useful 🙏`, tags:['#buildinpublic','#indiehacker','#saas','#vibecoding']},
+}
+
+const SUBMISSION_DATA=[
+  {platform:'Product Hunt',cat:'Launch',date:'Mar 10',status:'b-approved',statusText:'Approved',url:true},
+  {platform:'Uneed',cat:'Launch',date:'Mar 11',status:'b-approved',statusText:'Approved',url:true},
+  {platform:'DevHunt',cat:'Launch',date:'Mar 11',status:'b-approved',statusText:'Approved',url:true},
+  {platform:'BetaList',cat:'Launch',date:'Mar 12',status:'b-pending',statusText:'Pending',url:false},
+  {platform:'Microlaunch',cat:'Launch',date:'Mar 12',status:'b-approved',statusText:'Approved',url:true},
+  {platform:'SaaSHub',cat:'SaaS Dir',date:'Mar 13',status:'b-approved',statusText:'Approved',url:true},
+  {platform:'Futurepedia',cat:'AI Dir',date:'Mar 13',status:'b-approved',statusText:'Approved',url:true},
+  {platform:"There's an AI for That",cat:'AI Dir',date:'Mar 13',status:'b-pending',statusText:'Pending',url:false},
+  {platform:'AlternativeTo',cat:'SaaS Dir',date:'Mar 14',status:'b-queued',statusText:'Queued',url:false},
+  {platform:'Fazier',cat:'Launch',date:'Mar 14',status:'b-queued',statusText:'Queued',url:false},
+  {platform:'r/sideproject',cat:'Community',date:'Mar 14',status:'b-failed',statusText:'Failed',url:false},
+  {platform:'Indie Hackers',cat:'Community',date:'Mar 15',status:'b-queued',statusText:'Queued',url:false},
+]
+
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'))
+  document.getElementById('page-'+page).classList.add('active')
+  const labels = {overview:'Overview',projects:'Projects',launch:'Launch Status',kit:'AI Launch Kit',analytics:'Traffic & Backlinks',submissions:'All Submissions',plan:'Plan & Billing',settings:'Settings',notif:'Notifications'}
+  document.getElementById('tb-current').textContent = labels[page]||page
+  document.querySelectorAll('.sb-item').forEach(i=>{
+    if(i.getAttribute('onclick')&&i.getAttribute('onclick').includes("'"+page+"'")) i.classList.add('active')
+  })
+}
+
+function switchKit(el, key) {
+  document.querySelectorAll('.kit-nav-item').forEach(i=>i.classList.remove('active'))
+  el.classList.add('active')
+  const d = KIT_CONTENT[key]
+  document.querySelector('#kit-content-area div:first-child').textContent = d.label
+  document.getElementById('kit-text').textContent = d.text
+  const tagsRow = document.querySelector('.kit-tags-row')
+  tagsRow.innerHTML = d.tags.map(t=>`<span class="kit-tag">${t}</span>`).join('')
+}
+
+function copyKit(btn) {
+  const text = document.getElementById('kit-text').textContent
+  navigator.clipboard.writeText(text).catch(()=>{})
+  btn.textContent = 'Copied!'
+  setTimeout(()=>btn.textContent='Copy content', 2000)
+}
+
+// Build overview dots
+const dotGrid = document.getElementById('overview-dots')
+for(let i=0;i<80;i++){
+  const d = document.createElement('div')
+  d.className = 'dot'
+  if(i<42) d.classList.add('d-live')
+  else if(i<54) d.classList.add('d-ok')
+  else if(i<62) d.classList.add('d-pend')
+  dotGrid.appendChild(d)
+}
+
+// Build weekly chart
+const days = ['M','T','W','T','F','S','S']
+const vals = [320,480,390,610,540,280,180]
+const mx = Math.max(...vals)
+const chart = document.getElementById('weekly-chart')
+days.forEach((d,i)=>{
+  const col = document.createElement('div')
+  col.className = 'bar-col'
+  const h = Math.round((vals[i]/mx)*100)
+  col.innerHTML = `<div class="bar-fill ${i===4?'accent':''}" style="height:${h}%"></div><div class="bar-label">${d}</div>`
+  chart.appendChild(col)
+})
+
+// Build submissions table
+const tbody = document.getElementById('submissions-tbody')
+SUBMISSION_DATA.forEach(r=>{
+  tbody.innerHTML += `<tr>
+    <td style="font-weight:600">${r.platform}</td>
+    <td style="font-family:var(--mono);font-size:10px;color:#888">${r.cat}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:#888">${r.date}</td>
+    <td><span class="badge ${r.status}">${r.statusText}</span></td>
+    <td style="font-family:var(--mono);font-size:10px;color:${r.url?'var(--blue)':'#aaa'}">${r.url?'view →':'—'}</td>
+  </tr>`
+})
+</script>
+</body>
+</html>

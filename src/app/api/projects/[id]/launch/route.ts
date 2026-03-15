@@ -1,93 +1,106 @@
-import { NextResponse } from 'next/server'
-import { createServer } from '@/lib/supabase/server'
-import { generateLaunchContent } from '@/lib/openai/generate-launch-content'
-import { addLaunchJob } from '@/lib/queue'
-import { Project, Platform } from '@/types'
+import { NextResponse } from 'next/server';
+import { createServer } from '@/lib/supabase/server';
+import { generateLaunchContent } from '@/lib/openai/generate-launch-content';
+import { addLaunchJob } from '@/lib/queue';
+import { sendLaunchStartedEmail } from '@/lib/email/resend';
+import { logger } from '@/lib/logger';
+
 
 export async function POST(
-    request: Request,
+    req: Request,
     { params }: { params: { id: string } }
 ) {
-    const supabase = createServer()
-    const { data: { user } } = await supabase.auth.getUser()
+    const supabase = createServer();
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params
+    const { id } = params;
+
+    // 1. Fetch project details
+    const { data: project, error: projectError } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (projectError || !project) {
+        logger.warn('Project not found for launch', { projectId: id });
+        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
 
     try {
-        // 1. Get project
-        const { data: project, error: projectError } = await supabase
-            .from('projects')
-            .select('*')
-            .eq('id', id)
-            .eq('user_id', user.id)
-            .single()
+        logger.info('Starting launch sequence', { projectId: id, projectName: project.name });
 
-        if (projectError || !project) {
-            return NextResponse.json({ error: 'Project not found' }, { status: 404 })
-        }
+        // 2. Generate AI Launch Content
+        logger.info('Generating AI Launch content', { projectId: id });
+        const content = await generateLaunchContent(project);
 
-        // 2. Generate content
-        const content = await generateLaunchContent(project as Project)
-
-        // 3. Save launch content
-        const { error: insertContentError } = await supabase
+        // 3. Save generated content to database
+        const { error: contentError } = await supabase
             .from('launch_content')
-            .insert({
-                project_id: project.id,
-                ...content,
-            })
+            .upsert({
+                project_id: id,
+                tagline: content.tagline,
+                short_description: content.short_pitch,
+                long_description: content.long_pitch,
+                features: [], // Can be extracted if needed
+                hashtags: content.tags,
+                ph_description: content.product_hunt_description,
+                reddit_post: content.reddit_post,
+                hn_post: content.hn_post,
+                twitter_thread: content.twitter_thread.split('\n'), // Split tweets
+            });
 
-        if (insertContentError) {
-            console.error('Failed to save launch content', insertContentError)
-        }
+        if (contentError) throw contentError;
 
-        // Update project status
-        await supabase.from('projects').update({ status: 'launching' }).eq('id', project.id)
+        // 4. Update project status
+        await supabase.from('projects').update({ status: 'launching' }).eq('id', id);
 
-        // 4. Get active platforms
-        const { data: platforms, error: platformsError } = await supabase
+        // 5. Fetch platforms and queue jobs
+        const { data: platforms } = await supabase
             .from('platforms')
             .select('*')
-            .eq('is_active', true)
-            .order('priority', { ascending: true })
+            .eq('priority', 'tier_1'); // Start with tier 1 for MVP
 
-        if (platformsError) throw new Error(platformsError.message)
+        let autoCount = 0;
+        let guidedCount = 0;
 
-        // 5. Create submissions and queue jobs
-        let queuedCount = 0
+        if (platforms) {
+            for (const platform of platforms) {
+                if (platform.automation_type === 'auto' || platform.automation_type === 'assisted') {
+                    autoCount++;
+                } else {
+                    guidedCount++;
+                }
 
-        for (const platform of platforms) {
-            // Create pending submission
-            const { data: submission, error: subError } = await supabase
-                .from('submissions')
-                .insert({
-                    project_id: project.id,
-                    platform_id: platform.id,
-                    status: 'queued',
-                })
-                .select()
-                .single()
-
-            if (!subError && submission) {
-                // Enqueue job via BullMQ -> Redis
                 await addLaunchJob({
-                    projectId: project.id,
+                    projectId: id,
                     platformId: platform.id,
-                    submissionId: submission.id,
-                    project: project,
-                    platform: platform,
-                })
-                queuedCount++
+                    content,
+                });
             }
         }
 
-        return NextResponse.json({ success: true, queued: queuedCount, content })
+        // 6. Send Launch Started Email
+        if (user.email) {
+            const firstName = user.user_metadata?.full_name?.split(' ')[0] || 'Founder';
+            await sendLaunchStartedEmail(
+                user.email,
+                firstName,
+                project.name,
+                platforms?.length || 0,
+                autoCount,
+                guidedCount,
+                id
+            );
+        }
+
+        return NextResponse.json({ success: true, content });
     } catch (error: any) {
-        console.error('Launch Error:', error)
-        return NextResponse.json({ error: error.message || 'Server Error' }, { status: 500 })
+        console.error('Launch sequence failed:', error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

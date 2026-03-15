@@ -1,6 +1,7 @@
 import OpenAI from 'openai'
 import { z } from 'zod'
 import { Project } from '@/types'
+import { logger } from '../logger'
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -58,9 +59,12 @@ export async function generateLaunchContent(project: Project): Promise<Generated
 
     const content = response.choices[0].message.content
     if (!content) {
+        logger.error('Failed to generate content from OpenAI', { projectId: project.id });
         throw new Error('Failed to generate content from OpenAI')
     }
 
     const parsed = JSON.parse(content)
+    logger.info('Launch content generated successfully', { projectId: project.id });
+
     return LaunchContentSchema.parse(parsed)
 }

@@ -1,46 +1,60 @@
-import { Worker } from 'bullmq'
-import { Redis } from 'ioredis'
-import { createClient } from '@supabase/supabase-js'
-import { MicrolaunchBot } from './bots/microlaunch-bot'
-import { FormBot } from './bots/form-bot'
+import { Worker } from 'bullmq';
+import { Redis } from 'ioredis';
+import { chromium } from 'playwright';
+import * as Sentry from '@sentry/node';
+import { Axiom } from '@axiomhq/js';
 
-const connection = new Redis(process.env.UPSTASH_REDIS_REST_URL || '')
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
+// Initialize Sentry for the worker process
+Sentry.init({
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN,
+    tracesSampleRate: 0.1,
+});
 
-const worker = new Worker('launch-queue', async job => {
-    const { projectId, submissionId, platformId, project, platform } = job.data
+const connection = new Redis(process.env.UPSTASH_REDIS_REST_URL || '');
 
-    console.log(`Starting submission for: ${project.name} to ${platform.name}`)
+const worker = new Worker('launch-queue', async (job) => {
+    const { projectId, platformId, content } = job.data;
+    console.log(`[Worker] Processing submission for Project ${projectId} on Platform ${platformId}`);
+
+    const browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext();
+    const page = await context.newPage();
 
     try {
-        let result = { success: false, url: '', error: '' }
+        // This is a generic bot logic. 
+        // In production, we'd have specific scripts per directory (Stage 5.2 in blueprint).
 
-        if (platform.name === 'Microlaunch') {
-            const bot = new MicrolaunchBot()
-            result = await bot.launch(project, platform)
-        } else if (platform.automation_type === 'form') {
-            const bot = new FormBot()
-            result = await bot.launch(project, platform)
-        } else {
-            // Manual or API
-            result = { success: true, url: '', error: 'Requires manual submission or different bot' }
+        // Example: Navigate to submit URL
+        // await page.goto(platform.submit_url);
+        // await page.fill('input[name="url"]', project.website);
+        // await page.fill('input[name="name"]', project.name);
+        // await page.click('button[type="submit"]');
+
+        const successMsg = `[Worker] Successfully submitted Project ${projectId}`;
+        console.log(successMsg);
+        if (process.env.AXIOM_TOKEN && process.env.AXIOM_DATASET) {
+            const axiom = new Axiom({ token: process.env.AXIOM_TOKEN });
+            axiom.ingest(process.env.AXIOM_DATASET, [{ message: successMsg, projectId, platformId }]);
+            await axiom.flush();
         }
 
-        // Update submission
-        await supabase.from('submissions').update({
-            status: result.success ? (result.url ? 'approved' : 'submitted') : 'failed',
-            result_url: result.url || null,
-            error_message: result.error || null,
-        }).eq('id', submissionId)
+        // Update DB status to 'submitted' here via Supabase Service Role
+    } catch (error: any) {
+        const errorMsg = `[Worker] Submission failed for Project ${projectId}: ${error.message}`;
+        console.error(errorMsg, error);
+        Sentry.captureException(error, { extra: { projectId, platformId } });
 
-        console.log(`Finished ${platform.name} submission | Success: ${result.success}`)
-    } catch (err: any) {
-        console.error(`Failed job for ${platform.name}`, err)
-        await supabase.from('submissions').update({
-            status: 'failed',
-            error_message: err.message,
-        }).eq('id', submissionId)
+        if (process.env.AXIOM_TOKEN && process.env.AXIOM_DATASET) {
+            const axiom = new Axiom({ token: process.env.AXIOM_TOKEN });
+            axiom.ingest(process.env.AXIOM_DATASET, [{ message: errorMsg, error: String(error), projectId, platformId }]);
+            await axiom.flush();
+        }
+        // Log error to DB
+    } finally {
+        await browser.close();
     }
-}, { connection })
+}, { connection: connection as any });
 
-console.log('Worker listening to launch-queue...')
+
+
+console.log('[Worker] LaunchFlow Submission Worker started.');

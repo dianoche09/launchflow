@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --blue:#1a1aff;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+
+html,body{height:100%}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column;
+}
+
+/* NAV */
+nav{
+  border-bottom:var(--border);
+  padding:0 32px;
+  display:flex;
+  align-items:stretch;
+  height:56px;
+  background:var(--paper);
+  flex-shrink:0;
+}
+
+.nav-logo{
+  font-family:var(--display);
+  font-size:28px;
+  letter-spacing:1px;
+  line-height:56px;
+  padding-right:32px;
+  border-right:var(--border);
+  text-decoration:none;
+  color:var(--ink);
+}
+
+.nav-back{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 24px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:#888;
+  text-decoration:none;
+  border-right:var(--border);
+  transition:color .12s;
+}
+.nav-back:hover{color:var(--ink)}
+.nav-back svg{transition:transform .15s}
+.nav-back:hover svg{transform:translateX(-3px)}
+
+.nav-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  border-left:var(--border);
+  font-family:var(--mono);
+  font-size:12px;
+  color:#888;
+}
+.nav-right a{color:var(--rust);text-decoration:none;margin-left:6px}
+.nav-right a:hover{text-decoration:underline}
+
+/* MAIN LAYOUT */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 520px 1fr;
+  border-bottom:var(--border);
+}
+
+/* LEFT PANEL */
+.left-panel{
+  border-right:var(--border);
+  background:var(--ink);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:60px 48px;
+  position:relative;
+  overflow:hidden;
+}
+
+.left-bg-text{
+  position:absolute;
+  bottom:-20px;
+  left:-10px;
+  font-family:var(--display);
+  font-size:200px;
+  letter-spacing:4px;
+  color:rgba(184,255,0,0.06);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+}
+
+.left-top{}
+
+.left-tag{
+  display:inline-block;
+  background:var(--acid);
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:10px;
+  padding:5px 12px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:32px;
+}
+
+.left-h1{
+  font-family:var(--display);
+  font-size:clamp(56px, 6vw, 80px);
+  letter-spacing:2px;
+  line-height:0.9;
+  color:var(--paper);
+  margin-bottom:24px;
+}
+.left-h1 span{color:var(--acid)}
+
+.left-desc{
+  font-size:15px;
+  color:rgba(245,242,232,0.5);
+  line-height:1.7;
+  max-width:320px;
+}
+
+.left-bottom{}
+
+.testimonial{
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding-top:32px;
+}
+
+.testimonial-text{
+  font-size:15px;
+  color:rgba(245,242,232,0.7);
+  line-height:1.65;
+  font-style:italic;
+  margin-bottom:16px;
+}
+
+.testimonial-author{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.author-avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:var(--acid);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--display);
+  font-size:16px;
+  color:var(--ink);
+  flex-shrink:0;
+}
+
+.author-info{}
+.author-name{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--paper);
+  font-weight:500;
+}
+.author-handle{
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(245,242,232,0.4);
+}
+
+/* CENTER — FORM */
+.form-panel{
+  border-right:var(--border);
+  display:flex;
+  flex-direction:column;
+}
+
+.form-header{
+  border-bottom:var(--border);
+  padding:40px 48px 32px;
+}
+
+.form-title{
+  font-family:var(--display);
+  font-size:52px;
+  letter-spacing:2px;
+  line-height:0.9;
+  margin-bottom:8px;
+}
+
+.form-subtitle{
+  font-family:var(--mono);
+  font-size:12px;
+  color:#888;
+  letter-spacing:0.5px;
+}
+
+.form-body{
+  padding:40px 48px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TABS */
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:var(--border);
+  margin-bottom:36px;
+}
+
+.auth-tab{
+  padding:12px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all .12s;
+  border:none;
+  background:transparent;
+  color:#888;
+  border-right:var(--border);
+}
+.auth-tab:last-child{border-right:none}
+.auth-tab.active{
+  background:var(--ink);
+  color:var(--acid);
+}
+.auth-tab:not(.active):hover{background:var(--paper2)}
+
+/* SOCIAL AUTH */
+.social-btns{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:28px;
+}
+
+.social-btn{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 20px;
+  border:var(--border);
+  background:transparent;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--ink);
+  text-decoration:none;
+  transition:background .12s;
+  width:100%;
+}
+.social-btn:hover{background:var(--paper2)}
+
+.social-btn svg{flex-shrink:0}
+
+.social-btn-label{flex:1;text-align:left}
+.social-btn-arrow{
+  font-family:var(--mono);
+  font-size:12px;
+  color:#bbb;
+}
+
+/* DIVIDER */
+.or-divider{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:28px;
+}
+.or-line{flex:1;height:1px;background:var(--paper2)}
+.or-text{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#bbb;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* FORM FIELDS */
+.field{margin-bottom:20px}
+
+.field-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#666;
+  margin-bottom:8px;
+  display:block;
+}
+
+.field-input{
+  width:100%;
+  padding:14px 16px;
+  border:var(--border);
+  background:transparent;
+  font-family:var(--body);
+  font-size:15px;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .12s,background .12s;
+  -webkit-appearance:none;
+}
+.field-input:focus{
+  background:var(--paper2);
+  border-color:var(--blue);
+}
+.field-input::placeholder{color:#bbb}
+
+.field-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.forgot-link{
+  display:block;
+  text-align:right;
+  font-family:var(--mono);
+  font-size:11px;
+  color:#888;
+  text-decoration:none;
+  margin-top:-12px;
+  margin-bottom:20px;
+}
+.forgot-link:hover{color:var(--rust)}
+
+/* SUBMIT */
+.submit-btn{
+  width:100%;
+  padding:16px;
+  background:var(--ink);
+  color:var(--acid);
+  font-family:var(--display);
+  font-size:22px;
+  letter-spacing:2px;
+  border:var(--border);
+  cursor:pointer;
+  transition:all .12s;
+  margin-bottom:20px;
+}
+.submit-btn:hover{background:#222}
+.submit-btn:active{transform:scale(0.99)}
+
+.form-footer-text{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#999;
+  text-align:center;
+  line-height:1.7;
+}
+.form-footer-text a{color:var(--rust);text-decoration:none}
+.form-footer-text a:hover{text-decoration:underline}
+
+/* ERROR / SUCCESS */
+.field-error{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--rust);
+  margin-top:6px;
+  display:none;
+}
+
+.form-alert{
+  padding:14px 16px;
+  border:var(--border);
+  font-family:var(--mono);
+  font-size:12px;
+  margin-bottom:20px;
+  display:none;
+}
+.form-alert.error{
+  background:#fff0ec;
+  border-color:var(--rust);
+  color:var(--rust);
+}
+.form-alert.success{
+  background:#f0ffe8;
+  border-color:var(--acid-dark);
+  color:#3a6600;
+}
+
+/* RIGHT PANEL */
+.right-panel{
+  padding:60px 40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.right-stats{}
+
+.right-stat{
+  margin-bottom:40px;
+  padding-bottom:40px;
+  border-bottom:1px solid var(--paper2);
+}
+.right-stat:last-of-type{border-bottom:none}
+
+.right-stat-num{
+  font-family:var(--display);
+  font-size:56px;
+  letter-spacing:1px;
+  line-height:0.9;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.right-stat-num.acid{color:var(--rust)}
+
+.right-stat-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#999;
+}
+
+.right-stat-desc{
+  font-size:13px;
+  color:#777;
+  line-height:1.6;
+  margin-top:8px;
+}
+
+.right-bottom{}
+
+.platform-preview{
+  border:var(--border);
+  padding:20px;
+}
+
+.platform-preview-label{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#999;
+  margin-bottom:14px;
+}
+
+.platform-dots{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.pdot{
+  width:8px;
+  height:8px;
+  background:var(--paper2);
+  border:1px solid #ddd;
+  transition:background .1s;
+}
+.pdot.active{background:var(--ink)}
+.pdot.acid{background:var(--acid);border-color:var(--acid-dark)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <a href="launchflow-v2.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to home
+  </a>
+  <div class="nav-right">
+    Don't have an account?
+    <a href="#" onclick="switchTab('signup')">Sign up free</a>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+    <div class="left-bg-text">LF</div>
+
+    <div class="left-top">
+      <div class="left-tag">vibecoder tool</div>
+      <h1 class="left-h1">BUILD.<br>SHIP.<br><span>EVERY-<br>WHERE.</span></h1>
+      <p class="left-desc">One click launches your app to 80+ platforms. AI writes your copy. You get back to building.</p>
+    </div>
+
+    <div class="left-bottom">
+      <div class="testimonial">
+        <p class="testimonial-text">"Launched my Cursor-built app to 60+ platforms in one afternoon. Got my first 200 users without touching a single form."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">J</div>
+          <div class="author-info">
+            <div class="author-name">Jake Morrison</div>
+            <div class="author-handle">@jakebuildsstuff · indie maker</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-panel">
+    <div class="form-header">
+      <div class="form-title" id="form-title">SIGN IN</div>
+      <div class="form-subtitle" id="form-subtitle">Welcome back. Launch something today.</div>
+    </div>
+
+    <div class="form-body">
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('signin')" id="tab-signin">Sign in</button>
+        <button class="auth-tab" onclick="switchTab('signup')" id="tab-signup">Create account</button>
+      </div>
+
+      <div class="form-alert" id="form-alert"></div>
+
+      <!-- SOCIAL -->
+      <div class="social-btns">
+        <a href="#" class="social-btn" onclick="handleSocial('GitHub')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span class="social-btn-label">Continue with GitHub</span>
+          <span class="social-btn-arrow">→</span>
+        </a>
+        <a href="#" class="social-btn" onclick="handleSocial('Google')">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span class="social-btn-label">Continue with Google</span>
+          <span class="social-btn-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="or-divider">
+        <div class="or-line"></div>
+        <div class="or-text">or</div>
+        <div class="or-line"></div>
+      </div>
+
+      <!-- SIGN IN FORM -->
+      <div id="form-signin">
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input type="email" class="field-input" placeholder="you@example.com" id="signin-email">
+          <div class="field-error" id="signin-email-err">Enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <input type="password" class="field-input" placeholder="••••••••" id="signin-pass">
+          <div class="field-error" id="signin-pass-err">Password is required.</div>
+        </div>
+        <a href="#" class="forgot-link" onclick="showForgot()">Forgot password?</a>
+        <button class="submit-btn" onclick="handleSignin()">SIGN IN</button>
+        <p class="form-footer-text">
+          By signing in you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+
+      <!-- SIGN UP FORM -->
+      <div id="form-signup" style="display:none">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">First name</label>
+            <input type="text" class="field-input" placeholder="Jake" id="signup-first">
+          </div>
+          <div class="field">
+            <label class="field-label">Last name</label>
+            <input type="text" class="field-input" placeholder="Morrison" id="signup-last">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input type="email" class="field-input" placeholder="you@example.com" id="signup-email">
+          <div class="field-error" id="signup-email-err">Enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <input type="password" class="field-input" placeholder="Min. 8 characters" id="signup-pass">
+          <div class="field-error" id="signup-pass-err">Password must be at least 8 characters.</div>
+        </div>
+        <button class="submit-btn" onclick="handleSignup()">CREATE ACCOUNT</button>
+        <p class="form-footer-text">
+          Already have an account? <a href="#" onclick="switchTab('signin')">Sign in</a><br>
+          By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+
+      <!-- FORGOT PASSWORD -->
+      <div id="form-forgot" style="display:none">
+        <p style="font-size:14px;color:#666;line-height:1.65;margin-bottom:24px">Enter your email and we'll send you a reset link.</p>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input type="email" class="field-input" placeholder="you@example.com" id="forgot-email">
+        </div>
+        <button class="submit-btn" onclick="handleForgot()">SEND RESET LINK</button>
+        <p class="form-footer-text">
+          <a href="#" onclick="switchTab('signin')">Back to sign in</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+    <div class="right-stats">
+      <div class="right-stat">
+        <div class="right-stat-num acid">80+</div>
+        <div class="right-stat-label">Platforms covered</div>
+        <div class="right-stat-desc">Product Hunt, DevHunt, SaaSHub, Reddit, AI directories and more — all at once.</div>
+      </div>
+      <div class="right-stat">
+        <div class="right-stat-num">2min</div>
+        <div class="right-stat-label">Average setup time</div>
+        <div class="right-stat-desc">Fill your project once. Launch it everywhere. Reuse it next time.</div>
+      </div>
+      <div class="right-stat">
+        <div class="right-stat-num">AI</div>
+        <div class="right-stat-label">Launch kit included</div>
+        <div class="right-stat-desc">Taglines, Reddit posts, HN pitches, Twitter threads — written automatically.</div>
+      </div>
+    </div>
+
+    <div class="right-bottom">
+      <div class="platform-preview">
+        <div class="platform-preview-label">Your launch coverage</div>
+        <div class="platform-dots" id="platform-dots"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const dots = document.getElementById('platform-dots');
+for(let i=0;i<80;i++){
+  const d=document.createElement('div');
+  d.className='pdot';
+  if(i<12) d.classList.add('active');
+  if(i<4) d.classList.add('acid');
+  dots.appendChild(d);
+}
+
+let dotIdx=12;
+setInterval(()=>{
+  if(dotIdx<80){
+    const allDots=dots.querySelectorAll('.pdot');
+    allDots[dotIdx].classList.add('active');
+    dotIdx++;
+  }
+},120);
+
+function switchTab(tab){
+  const signin=document.getElementById('form-signin');
+  const signup=document.getElementById('form-signup');
+  const forgot=document.getElementById('form-forgot');
+  const tabSI=document.getElementById('tab-signin');
+  const tabSU=document.getElementById('tab-signup');
+  const title=document.getElementById('form-title');
+  const subtitle=document.getElementById('form-subtitle');
+  const alert=document.getElementById('form-alert');
+  alert.style.display='none';
+
+  signin.style.display='none';
+  signup.style.display='none';
+  forgot.style.display='none';
+  tabSI.classList.remove('active');
+  tabSU.classList.remove('active');
+
+  if(tab==='signin'){
+    signin.style.display='block';
+    tabSI.classList.add('active');
+    title.textContent='SIGN IN';
+    subtitle.textContent='Welcome back. Launch something today.';
+  } else if(tab==='signup'){
+    signup.style.display='block';
+    tabSU.classList.add('active');
+    title.textContent='CREATE ACCOUNT';
+    subtitle.textContent='Free to start. No credit card required.';
+  }
+}
+
+function showForgot(){
+  document.getElementById('form-signin').style.display='none';
+  document.getElementById('form-signup').style.display='none';
+  document.getElementById('form-forgot').style.display='block';
+  document.getElementById('form-title').textContent='RESET PASSWORD';
+  document.getElementById('form-subtitle').textContent='We\'ll send you a link to reset your password.';
+}
+
+function showAlert(msg,type){
+  const a=document.getElementById('form-alert');
+  a.textContent=msg;
+  a.className='form-alert '+type;
+  a.style.display='block';
+}
+
+function handleSocial(provider){
+  showAlert('Redirecting to '+provider+'...','success');
+}
+
+function handleSignin(){
+  const email=document.getElementById('signin-email').value.trim();
+  const pass=document.getElementById('signin-pass').value;
+  let ok=true;
+
+  document.getElementById('signin-email-err').style.display='none';
+  document.getElementById('signin-pass-err').style.display='none';
+
+  if(!email||!email.includes('@')){
+    document.getElementById('signin-email-err').style.display='block';
+    ok=false;
+  }
+  if(!pass){
+    document.getElementById('signin-pass-err').style.display='block';
+    ok=false;
+  }
+  if(!ok) return;
+
+  const btn=document.querySelector('#form-signin .submit-btn');
+  btn.textContent='SIGNING IN...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    showAlert('Demo mode — connect Supabase to enable real auth.','success');
+    btn.textContent='SIGN IN';
+    btn.disabled=false;
+  },1200);
+}
+
+function handleSignup(){
+  const email=document.getElementById('signup-email').value.trim();
+  const pass=document.getElementById('signup-pass').value;
+  let ok=true;
+
+  document.getElementById('signup-email-err').style.display='none';
+  document.getElementById('signup-pass-err').style.display='none';
+
+  if(!email||!email.includes('@')){
+    document.getElementById('signup-email-err').style.display='block';
+    ok=false;
+  }
+  if(!pass||pass.length<8){
+    document.getElementById('signup-pass-err').style.display='block';
+    ok=false;
+  }
+  if(!ok) return;
+
+  const btn=document.querySelector('#form-signup .submit-btn');
+  btn.textContent='CREATING ACCOUNT...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    showAlert('Demo mode — connect Supabase to enable real auth.','success');
+    btn.textContent='CREATE ACCOUNT';
+    btn.disabled=false;
+  },1200);
+}
+
+function handleForgot(){
+  const email=document.getElementById('forgot-email').value.trim();
+  if(!email||!email.includes('@')){
+    showAlert('Enter a valid email address.','error');
+    return;
+  }
+  const btn=document.querySelector('#form-forgot .submit-btn');
+  btn.textContent='SENDING...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    showAlert('Reset link sent — check your email.','success');
+    btn.textContent='SEND RESET LINK';
+    btn.disabled=false;
+  },1200);
+}
+</script>
+
+</body>
+</html>

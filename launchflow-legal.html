@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Terms & Privacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;--paper:#f5f2e8;--paper2:#ede9d8;--paper3:#e4e0ce;
+  --acid:#b8ff00;--acid-dark:#8acc00;--rust:#c94d1e;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;--body:'Bricolage Grotesque',sans-serif;--mono:'Azeret Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.nav-back{display:flex;align-items:center;padding:0 24px;font-family:var(--mono);font-size:12px;color:#888;text-decoration:none;border-right:var(--border);transition:color .12s;letter-spacing:.5px}
+.nav-back:hover{color:var(--ink)}
+.nav-tabs{display:flex;margin-left:auto;border-left:var(--border)}
+.nav-tab{display:flex;align-items:center;padding:0 24px;height:56px;font-family:var(--mono);font-size:12px;color:#888;text-decoration:none;border-right:var(--border);transition:all .12s;cursor:pointer;letter-spacing:.5px;border:none;background:transparent}
+.nav-tab:last-child{border-right:none}
+.nav-tab:hover{background:var(--paper2);color:var(--ink)}
+.nav-tab.active{background:var(--ink);color:var(--acid)}
+
+/* HERO */
+.hero{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr}
+.hero-left{border-right:var(--border);padding:48px 64px 48px 40px}
+.h-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.h-eyebrow::before{content:'';width:24px;height:2px;background:var(--rust)}
+.h-h1{font-family:var(--display);font-size:clamp(56px,7vw,88px);letter-spacing:2px;line-height:.88}
+.h-h1 span{color:var(--acid);background:var(--ink);padding:0 6px;display:inline-block}
+.hero-right{padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.h-meta{font-family:var(--mono);font-size:11px;color:#888;line-height:2}
+.h-meta strong{color:var(--ink)}
+
+/* DOC LAYOUT */
+.doc-wrap{display:grid;grid-template-columns:240px 1fr}
+.doc-nav{border-right:var(--border);padding:32px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.doc-nav::-webkit-scrollbar{width:0}
+.doc-nav-section{margin-bottom:4px}
+.doc-nav-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#bbb;padding:8px 24px 4px}
+.doc-nav-link{display:block;padding:8px 24px;font-family:var(--mono);font-size:11px;color:#888;text-decoration:none;transition:all .1s;letter-spacing:.3px;border-left:2px solid transparent}
+.doc-nav-link:hover{background:var(--paper2);color:var(--ink)}
+.doc-nav-link.active{color:var(--ink);border-left-color:var(--ink);background:var(--paper2)}
+
+.doc-content{padding:48px 64px 80px;max-width:760px}
+.doc-section{margin-bottom:56px;display:none}
+.doc-section.active{display:block}
+
+.doc-h2{font-family:var(--display);font-size:52px;letter-spacing:2px;line-height:.88;margin-bottom:20px}
+.doc-h3{font-family:var(--display);font-size:28px;letter-spacing:1px;margin-bottom:12px;margin-top:36px}
+.doc-h3:first-of-type{margin-top:0}
+.doc-p{font-size:15px;color:#444;line-height:1.75;margin-bottom:16px}
+.doc-p a{color:var(--rust);text-decoration:none}
+.doc-p a:hover{text-decoration:underline}
+.doc-ul{list-style:none;margin:0 0 16px;display:flex;flex-direction:column;gap:0}
+.doc-ul li{padding:10px 0;border-bottom:1px solid var(--paper2);font-size:14px;color:#555;display:flex;align-items:flex-start;gap:12px;line-height:1.6}
+.doc-ul li:last-child{border-bottom:none}
+.doc-ul li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ink);flex-shrink:0;margin-top:6px}
+.doc-highlight{background:var(--paper2);border-left:4px solid var(--ink);padding:16px 20px;margin:20px 0;font-size:14px;color:#444;line-height:1.7}
+.doc-highlight strong{color:var(--ink)}
+.doc-divider{height:2px;background:var(--paper3);margin:32px 0}
+.doc-tag{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:var(--ink);color:var(--acid);margin-right:8px;margin-bottom:12px;display:inline-block}
+.doc-date{font-family:var(--mono);font-size:11px;color:#aaa;margin-bottom:32px}
+
+footer{border-top:var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--display);font-size:20px;letter-spacing:1px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#aaa;text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <a href="launchflow-v2.html" class="nav-back">← Home</a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchDoc('terms',this)">Terms of Service</button>
+    <button class="nav-tab" onclick="switchDoc('privacy',this)">Privacy Policy</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="h-eyebrow">Legal</div>
+    <h1 class="h-h1">LEGAL<br><span>STUFF.</span></h1>
+  </div>
+  <div class="hero-right">
+    <div class="h-meta">
+      <div><strong>Company:</strong> LaunchFlow</div>
+      <div><strong>Email:</strong> hello@launchflow.io</div>
+      <div><strong>Terms last updated:</strong> March 14, 2025</div>
+      <div><strong>Privacy last updated:</strong> March 14, 2025</div>
+    </div>
+    <div style="font-size:14px;color:#888;line-height:1.65;max-width:320px">Plain English where possible. We're a small team and we want to be straightforward about how this works.</div>
+  </div>
+</div>
+
+<!-- DOC -->
+<div class="doc-wrap">
+
+  <!-- NAV -->
+  <div class="doc-nav" id="doc-nav">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- CONTENT -->
+  <div class="doc-content">
+
+    <!-- TERMS -->
+    <div class="doc-section active" id="section-terms">
+
+      <div id="terms-intro">
+        <div class="doc-tag">Terms of Service</div>
+        <div class="doc-date">Effective March 14, 2025</div>
+        <h2 class="doc-h2">TERMS OF<br>SERVICE</h2>
+        <p class="doc-p">By using LaunchFlow, you agree to these terms. If you don't agree, please don't use the service. These terms are between you and LaunchFlow ("we", "us", "our").</p>
+        <div class="doc-highlight"><strong>Short version:</strong> Pay per launch, don't abuse the system, we're not responsible for platform rejections. Credits never expire. That's the gist.</div>
+      </div>
+
+      <div id="terms-service">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">1. What LaunchFlow Does</h3>
+        <p class="doc-p">LaunchFlow automates the submission of your startup, app, or product to online directories, launch platforms, and communities. We provide:</p>
+        <ul class="doc-ul">
+          <li>Automated and assisted form submissions to third-party platforms</li>
+          <li>AI-generated launch copy (taglines, descriptions, posts)</li>
+          <li>Guided submission instructions for platforms that require human submission</li>
+          <li>A dashboard to track submission status</li>
+        </ul>
+        <p class="doc-p">We are a submission service. We are not affiliated with Product Hunt, Reddit, G2, or any other platform we submit to.</p>
+      </div>
+
+      <div id="terms-payment">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">2. Payment & Credits</h3>
+        <p class="doc-p">LaunchFlow operates on a pay-per-launch model. You purchase credits or launch packages. There are no subscriptions or recurring charges unless you explicitly set one up.</p>
+        <ul class="doc-ul">
+          <li><strong>Credits never expire.</strong> Once purchased, credits remain in your account indefinitely.</li>
+          <li>Launch packages are one-time purchases per launch.</li>
+          <li>Payments are processed securely through Stripe.</li>
+          <li>All prices are in USD.</li>
+        </ul>
+        <div class="doc-highlight"><strong>Refund policy:</strong> We offer refunds on unused credits within 14 days of purchase. Once a launch has started (submissions queued), credits used for that launch are non-refundable. Platform rejections do not qualify for refunds — we can only control our submission process, not platform decisions.</div>
+      </div>
+
+      <div id="terms-submissions">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">3. Submissions & Platform Rules</h3>
+        <p class="doc-p">When you launch with LaunchFlow, we submit your product to third-party platforms on your behalf. By launching, you confirm that:</p>
+        <ul class="doc-ul">
+          <li>You own or have the right to submit the product</li>
+          <li>The product information you provide is accurate and not misleading</li>
+          <li>Your product does not violate any platform's terms of service</li>
+          <li>You have read and accept the submission guidelines of platforms you're submitting to</li>
+        </ul>
+        <p class="doc-p">We cannot guarantee acceptance by any platform. Platforms have their own review processes and may reject submissions for any reason. A rejection does not entitle you to a refund.</p>
+        <p class="doc-p">For guided platforms (Product Hunt, Reddit, etc.), you are responsible for completing the submission using the copy and instructions we provide. We write the content — you submit.</p>
+      </div>
+
+      <div id="terms-ai">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">4. AI-Generated Content</h3>
+        <p class="doc-p">LaunchFlow uses OpenAI's API to generate launch copy. By using this feature:</p>
+        <ul class="doc-ul">
+          <li>You retain ownership of the content generated for your product</li>
+          <li>You are responsible for reviewing the content before submission</li>
+          <li>We are not liable for inaccurate or inappropriate AI-generated content</li>
+          <li>You may edit all generated content before submitting</li>
+        </ul>
+      </div>
+
+      <div id="terms-prohibited">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">5. Prohibited Use</h3>
+        <p class="doc-p">You may not use LaunchFlow to:</p>
+        <ul class="doc-ul">
+          <li>Submit spam, malware, scams, or misleading products</li>
+          <li>Submit adult content, illegal products, or harmful software</li>
+          <li>Circumvent platform bans or submit under false identities</li>
+          <li>Resell or white-label our service without written permission</li>
+          <li>Use the service in a way that violates applicable laws</li>
+        </ul>
+        <p class="doc-p">Violation may result in immediate account termination without refund.</p>
+      </div>
+
+      <div id="terms-liability">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">6. Limitation of Liability</h3>
+        <p class="doc-p">LaunchFlow is provided "as is". We make no guarantees about uptime, submission success rates, or traffic generated from listings.</p>
+        <p class="doc-p">To the maximum extent permitted by law, LaunchFlow's liability is limited to the amount you paid in the 30 days before the claim. We are not liable for indirect, incidental, or consequential damages.</p>
+      </div>
+
+      <div id="terms-changes">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">7. Changes to Terms</h3>
+        <p class="doc-p">We may update these terms. We'll notify you by email for material changes. Continued use after notification constitutes acceptance.</p>
+        <p class="doc-p">Questions? Email us at <a href="mailto:hello@launchflow.io">hello@launchflow.io</a></p>
+      </div>
+
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="doc-section" id="section-privacy">
+
+      <div id="privacy-intro">
+        <div class="doc-tag">Privacy Policy</div>
+        <div class="doc-date">Effective March 14, 2025</div>
+        <h2 class="doc-h2">PRIVACY<br>POLICY</h2>
+        <p class="doc-p">We take privacy seriously. This policy explains what data we collect, why, and how we protect it.</p>
+        <div class="doc-highlight"><strong>Short version:</strong> We collect only what's needed to run the service. We don't sell your data. Ever.</div>
+      </div>
+
+      <div id="privacy-collect">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">1. What We Collect</h3>
+        <p class="doc-p"><strong>Account data:</strong> Email, name, and OAuth tokens (GitHub/Google) when you sign up.</p>
+        <p class="doc-p"><strong>Project data:</strong> Product names, URLs, descriptions, logos, and screenshots you provide for submissions.</p>
+        <p class="doc-p"><strong>Payment data:</strong> Processed entirely by Stripe. We never see or store your card details.</p>
+        <p class="doc-p"><strong>Usage data:</strong> Submission logs, platform responses, dashboard activity. Used to run the service and debug issues.</p>
+        <p class="doc-p"><strong>Bot data:</strong> Screenshots taken during automated submissions for verification purposes. Stored temporarily.</p>
+      </div>
+
+      <div id="privacy-use">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">2. How We Use Your Data</h3>
+        <ul class="doc-ul">
+          <li>To submit your product to platforms you select</li>
+          <li>To generate AI launch copy using your product information</li>
+          <li>To send transactional emails (launch started, completed, low credits)</li>
+          <li>To improve our bot automation and submission success rates</li>
+          <li>To prevent abuse and enforce our terms</li>
+        </ul>
+        <p class="doc-p">We do not use your data for advertising. We do not sell or rent your data to third parties.</p>
+      </div>
+
+      <div id="privacy-third-party">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">3. Third-Party Services</h3>
+        <p class="doc-p">We use the following third-party services:</p>
+        <ul class="doc-ul">
+          <li><strong>Supabase</strong> — database and authentication (EU/US data centers)</li>
+          <li><strong>OpenAI</strong> — AI content generation (your project data is sent to generate copy)</li>
+          <li><strong>Stripe</strong> — payment processing (subject to Stripe's privacy policy)</li>
+          <li><strong>Upstash</strong> — Redis queue for submission jobs</li>
+          <li><strong>Railway</strong> — worker hosting</li>
+          <li><strong>Vercel</strong> — frontend hosting</li>
+        </ul>
+        <p class="doc-p">When you use LaunchFlow to submit to third-party platforms, your product data (name, URL, description) is sent to those platforms as part of the submission process.</p>
+      </div>
+
+      <div id="privacy-retention">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">4. Data Retention</h3>
+        <ul class="doc-ul">
+          <li>Account data: retained while your account is active</li>
+          <li>Project and submission data: retained indefinitely (your launch history)</li>
+          <li>Bot screenshots: deleted after 30 days</li>
+          <li>System logs: deleted after 90 days</li>
+        </ul>
+        <p class="doc-p">You can delete your account and all associated data at any time from Settings → Delete Account. This is permanent and cannot be undone.</p>
+      </div>
+
+      <div id="privacy-rights">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">5. Your Rights</h3>
+        <p class="doc-p">You have the right to:</p>
+        <ul class="doc-ul">
+          <li>Access all data we hold about you — email us and we'll send a full export</li>
+          <li>Delete your account and all data</li>
+          <li>Correct inaccurate data via your dashboard</li>
+          <li>Opt out of non-transactional emails</li>
+        </ul>
+        <p class="doc-p">For GDPR requests or privacy concerns: <a href="mailto:privacy@launchflow.io">privacy@launchflow.io</a></p>
+      </div>
+
+      <div id="privacy-cookies">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">6. Cookies</h3>
+        <p class="doc-p">We use essential cookies only: authentication session cookies (Supabase) and basic analytics. We do not use advertising or tracking cookies.</p>
+      </div>
+
+      <div id="privacy-contact">
+        <div class="doc-divider"></div>
+        <h3 class="doc-h3">7. Contact</h3>
+        <p class="doc-p">Privacy questions: <a href="mailto:privacy@launchflow.io">privacy@launchflow.io</a></p>
+        <p class="doc-p">General questions: <a href="mailto:hello@launchflow.io">hello@launchflow.io</a></p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-links">
+    <a href="launchflow-v2.html">Home</a>
+    <a href="launchflow-pricing.html">Pricing</a>
+    <a href="mailto:hello@launchflow.io">Contact</a>
+  </div>
+</footer>
+
+<script>
+const NAV_ITEMS = {
+  terms: [
+    {id:'terms-intro', label:'Overview'},
+    {id:'terms-service', label:'What we do'},
+    {id:'terms-payment', label:'Payment & Credits'},
+    {id:'terms-submissions', label:'Submissions'},
+    {id:'terms-ai', label:'AI Content'},
+    {id:'terms-prohibited', label:'Prohibited use'},
+    {id:'terms-liability', label:'Liability'},
+    {id:'terms-changes', label:'Changes'},
+  ],
+  privacy: [
+    {id:'privacy-intro', label:'Overview'},
+    {id:'privacy-collect', label:'What we collect'},
+    {id:'privacy-use', label:'How we use it'},
+    {id:'privacy-third-party', label:'Third parties'},
+    {id:'privacy-retention', label:'Data retention'},
+    {id:'privacy-rights', label:'Your rights'},
+    {id:'privacy-cookies', label:'Cookies'},
+    {id:'privacy-contact', label:'Contact'},
+  ]
+}
+
+let activeDoc = 'terms'
+
+function buildNav(doc) {
+  const nav = document.getElementById('doc-nav')
+  nav.innerHTML = `<div class="doc-nav-section">
+    <div class="doc-nav-label">${doc === 'terms' ? 'Terms of Service' : 'Privacy Policy'}</div>
+    ${NAV_ITEMS[doc].map(item => `
+      <a href="#${item.id}" class="doc-nav-link" onclick="setActive('${item.id}')">${item.label}</a>
+    `).join('')}
+  </div>`
+}
+
+function setActive(id) {
+  document.querySelectorAll('.doc-nav-link').forEach(l => l.classList.remove('active'))
+  document.querySelector(`[href="#${id}"]`)?.classList.add('active')
+}
+
+function switchDoc(doc, btn) {
+  activeDoc = doc
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+  document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'))
+  document.getElementById('section-' + doc).classList.add('active')
+  buildNav(doc)
+}
+
+// Init
+buildNav('terms')
+
+// Scroll spy
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) setActive(entry.target.id)
+  })
+}, { threshold: 0.5 })
+
+document.querySelectorAll('[id^="terms-"], [id^="privacy-"]').forEach(el => observer.observe(el))
+</script>
+</body>
+</html>

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Build it. Launch everywhere.</title>
+<meta name="description" content="Submit your vibe-coded app to 99+ platforms automatically. AI launch kit, smart queue, live tracking. From $9 per launch.">
+<meta property="og:title" content="LaunchFlow — Build it. Launch everywhere.">
+<meta property="og:description" content="Submit your startup to 99+ platforms in one click. Product Hunt, Uneed, DevHunt, AI dirs, SaaS dirs and more.">
+<meta property="og:image" content="https://launchflow.io/og.png">
+<meta property="og:url" content="https://launchflow.io">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@LaunchFlowHQ">
+<link rel="canonical" href="https://launchflow.io">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --rust-light:#f5e8e2;
+  --blue:#1a1aff;
+  --blue-light:#e8e8ff;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+
+/* GRID SYSTEM */
+.container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* NAV */
+nav{
+  border-bottom:var(--border);
+  padding:0 32px;
+  display:flex;
+  align-items:stretch;
+  height:56px;
+  background:var(--paper);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.nav-logo{
+  font-family:var(--display);
+  font-size:28px;
+  letter-spacing:1px;
+  line-height:56px;
+  padding-right:32px;
+  border-right:var(--border);
+  cursor:pointer;
+}
+
+.nav-links{
+  display:flex;
+  list-style:none;
+  margin-left:auto;
+}
+.nav-links li{border-left:var(--border)}
+.nav-links a{
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  height:56px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--ink);
+  text-decoration:none;
+  transition:background .12s;
+}
+.nav-links a:hover{background:var(--paper2)}
+
+.nav-cta-wrap{border-left:var(--border);display:flex;align-items:center}
+.nav-cta{
+  display:block;
+  background:var(--acid);
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:500;
+  padding:0 24px;
+  height:56px;
+  line-height:56px;
+  text-decoration:none;
+  letter-spacing:0.5px;
+  transition:background .12s;
+}
+.nav-cta:hover{background:var(--acid-dark)}
+
+/* HERO */
+.hero{
+  border-bottom:var(--border);
+  display:grid;
+  grid-template-columns:1fr 380px;
+  min-height:calc(100vh - 56px);
+}
+
+.hero-left{
+  border-right:var(--border);
+  padding:60px 64px 60px 32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.hero-eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--rust);
+  margin-bottom:32px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.hero-eyebrow::before{
+  content:'';
+  display:block;
+  width:32px;
+  height:2px;
+  background:var(--rust);
+}
+
+.hero-h1{
+  font-family:var(--display);
+  font-size:clamp(80px, 11vw, 160px);
+  line-height:0.88;
+  letter-spacing:2px;
+  margin-bottom:0;
+}
+
+.hero-h1 .outline{
+  -webkit-text-stroke:2px var(--ink);
+  color:transparent;
+}
+
+.hero-h1 .filled-acid{
+  color:var(--acid);
+  -webkit-text-stroke:0px;
+  background:var(--ink);
+  padding:0 8px;
+  display:inline-block;
+}
+
+.hero-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-top:48px;
+}
+
+.hero-desc{
+  font-size:17px;
+  line-height:1.65;
+  max-width:420px;
+  font-weight:400;
+  color:#333;
+}
+
+.hero-cta-group{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex-shrink:0;
+  margin-left:40px;
+}
+
+.btn-big{
+  background:var(--ink);
+  color:var(--acid);
+  font-family:var(--display);
+  font-size:22px;
+  letter-spacing:1px;
+  padding:16px 32px;
+  text-decoration:none;
+  border:2px solid var(--ink);
+  display:inline-block;
+  transition:all .12s;
+  white-space:nowrap;
+}
+.btn-big:hover{
+  background:var(--acid);
+  color:var(--ink);
+}
+
+.btn-outline{
+  background:transparent;
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:12px;
+  padding:12px 24px;
+  text-decoration:none;
+  border:2px solid var(--ink);
+  display:inline-block;
+  text-align:center;
+  transition:background .12s;
+}
+.btn-outline:hover{background:var(--paper2)}
+
+/* HERO RIGHT */
+.hero-right{
+  display:flex;
+  flex-direction:column;
+}
+
+.hero-stat{
+  flex:1;
+  border-bottom:var(--border);
+  padding:32px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+.hero-stat:last-child{border-bottom:none}
+
+.stat-big{
+  font-family:var(--display);
+  font-size:72px;
+  line-height:0.9;
+  letter-spacing:1px;
+}
+.stat-big.accent{color:var(--rust)}
+
+.stat-caption{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#666;
+  margin-top:12px;
+}
+
+/* MARQUEE */
+.marquee-bar{
+  background:var(--ink);
+  padding:14px 0;
+  overflow:hidden;
+  border-bottom:var(--border);
+}
+.marquee-track{
+  display:flex;
+  gap:0;
+  white-space:nowrap;
+  animation:marquee 24s linear infinite;
+  width:max-content;
+}
+.marquee-item{
+  font-family:var(--display);
+  font-size:20px;
+  letter-spacing:2px;
+  color:var(--acid);
+  padding:0 32px;
+  border-right:1px solid rgba(184,255,0,0.2);
+  white-space:nowrap;
+}
+.marquee-item.dim{color:rgba(184,255,0,0.35)}
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+/* WHO STRIP */
+.who-strip{
+  border-bottom:var(--border);
+  display:grid;
+  grid-template-columns:240px 1fr;
+}
+
+.who-label{
+  border-right:var(--border);
+  padding:40px 32px;
+  display:flex;
+  align-items:center;
+}
+.who-label-text{
+  font-family:var(--display);
+  font-size:48px;
+  letter-spacing:2px;
+  line-height:1;
+  writing-mode:horizontal-tb;
+}
+
+.who-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.who-card{
+  border-left:var(--border);
+  padding:40px 32px;
+  transition:background .15s;
+  cursor:default;
+}
+.who-card:first-child{border-left:none}
+.who-card:hover{background:var(--paper2)}
+
+.who-tool-tag{
+  display:inline-block;
+  background:var(--ink);
+  color:var(--acid);
+  font-family:var(--mono);
+  font-size:10px;
+  padding:4px 10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.who-card-title{
+  font-family:var(--display);
+  font-size:32px;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  line-height:1;
+}
+
+.who-card-body{
+  font-size:14px;
+  color:#555;
+  line-height:1.65;
+}
+
+/* HOW */
+.how-section{
+  border-bottom:var(--border);
+}
+
+.how-header{
+  border-bottom:var(--border);
+  padding:48px 32px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+
+.how-h2{
+  font-family:var(--display);
+  font-size:clamp(60px, 8vw, 96px);
+  letter-spacing:2px;
+  line-height:0.9;
+}
+
+.how-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.how-step{
+  border-right:var(--border);
+  padding:48px 32px;
+  position:relative;
+  transition:background .15s;
+}
+.how-step:last-child{border-right:none}
+.how-step:hover{background:var(--acid);cursor:default}
+.how-step:hover .step-number{color:var(--ink)}
+.how-step:hover .step-title{color:var(--ink)}
+.how-step:hover .step-body{color:var(--ink)}
+
+.step-number{
+  font-family:var(--display);
+  font-size:80px;
+  line-height:1;
+  color:var(--paper2);
+  margin-bottom:24px;
+  transition:color .15s;
+}
+
+.step-title{
+  font-family:var(--body);
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:12px;
+  transition:color .15s;
+}
+
+.step-body{
+  font-size:14px;
+  color:#555;
+  line-height:1.65;
+  transition:color .15s;
+}
+
+/* PLATFORMS */
+.platforms-section{
+  border-bottom:var(--border);
+  display:grid;
+  grid-template-columns:360px 1fr;
+}
+
+.platforms-left{
+  border-right:var(--border);
+  padding:60px 32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.platforms-h2{
+  font-family:var(--display);
+  font-size:72px;
+  letter-spacing:2px;
+  line-height:0.88;
+}
+
+.platforms-sub{
+  font-size:14px;
+  color:#555;
+  line-height:1.65;
+  max-width:260px;
+}
+
+.platforms-count{
+  font-family:var(--display);
+  font-size:120px;
+  letter-spacing:2px;
+  color:var(--paper2);
+  line-height:1;
+}
+
+.platforms-right{
+  padding:40px 32px;
+}
+
+.platform-category{
+  margin-bottom:32px;
+}
+
+.platform-category-label{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#999;
+  margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--paper2);
+}
+
+.platform-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.ptag{
+  font-family:var(--mono);
+  font-size:12px;
+  padding:6px 12px;
+  border:1.5px solid var(--ink);
+  cursor:default;
+  transition:all .1s;
+}
+.ptag:hover{
+  background:var(--ink);
+  color:var(--acid);
+}
+.ptag.tier1{
+  background:var(--ink);
+  color:var(--acid);
+}
+.ptag.more{
+  border-style:dashed;
+  color:#999;
+  border-color:#999;
+}
+
+/* FEATURES */
+.features-section{
+  border-bottom:var(--border);
+}
+
+.features-header{
+  border-bottom:var(--border);
+  padding:48px 32px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:end;
+  gap:40px;
+}
+
+.features-h2{
+  font-family:var(--display);
+  font-size:clamp(60px,8vw,96px);
+  letter-spacing:2px;
+  line-height:0.88;
+}
+
+.features-desc{
+  font-size:16px;
+  color:#555;
+  line-height:1.65;
+  max-width:400px;
+}
+
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.feature{
+  border-right:var(--border);
+  border-bottom:var(--border);
+  padding:40px 32px;
+  transition:background .15s;
+}
+.feature:nth-child(3n){border-right:none}
+.feature:nth-child(n+4){border-bottom:none}
+.feature:hover{background:var(--blue-light)}
+
+.feature-num{
+  font-family:var(--mono);
+  font-size:10px;
+  color:#999;
+  letter-spacing:1px;
+  margin-bottom:20px;
+}
+
+.feature-title{
+  font-family:var(--body);
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:12px;
+  letter-spacing:-0.3px;
+}
+
+.feature-body{
+  font-size:14px;
+  color:#555;
+  line-height:1.65;
+}
+
+/* PRICING */
+.pricing-section{
+  border-bottom:var(--border);
+}
+
+.pricing-header{
+  border-bottom:var(--border);
+  padding:48px 32px;
+}
+
+.pricing-h2{
+  font-family:var(--display);
+  font-size:clamp(60px,8vw,96px);
+  letter-spacing:2px;
+  line-height:0.88;
+}
+
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.pricing-card{
+  border-right:var(--border);
+  padding:48px 40px;
+}
+.pricing-card:last-child{border-right:none}
+
+.pricing-card.featured{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+.pricing-tier{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#999;
+  margin-bottom:24px;
+}
+.featured .pricing-tier{color:rgba(245,242,232,0.4)}
+
+.pricing-price{
+  font-family:var(--display);
+  font-size:80px;
+  letter-spacing:1px;
+  line-height:0.9;
+  margin-bottom:8px;
+}
+.featured .pricing-price{color:var(--acid)}
+
+.pricing-period{
+  font-family:var(--mono);
+  font-size:12px;
+  color:#999;
+  margin-bottom:40px;
+}
+.featured .pricing-period{color:rgba(245,242,232,0.5)}
+
+.pricing-list{
+  list-style:none;
+  margin-bottom:48px;
+}
+.pricing-list li{
+  font-size:14px;
+  padding:10px 0;
+  border-bottom:1px solid var(--paper2);
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  color:#444;
+}
+.pricing-list li::before{
+  content:'—';
+  font-family:var(--mono);
+  font-size:12px;
+  color:#bbb;
+  flex-shrink:0;
+}
+.featured .pricing-list li{
+  border-bottom-color:rgba(245,242,232,0.1);
+  color:rgba(245,242,232,0.7);
+}
+.featured .pricing-list li::before{color:var(--acid)}
+
+.pricing-btn{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  font-family:var(--display);
+  font-size:20px;
+  letter-spacing:1px;
+  padding:16px 24px;
+  border:2px solid var(--ink);
+  color:var(--ink);
+  background:transparent;
+  cursor:pointer;
+  transition:all .12s;
+}
+.pricing-btn:hover{background:var(--ink);color:var(--acid)}
+
+.featured .pricing-btn{
+  background:var(--acid);
+  color:var(--ink);
+  border-color:var(--acid);
+}
+.featured .pricing-btn:hover{background:var(--acid-dark);border-color:var(--acid-dark)}
+
+/* CTA */
+.cta-section{
+  display:grid;
+  grid-template-columns:1fr 480px;
+  min-height:400px;
+  border-bottom:var(--border);
+}
+
+.cta-left{
+  border-right:var(--border);
+  padding:80px 64px 80px 32px;
+  background:var(--ink);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.cta-h2{
+  font-family:var(--display);
+  font-size:clamp(64px,8vw,104px);
+  letter-spacing:2px;
+  line-height:0.88;
+  color:var(--paper);
+  margin-bottom:24px;
+}
+.cta-h2 span{color:var(--acid)}
+
+.cta-sub{
+  font-size:16px;
+  color:rgba(245,242,232,0.55);
+  line-height:1.65;
+  max-width:400px;
+}
+
+.cta-right{
+  padding:80px 40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:16px;
+}
+
+.cta-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#999;
+}
+
+.waitlist-row{
+  display:flex;
+  border:2px solid var(--ink);
+}
+
+.waitlist-input{
+  flex:1;
+  padding:16px 20px;
+  font-family:var(--mono);
+  font-size:14px;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:var(--ink);
+}
+.waitlist-input::placeholder{color:#bbb}
+
+.waitlist-btn{
+  background:var(--ink);
+  color:var(--acid);
+  font-family:var(--display);
+  font-size:18px;
+  letter-spacing:1px;
+  padding:0 28px;
+  border:none;
+  cursor:pointer;
+  transition:background .12s;
+  white-space:nowrap;
+}
+.waitlist-btn:hover{background:#222}
+
+.cta-note{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#999;
+}
+
+.built-with{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.bw-tag{
+  font-family:var(--mono);
+  font-size:11px;
+  padding:4px 10px;
+  border:1px solid var(--paper2);
+  color:#666;
+}
+
+/* FOOTER */
+footer{
+  padding:24px 32px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:center;
+  border-bottom:var(--border);
+}
+
+.footer-logo{
+  font-family:var(--display);
+  font-size:24px;
+  letter-spacing:1px;
+}
+
+.footer-center{
+  text-align:center;
+  font-family:var(--mono);
+  font-size:11px;
+  color:#999;
+  letter-spacing:1px;
+}
+
+.footer-right{
+  display:flex;
+  gap:24px;
+  justify-content:flex-end;
+}
+.footer-right a{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#999;
+  text-decoration:none;
+  letter-spacing:1px;
+  transition:color .12s;
+}
+.footer-right a:hover{color:var(--ink)}
+
+/* success state */
+.success-msg{
+  font-family:var(--mono);
+  font-size:14px;
+  color:var(--rust);
+  display:none;
+  padding:16px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LAUNCHFLOW</div>
+  <ul class="nav-links">
+    <li><a href="#how">Process</a></li>
+    <li><a href="#platforms">Platforms</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-cta-wrap">
+    <a href="#waitlist" class="nav-cta">Get early access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-eyebrow">for vibecoders &amp; indie makers</div>
+      <h1 class="hero-h1">
+        BUILD<br>
+        <span class="outline">SHIP</span><br>
+        <span class="filled-acid">EVERYWHERE</span>
+      </h1>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        You built something with Cursor, Lovable, Bolt, or Replit.
+        Now it needs to be seen. LaunchFlow submits your app to
+        80+ platforms automatically — so you can build the next thing.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#waitlist" class="btn-big">LAUNCH NOW</a>
+        <a href="#how" class="btn-outline">See how it works</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="stat-big accent">80+</div>
+      <div class="stat-caption">platforms covered</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-big">&lt;2<span style="font-size:40px">MIN</span></div>
+      <div class="stat-caption">to launch everywhere</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-big">AI</div>
+      <div class="stat-caption">writes your launch copy</div>
+    </div>
+    <div class="hero-stat" style="border-bottom:none">
+      <div class="stat-big">$0</div>
+      <div class="stat-caption">to start</div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="marquee-item">PRODUCT HUNT</span>
+    <span class="marquee-item dim">UNEED</span>
+    <span class="marquee-item">DEVHUNT</span>
+    <span class="marquee-item dim">BETALIST</span>
+    <span class="marquee-item">MICROLAUNCH</span>
+    <span class="marquee-item dim">INDIE HACKERS</span>
+    <span class="marquee-item">HACKER NEWS</span>
+    <span class="marquee-item dim">FUTUREPEDIA</span>
+    <span class="marquee-item">SAASHUB</span>
+    <span class="marquee-item dim">ALTERNATIVETO</span>
+    <span class="marquee-item">FAZIER</span>
+    <span class="marquee-item dim">PEERLIST</span>
+    <span class="marquee-item">R/SIDEPROJECT</span>
+    <span class="marquee-item dim">STARTUPBASE</span>
+    <span class="marquee-item">THERE'S AN AI FOR THAT</span>
+    <!-- duplicate -->
+    <span class="marquee-item">PRODUCT HUNT</span>
+    <span class="marquee-item dim">UNEED</span>
+    <span class="marquee-item">DEVHUNT</span>
+    <span class="marquee-item dim">BETALIST</span>
+    <span class="marquee-item">MICROLAUNCH</span>
+    <span class="marquee-item dim">INDIE HACKERS</span>
+    <span class="marquee-item">HACKER NEWS</span>
+    <span class="marquee-item dim">FUTUREPEDIA</span>
+    <span class="marquee-item">SAASHUB</span>
+    <span class="marquee-item dim">ALTERNATIVETO</span>
+    <span class="marquee-item">FAZIER</span>
+    <span class="marquee-item dim">PEERLIST</span>
+    <span class="marquee-item">R/SIDEPROJECT</span>
+    <span class="marquee-item dim">STARTUPBASE</span>
+    <span class="marquee-item">THERE'S AN AI FOR THAT</span>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<div class="who-strip">
+  <div class="who-label">
+    <div class="who-label-text">WHO</div>
+  </div>
+  <div class="who-cards">
+    <div class="who-card">
+      <div class="who-tool-tag">Cursor / Windsurf</div>
+      <div class="who-card-title">The dev-builder</div>
+      <div class="who-card-body">You write real code, ship production apps. You just don't want to spend your Monday filling launch forms on 80 different websites.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-tool-tag">Lovable / Bolt / v0</div>
+      <div class="who-card-title">The no-code founder</div>
+      <div class="who-card-body">You built your MVP without writing a line. You want users and signal, not a lesson in SEO and directory submissions.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-tool-tag">Replit / any tool</div>
+      <div class="who-card-title">The serial shipper</div>
+      <div class="who-card-body">You launch something new every few weeks. You need a repeatable launch machine that runs while you're already building the next thing.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section" id="how">
+  <div class="how-header">
+    <h2 class="how-h2">HOW IT<br>WORKS</h2>
+    <p style="font-size:15px;color:#666;max-width:340px;line-height:1.65">Four steps. No complexity. No forms. Just your app in front of the people who discover new tools.</p>
+  </div>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="step-number">01</div>
+      <div class="step-title">Add your project</div>
+      <div class="step-body">Name, URL, description, logo, screenshots. One form. Done once. Reusable forever.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-number">02</div>
+      <div class="step-title">AI writes your launch kit</div>
+      <div class="step-body">Product Hunt tagline. Reddit post. HN pitch. Twitter thread. Each one written for its audience, not copy-pasted.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-number">03</div>
+      <div class="step-title">Click launch</div>
+      <div class="step-body">LaunchFlow queues everything. Launch platforms first for early users. Directories after for long-term SEO.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-number">04</div>
+      <div class="step-title">Watch the dashboard</div>
+      <div class="step-body">Live status per platform. Pending, submitted, approved. Backlinks tracked. Full report at the end.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="platforms-section" id="platforms">
+  <div class="platforms-left">
+    <div>
+      <h2 class="platforms-h2">80+<br>PLAT-<br>FORMS</h2>
+    </div>
+    <div class="platforms-count">80</div>
+    <p class="platforms-sub">Launch sites, AI directories, SaaS hubs, developer communities — all covered in one click.</p>
+  </div>
+  <div class="platforms-right">
+    <div class="platform-category">
+      <div class="platform-category-label">Launch platforms — submit here first</div>
+      <div class="platform-tags">
+        <span class="ptag tier1">Product Hunt</span>
+        <span class="ptag tier1">Uneed</span>
+        <span class="ptag tier1">DevHunt</span>
+        <span class="ptag tier1">BetaList</span>
+        <span class="ptag tier1">Microlaunch</span>
+        <span class="ptag tier1">Fazier</span>
+        <span class="ptag tier1">Indie Hackers</span>
+        <span class="ptag tier1">Hacker News</span>
+        <span class="ptag">Peerlist</span>
+        <span class="ptag">SideProjectors</span>
+        <span class="ptag">LaunchIgniter</span>
+      </div>
+    </div>
+    <div class="platform-category">
+      <div class="platform-category-label">AI directories</div>
+      <div class="platform-tags">
+        <span class="ptag">There's an AI for That</span>
+        <span class="ptag">Futurepedia</span>
+        <span class="ptag">AI Scout</span>
+        <span class="ptag">Toolify</span>
+        <span class="ptag">AI Valley</span>
+        <span class="ptag">FutureTools</span>
+        <span class="ptag">AI Tool Hunt</span>
+        <span class="ptag">ShowMeBestAI</span>
+      </div>
+    </div>
+    <div class="platform-category">
+      <div class="platform-category-label">SaaS &amp; startup directories</div>
+      <div class="platform-tags">
+        <span class="ptag">SaaSHub</span>
+        <span class="ptag">AlternativeTo</span>
+        <span class="ptag">StartupBase</span>
+        <span class="ptag">PitchWall</span>
+        <span class="ptag">StartupBuffer</span>
+        <span class="ptag">LaunchingNext</span>
+        <span class="ptag">ToolFame</span>
+        <span class="ptag">Firsto</span>
+        <span class="ptag more">+52 more</span>
+      </div>
+    </div>
+    <div class="platform-category" style="margin-bottom:0">
+      <div class="platform-category-label">Communities</div>
+      <div class="platform-tags">
+        <span class="ptag">r/sideproject</span>
+        <span class="ptag">r/saas</span>
+        <span class="ptag">r/buildinpublic</span>
+        <span class="ptag">r/imadethis</span>
+        <span class="ptag">Stacker News</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-section">
+  <div class="features-header">
+    <h2 class="features-h2">WHAT YOU<br>GET</h2>
+    <p class="features-desc">Everything a vibecoder needs right after hitting deploy. Nothing you don't.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-num">01 — AI</div>
+      <div class="feature-title">Launch kit generator</div>
+      <div class="feature-body">One project description in. Product Hunt tagline, Reddit story, HN post, Twitter thread — out. Each crafted for its platform's audience.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">02 — QUEUE</div>
+      <div class="feature-title">Smart submission order</div>
+      <div class="feature-body">Launch platforms first for early traffic. Directories follow to build domain authority. The order matters — we know it.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">03 — DASHBOARD</div>
+      <div class="feature-title">Live tracking</div>
+      <div class="feature-body">See every submission in real time. Queued, submitted, approved, rejected. Backlinks generated. Traffic sources. All in one place.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">04 — MULTI</div>
+      <div class="feature-title">Unlimited projects</div>
+      <div class="feature-body">Ship one app per week? We got you. Each project is independent. Launch them in parallel or in sequence — your call.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">05 — REPORT</div>
+      <div class="feature-title">Full launch report</div>
+      <div class="feature-body">When it's done, you get everything. All platform links, approval status, backlink count, traffic data. Ready to share.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">06 — NATIVE</div>
+      <div class="feature-title">Built for your stack</div>
+      <div class="feature-body">Cursor, Lovable, Bolt, Replit, v0 — LaunchFlow knows the vibecoder ecosystem and the communities that care about it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing">
+  <div class="pricing-header" style="display:flex;align-items:flex-end;justify-content:space-between;padding:48px 32px">
+    <h2 class="pricing-h2">PRICING</h2>
+    <div style="font-family:var(--mono);font-size:12px;color:#888;text-align:right;line-height:1.7">No subscriptions.<br>Pay once per launch.<br>Credits never expire.</div>
+  </div>
+
+  <!-- Free strip -->
+  <div style="border-top:var(--border);border-bottom:var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;background:var(--paper2)">
+    <div style="font-family:var(--display);font-size:24px;letter-spacing:1px">FREE FOREVER</div>
+    <div style="font-family:var(--mono);font-size:11px;color:#888">3 platforms · Basic AI kit · No credit card</div>
+    <a href="#waitlist" style="font-family:var(--mono);font-size:11px;padding:9px 20px;border:1.5px solid var(--ink);text-decoration:none;color:var(--ink);transition:all .12s" onmouseover="this.style.background='var(--ink)';this.style.color='var(--acid)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">Start free →</a>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-tier">Starter</div>
+      <div class="pricing-price">$9</div>
+      <div class="pricing-period">one-time · per launch</div>
+      <ul class="pricing-list">
+        <li>19 platforms — Tier 1 only</li>
+        <li>Product Hunt, Uneed, DevHunt + 16 more</li>
+        <li>Basic AI launch kit</li>
+        <li>Submission dashboard</li>
+        <li>Launch report</li>
+      </ul>
+      <a href="#waitlist" class="pricing-btn">GET STARTER</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-tier">Full Launch — most popular</div>
+      <div class="pricing-price">$19</div>
+      <div class="pricing-period">one-time · per launch</div>
+      <ul class="pricing-list">
+        <li>49 platforms — Tier 1 + 2</li>
+        <li>AI dirs + SaaS dirs + G2/Capterra</li>
+        <li>Full AI launch kit</li>
+        <li>Smart queue ordering</li>
+        <li>Live tracking + launch report PDF</li>
+      </ul>
+      <a href="#waitlist" class="pricing-btn">GET FULL LAUNCH</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tier">Launch Pro</div>
+      <div class="pricing-price">$29</div>
+      <div class="pricing-period">one-time · per launch</div>
+      <ul class="pricing-list">
+        <li>99+ platforms — All tiers</li>
+        <li>Reddit copy (5 subreddits)</li>
+        <li>HN + Dev.to guided submit</li>
+        <li>Deal platforms (AppSumo etc.)</li>
+        <li>Priority queue</li>
+      </ul>
+      <a href="#waitlist" class="pricing-btn">GET LAUNCH PRO</a>
+    </div>
+  </div>
+
+  <!-- Credit packs strip -->
+  <div style="border-top:var(--border);padding:28px 32px;background:var(--paper2);display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:4px">CREDIT PACKS — SHIP MULTIPLE PROJECTS</div>
+      <div style="font-family:var(--mono);font-size:11px;color:#888">Credits never expire. Use across all your projects.</div>
+    </div>
+    <div style="display:flex;gap:0;border:var(--border)">
+      <div style="padding:16px 24px;border-right:var(--border)">
+        <div style="font-family:var(--display);font-size:28px;letter-spacing:1px">$9</div>
+        <div style="font-family:var(--mono);font-size:10px;color:#888;margin-top:2px">25 credits</div>
+      </div>
+      <div style="padding:16px 24px;border-right:var(--border);background:var(--ink)">
+        <div style="font-family:var(--display);font-size:28px;letter-spacing:1px;color:var(--acid)">$19</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(245,242,232,.4);margin-top:2px">80 credits</div>
+      </div>
+      <div style="padding:16px 24px">
+        <div style="font-family:var(--display);font-size:28px;letter-spacing:1px">$39</div>
+        <div style="font-family:var(--mono);font-size:10px;color:#888;margin-top:2px">200 credits</div>
+      </div>
+    </div>
+    <a href="launchflow-pricing.html" style="font-family:var(--mono);font-size:11px;padding:9px 20px;border:1.5px solid var(--ink);text-decoration:none;color:var(--ink);transition:all .12s;white-space:nowrap" onmouseover="this.style.background='var(--ink)';this.style.color='var(--acid)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">See full pricing →</a>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="waitlist">
+  <div class="cta-left">
+    <h2 class="cta-h2">STOP<br>BUILDING<br>INTO <span>SILENCE.</span></h2>
+    <p class="cta-sub">You shipped. Nobody saw it. That ends here. Join the waitlist and be first to launch everywhere when we go live.</p>
+  </div>
+  <div class="cta-right">
+    <div class="cta-label">Join the waitlist</div>
+    <div class="waitlist-row">
+      <input type="email" class="waitlist-input" placeholder="your@email.com" id="email-input">
+      <button class="waitlist-btn" onclick="handleWL()">JOIN</button>
+    </div>
+    <div class="success-msg" id="success-msg">You're in. We'll notify you at launch.</div>
+    <p class="cta-note">No spam. Launch updates only.</p>
+    <div>
+      <p style="font-family:var(--mono);font-size:11px;color:#999;margin-bottom:8px;letter-spacing:1px">WORKS WITH YOUR TOOLS</p>
+      <div class="built-with">
+        <span class="bw-tag">Cursor</span>
+        <span class="bw-tag">Lovable</span>
+        <span class="bw-tag">Bolt</span>
+        <span class="bw-tag">Replit</span>
+        <span class="bw-tag">v0</span>
+        <span class="bw-tag">Windsurf</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-center">BUILT FOR VIBECODERS — 2025</div>
+  <div class="footer-right">
+    <a href="#">Twitter</a>
+    <a href="#">Product Hunt</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+
+<script>
+function handleWL(){
+  const input=document.getElementById('email-input');
+  const msg=document.getElementById('success-msg');
+  if(!input.value.trim()||!input.value.includes('@')){
+    input.style.borderBottom='2px solid var(--rust)';
+    return;
+  }
+  input.parentElement.style.display='none';
+  msg.style.display='block';
+}
+</script>
+
+</body>
+</html>

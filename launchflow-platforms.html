@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Platforms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --blue:#1a1aff;
+  --green:#2a9d00;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.nav-links{display:flex;list-style:none}
+.nav-links li{border-left:var(--border)}
+.nav-links a{display:flex;align-items:center;padding:0 24px;height:56px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none;transition:background .12s;letter-spacing:.5px}
+.nav-links a:hover{background:var(--paper2)}
+.nav-links a.active{background:var(--ink);color:var(--acid)}
+.nav-cta-wrap{border-left:var(--border);margin-left:auto;display:flex;align-items:center}
+.nav-cta{display:block;background:var(--acid);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:500;padding:0 24px;height:56px;line-height:56px;text-decoration:none;letter-spacing:.5px;transition:background .12s}
+.nav-cta:hover{background:var(--acid-dark)}
+
+/* HERO */
+.hero{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr;min-height:260px}
+.hero-left{border-right:var(--border);padding:52px 64px 52px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--rust)}
+.hero-h1{font-family:var(--display);font-size:clamp(64px,8vw,104px);letter-spacing:2px;line-height:.88}
+.hero-h1 span{color:var(--acid);background:var(--ink);padding:0 8px;display:inline-block}
+.hero-sub{font-size:15px;color:#666;line-height:1.65;max-width:420px;margin-top:20px}
+
+.hero-right{display:flex;flex-direction:column}
+.hero-stat{flex:1;border-bottom:var(--border);padding:24px 32px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero-stat:last-child{border-bottom:none}
+.hs-num{font-family:var(--display);font-size:48px;letter-spacing:1px;line-height:.9;margin-bottom:6px}
+.hs-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+
+/* FILTER BAR */
+.filter-bar{border-bottom:var(--border);display:flex;align-items:stretch;background:var(--paper);position:sticky;top:56px;z-index:50;overflow-x:auto}
+.filter-section{display:flex;align-items:stretch;border-right:var(--border);flex-shrink:0}
+.filter-label{padding:0 16px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;display:flex;align-items:center;border-right:1px solid var(--paper3)}
+.filter-btn{height:48px;padding:0 18px;font-family:var(--mono);font-size:11px;letter-spacing:.5px;border:none;border-right:1px solid var(--paper3);background:transparent;cursor:pointer;color:#888;transition:all .12s;white-space:nowrap}
+.filter-btn:last-child{border-right:none}
+.filter-btn:hover{background:var(--paper2);color:var(--ink)}
+.filter-btn.active{background:var(--ink);color:var(--acid)}
+
+.search-wrap{margin-left:auto;display:flex;align-items:center;padding:0 16px;border-left:var(--border);gap:10px}
+.search-input{background:transparent;border:none;outline:none;font-family:var(--mono);font-size:12px;color:var(--ink);width:180px}
+.search-input::placeholder{color:#bbb}
+.result-count{font-family:var(--mono);font-size:11px;color:#aaa;white-space:nowrap}
+
+/* TIER SECTION */
+.tier-section{border-bottom:var(--border)}
+.tier-header{border-bottom:var(--border);padding:0;display:grid;grid-template-columns:200px 1fr;cursor:pointer}
+.tier-header:hover .tier-label-wrap{background:var(--paper2)}
+.tier-label-wrap{border-right:var(--border);padding:28px 32px;transition:background .12s}
+.tier-badge{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;margin-bottom:8px}
+.tb-1{background:var(--ink);color:var(--acid)}
+.tb-2{background:var(--paper3);color:#666;border:1.5px solid var(--ink)}
+.tb-3{background:var(--rust);color:white}
+.tier-name{font-family:var(--display);font-size:32px;letter-spacing:1px;line-height:.9}
+.tier-meta{padding:28px 32px 28px 40px;display:flex;align-items:center;gap:48px}
+.tm-stat{display:flex;flex-direction:column;gap:4px}
+.tm-num{font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:.9}
+.tm-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#888}
+.tier-desc{font-size:14px;color:#666;line-height:1.6;max-width:320px;margin-left:auto}
+
+/* PLATFORM TABLE */
+.plat-table{width:100%;border-collapse:collapse}
+.plat-head{background:var(--paper3)}
+.plat-head th{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;padding:10px 20px;text-align:left;border-right:1px solid var(--paper3);font-weight:400}
+.plat-head th:last-child{border-right:none}
+
+.plat-row{border-bottom:1px solid var(--paper2);transition:background .1s;cursor:default}
+.plat-row:last-child{border-bottom:none}
+.plat-row:hover{background:var(--paper2)}
+.plat-row.hidden{display:none}
+
+.plat-row td{padding:14px 20px;vertical-align:middle;border-right:1px solid var(--paper2)}
+.plat-row td:last-child{border-right:none}
+
+.pname{font-size:14px;font-weight:600}
+.purl{font-family:var(--mono);font-size:10px;color:#aaa;margin-top:2px}
+.pcategory{font-family:var(--mono);font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase}
+
+.auto-badge{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border:1.5px solid;display:inline-block}
+.ab-auto{background:rgba(184,255,0,.1);color:var(--acid-dark);border-color:var(--acid-dark)}
+.ab-assisted{background:rgba(26,26,255,.06);color:var(--blue);border-color:var(--blue)}
+.ab-guided{background:rgba(201,77,30,.08);color:var(--rust);border-color:var(--rust)}
+
+.dr-bar{display:flex;align-items:center;gap:8px}
+.dr-track{width:60px;height:4px;background:var(--paper3);position:relative}
+.dr-fill{height:100%;background:var(--ink)}
+.dr-num{font-family:var(--mono);font-size:11px;color:#666;min-width:28px}
+
+.stars{display:flex;gap:2px}
+.star{width:8px;height:8px;background:var(--paper3)}
+.star.on{background:var(--ink)}
+.star.half{background:linear-gradient(90deg,var(--ink) 50%,var(--paper3) 50%)}
+
+.plat-note{font-size:12px;color:#888;line-height:1.5;max-width:280px}
+.note-guided{color:var(--rust);font-family:var(--mono);font-size:10px}
+
+/* SEMI-AUTO BANNER */
+.semi-banner{border-bottom:var(--border);display:grid;grid-template-columns:160px 1fr;background:var(--ink)}
+.sb-left{border-right:2px solid rgba(255,255,255,.1);padding:32px;display:flex;align-items:center;justify-content:center}
+.sb-left-text{font-family:var(--display);font-size:48px;letter-spacing:2px;line-height:.88;color:var(--acid);text-align:center}
+.sb-right{padding:32px 40px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.sb-title{font-family:var(--display);font-size:28px;letter-spacing:1px;color:var(--paper);margin-bottom:10px;grid-column:1/-1}
+.sb-item{display:flex;align-items:flex-start;gap:12px}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.sb-text{font-size:13px;color:rgba(245,242,232,.55);line-height:1.6}
+
+/* CTA STRIP */
+.cta-strip{border-bottom:var(--border);display:grid;grid-template-columns:1fr 1fr;background:var(--paper2)}
+.cs-left{border-right:var(--border);padding:40px;display:flex;align-items:center;gap:32px}
+.cs-h3{font-family:var(--display);font-size:40px;letter-spacing:1px;line-height:.9;margin-bottom:8px}
+.cs-sub{font-size:14px;color:#666;line-height:1.6}
+.cs-right{padding:40px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.cs-btn{display:block;text-align:center;text-decoration:none;font-family:var(--display);font-size:22px;letter-spacing:1px;padding:14px;border:var(--border);color:var(--ink);background:transparent;cursor:pointer;transition:all .12s}
+.cs-btn:hover{background:var(--ink);color:var(--acid)}
+.cs-btn.primary{background:var(--ink);color:var(--acid)}
+.cs-btn.primary:hover{background:#222}
+
+footer{border-top:var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--display);font-size:22px;letter-spacing:1px}
+.footer-center{font-family:var(--mono);font-size:11px;color:#aaa}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#aaa;text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <ul class="nav-links">
+    <li><a href="launchflow-v2.html#how">Process</a></li>
+    <li><a href="#" class="active">Platforms</a></li>
+    <li><a href="launchflow-pricing.html">Pricing</a></li>
+  </ul>
+  <div class="nav-cta-wrap">
+    <a href="launchflow-login.html" class="nav-cta">Get started free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Platforms</div>
+    <h1 class="hero-h1">99+<br><span>PLATFORMS.</span></h1>
+    <p class="hero-sub">Every place your app should be seen. Launch sites, AI directories, SaaS hubs, communities, deal platforms. All in one launch.</p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat"><div class="hs-num" style="color:var(--rust)">19</div><div class="hs-label">Starter — Tier 1</div></div>
+    <div class="hero-stat"><div class="hs-num">49</div><div class="hs-label">Full Launch — Tier 1+2</div></div>
+    <div class="hero-stat"><div class="hs-num" style="color:var(--acid-dark)">99+</div><div class="hs-label">Launch Pro — All tiers</div></div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-section">
+    <div class="filter-label">Tier</div>
+    <button class="filter-btn active" onclick="filter('tier','all',this)">All</button>
+    <button class="filter-btn" onclick="filter('tier','1',this)">Tier 1</button>
+    <button class="filter-btn" onclick="filter('tier','2',this)">Tier 2</button>
+    <button class="filter-btn" onclick="filter('tier','3',this)">Tier 3</button>
+  </div>
+  <div class="filter-section">
+    <div class="filter-label">Category</div>
+    <button class="filter-btn active" onclick="filter('cat','all',this)">All</button>
+    <button class="filter-btn" onclick="filter('cat','launch',this)">Launch</button>
+    <button class="filter-btn" onclick="filter('cat','ai',this)">AI Dir</button>
+    <button class="filter-btn" onclick="filter('cat','saas',this)">SaaS Dir</button>
+    <button class="filter-btn" onclick="filter('cat','community',this)">Community</button>
+    <button class="filter-btn" onclick="filter('cat','deal',this)">Deal</button>
+  </div>
+  <div class="filter-section">
+    <div class="filter-label">Method</div>
+    <button class="filter-btn active" onclick="filter('auto','all',this)">All</button>
+    <button class="filter-btn" onclick="filter('auto','auto',this)">Auto</button>
+    <button class="filter-btn" onclick="filter('auto','assisted',this)">Assisted</button>
+    <button class="filter-btn" onclick="filter('auto','guided',this)">Guided</button>
+  </div>
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#aaa" stroke-width="1.2"/><path d="M9 9l3 3" stroke="#aaa" stroke-width="1.2" stroke-linecap="round"/></svg>
+    <input type="text" class="search-input" placeholder="Search platforms..." id="search-input" oninput="search(this.value)">
+    <span class="result-count" id="result-count">99+ platforms</span>
+  </div>
+</div>
+
+<!-- SEMI-AUTO BANNER -->
+<div class="semi-banner">
+  <div class="sb-left"><div class="sb-left-text">SEMI<br>AUTO</div></div>
+  <div class="sb-right">
+    <div class="sb-title">How submission works</div>
+    <div class="sb-item">
+      <div class="sb-dot" style="background:var(--acid)"></div>
+      <div class="sb-text"><strong style="color:var(--paper)">Auto</strong> — Our bot fills and submits the form completely. You don't touch it.</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-dot" style="background:var(--blue)"></div>
+      <div class="sb-text"><strong style="color:var(--paper)">Assisted</strong> — Bot fills everything, you click submit. Takes 10 seconds.</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-dot" style="background:var(--rust)"></div>
+      <div class="sb-text"><strong style="color:var(--paper)">Guided</strong> — Platform rules require human submission. We write all copy + give step-by-step instructions. Takes 2–5 minutes.</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-dot" style="background:#888"></div>
+      <div class="sb-text">Platforms like Product Hunt and Reddit perform better with genuine human submissions anyway.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM TABLES -->
+<div id="platforms-container"></div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cs-left">
+    <div>
+      <div class="cs-h3">READY TO LAUNCH?</div>
+      <p class="cs-sub">Start free with 3 platforms. Upgrade when you're ready for the full launch.</p>
+    </div>
+  </div>
+  <div class="cs-right">
+    <a href="launchflow-login.html" class="cs-btn primary">START FREE — 3 PLATFORMS</a>
+    <a href="launchflow-pricing.html" class="cs-btn">SEE PRICING →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-center">Built for vibecoders — 2025</div>
+  <div class="footer-links">
+    <a href="launchflow-v2.html">Home</a>
+    <a href="launchflow-pricing.html">Pricing</a>
+    <a href="launchflow-demo-v2.html">Demo</a>
+  </div>
+</footer>
+
+<script>
+const PLATFORMS = [
+  // TIER 1
+  {name:'Product Hunt',url:'producthunt.com',tier:1,cat:'launch',auto:'guided',dr:93,traffic:10,seo:10,note:'Community rules. We write copy, you submit. 5 min.'},
+  {name:'Uneed',url:'uneed.best',tier:1,cat:'launch',auto:'auto',dr:48,traffic:8,seo:8,note:null},
+  {name:'DevHunt',url:'devhunt.org',tier:1,cat:'launch',auto:'auto',dr:42,traffic:7,seo:7,note:null},
+  {name:'BetaList',url:'betalist.com',tier:1,cat:'launch',auto:'auto',dr:58,traffic:7,seo:8,note:null},
+  {name:'Microlaunch',url:'microlaunch.net',tier:1,cat:'launch',auto:'auto',dr:38,traffic:6,seo:6,note:null},
+  {name:'Fazier',url:'fazier.com',tier:1,cat:'launch',auto:'auto',dr:32,traffic:5,seo:5,note:null},
+  {name:'Peerlist',url:'peerlist.io',tier:1,cat:'launch',auto:'assisted',dr:52,traffic:6,seo:7,note:'Login required. Bot fills, you click submit.'},
+  {name:'TinyLaunch',url:'tinylaunch.co',tier:1,cat:'launch',auto:'auto',dr:22,traffic:3,seo:3,note:null},
+  {name:'LaunchIgniter',url:'launchigniter.com',tier:1,cat:'launch',auto:'auto',dr:25,traffic:3,seo:3,note:null},
+  {name:'Indie Hackers',url:'indiehackers.com',tier:1,cat:'community',auto:'guided',dr:78,traffic:8,seo:9,note:'We write your product story. You post. 3 min.'},
+  {name:'Hacker News',url:'news.ycombinator.com',tier:1,cat:'community',auto:'guided',dr:91,traffic:10,seo:10,note:'Show HN. We write your post. You submit. 2 min.'},
+  {name:'SideProjectors',url:'sideprojectors.com',tier:1,cat:'launch',auto:'auto',dr:42,traffic:5,seo:6,note:null},
+  {name:'PitchWall',url:'pitchwall.co',tier:1,cat:'launch',auto:'auto',dr:28,traffic:3,seo:4,note:null},
+  {name:'StartupBase',url:'startupbase.io',tier:1,cat:'launch',auto:'auto',dr:32,traffic:4,seo:4,note:null},
+  {name:'LaunchingNext',url:'launchingnext.com',tier:1,cat:'launch',auto:'auto',dr:30,traffic:3,seo:4,note:null},
+  {name:'Firsto',url:'firsto.xyz',tier:1,cat:'launch',auto:'auto',dr:18,traffic:2,seo:2,note:null},
+  {name:'StartupBuffer',url:'startupbuffer.com',tier:1,cat:'launch',auto:'auto',dr:35,traffic:4,seo:5,note:null},
+  {name:'FoundrList',url:'foundrlist.com',tier:1,cat:'launch',auto:'auto',dr:20,traffic:2,seo:2,note:null},
+  {name:'TrendyStartups',url:'trendystartups.co',tier:1,cat:'launch',auto:'auto',dr:18,traffic:2,seo:2,note:null},
+  // TIER 2 — AI
+  {name:"There's an AI for That",url:'theresanaiforthat.com',tier:2,cat:'ai',auto:'auto',dr:72,traffic:8,seo:9,note:null},
+  {name:'Futurepedia',url:'futurepedia.io',tier:2,cat:'ai',auto:'auto',dr:68,traffic:8,seo:9,note:null},
+  {name:'AI Scout',url:'aiscout.net',tier:2,cat:'ai',auto:'auto',dr:45,traffic:5,seo:6,note:null},
+  {name:'Toolify',url:'toolify.ai',tier:2,cat:'ai',auto:'auto',dr:52,traffic:6,seo:7,note:null},
+  {name:'AI Valley',url:'aivalley.ai',tier:2,cat:'ai',auto:'auto',dr:38,traffic:4,seo:5,note:null},
+  {name:'FutureTools',url:'futuretools.io',tier:2,cat:'ai',auto:'assisted',dr:55,traffic:6,seo:7,note:'Login required. Bot fills, you click submit.'},
+  {name:'AI Tool Hunt',url:'aitoolhunt.com',tier:2,cat:'ai',auto:'auto',dr:32,traffic:4,seo:4,note:null},
+  {name:'ShowMeBestAI',url:'showmebest.ai',tier:2,cat:'ai',auto:'auto',dr:28,traffic:3,seo:4,note:null},
+  {name:'TopAI.tools',url:'topai.tools',tier:2,cat:'ai',auto:'auto',dr:42,traffic:5,seo:6,note:null},
+  {name:'ListMyAI',url:'listmyai.net',tier:2,cat:'ai',auto:'auto',dr:40,traffic:5,seo:6,note:null},
+  // TIER 2 — SaaS
+  {name:'SaaSHub',url:'saashub.com',tier:2,cat:'saas',auto:'auto',dr:78,traffic:7,seo:9,note:null},
+  {name:'AlternativeTo',url:'alternativeto.net',tier:2,cat:'saas',auto:'guided',dr:80,traffic:8,seo:10,note:'Account required. We write listing. You submit. 3 min.'},
+  {name:'G2',url:'g2.com',tier:2,cat:'saas',auto:'guided',dr:91,traffic:9,seo:10,note:'Vendor registration. We prepare all info. 10 min. High value.'},
+  {name:'Capterra',url:'capterra.com',tier:2,cat:'saas',auto:'guided',dr:90,traffic:9,seo:10,note:'Vendor signup. We prepare listing. 10 min.'},
+  {name:'OpenAlternative',url:'openalternative.co',tier:2,cat:'saas',auto:'auto',dr:48,traffic:5,seo:6,note:null},
+  {name:'LibHunt',url:'libhunt.com',tier:2,cat:'saas',auto:'auto',dr:55,traffic:5,seo:7,note:null},
+  {name:'Toolfolio',url:'toolfolio.io',tier:2,cat:'saas',auto:'auto',dr:35,traffic:4,seo:5,note:null},
+  {name:'SourceForge',url:'sourceforge.net',tier:2,cat:'saas',auto:'guided',dr:88,traffic:7,seo:10,note:'Very high DR. Account required. We write listing. 5 min.'},
+  {name:'Slant',url:'slant.co',tier:2,cat:'saas',auto:'assisted',dr:65,traffic:5,seo:7,note:'Bot fills, you click submit.'},
+  {name:'TrustMRR',url:'trustmrr.com',tier:2,cat:'saas',auto:'auto',dr:28,traffic:3,seo:3,note:null},
+  {name:'Startup Stash',url:'startupstash.com',tier:2,cat:'saas',auto:'auto',dr:55,traffic:5,seo:6,note:null},
+  // TIER 3 — Community
+  {name:'r/sideproject',url:'reddit.com/r/sideproject',tier:3,cat:'community',auto:'guided',dr:91,traffic:9,seo:8,note:'We write your post. You submit. 2 min.'},
+  {name:'r/saas',url:'reddit.com/r/saas',tier:3,cat:'community',auto:'guided',dr:91,traffic:8,seo:7,note:'Problem-solution format. We write it.'},
+  {name:'r/startups',url:'reddit.com/r/startups',tier:3,cat:'community',auto:'guided',dr:91,traffic:7,seo:7,note:'Founder story format. We write it.'},
+  {name:'r/imadethis',url:'reddit.com/r/imadethis',tier:3,cat:'community',auto:'guided',dr:91,traffic:7,seo:6,note:'Showcase format. We write it.'},
+  {name:'r/buildinpublic',url:'reddit.com/r/buildinpublic',tier:3,cat:'community',auto:'guided',dr:91,traffic:6,seo:6,note:'Progress format. We write it.'},
+  {name:'Dev.to',url:'dev.to',tier:3,cat:'community',auto:'guided',dr:78,traffic:7,seo:8,note:'We write your launch post. You publish. 3 min.'},
+  {name:'Stacker News',url:'stacker.news',tier:3,cat:'community',auto:'auto',dr:42,traffic:4,seo:5,note:null},
+  {name:'Lobsters',url:'lobste.rs',tier:3,cat:'community',auto:'guided',dr:68,traffic:5,seo:7,note:'Dev community. We write your post.'},
+  // TIER 3 — Deal
+  {name:'AppSumo',url:'appsumo.com',tier:3,cat:'deal',auto:'guided',dr:84,traffic:9,seo:9,note:'LTD application. We prepare your pitch. 15 min. High revenue potential.'},
+  {name:'Dealify',url:'dealify.com',tier:3,cat:'deal',auto:'guided',dr:42,traffic:5,seo:5,note:'We prepare listing. You submit.'},
+  {name:'SaaS Mantra',url:'saasmantra.com',tier:3,cat:'deal',auto:'guided',dr:38,traffic:4,seo:5,note:'We prepare content. You submit.'},
+  {name:'LTD Hunt',url:'ltdhunt.com',tier:3,cat:'deal',auto:'guided',dr:28,traffic:3,seo:3,note:null},
+  {name:'SaaSZilla',url:'saaszilla.co',tier:3,cat:'deal',auto:'guided',dr:32,traffic:3,seo:4,note:null},
+  {name:'SaaS Pirate',url:'saaspirate.com',tier:3,cat:'deal',auto:'auto',dr:28,traffic:3,seo:3,note:null},
+  {name:'Prime Club',url:'primeclub.co',tier:3,cat:'deal',auto:'guided',dr:22,traffic:3,seo:3,note:null},
+  {name:'PayOnceUseForever',url:'payonceuseforever.com',tier:3,cat:'deal',auto:'auto',dr:20,traffic:2,seo:2,note:null},
+  // TIER 3 — AI niche
+  {name:'AI Cyclopedia',url:'aicyclopedia.com',tier:3,cat:'ai',auto:'auto',dr:22,traffic:2,seo:3,note:null},
+  {name:'AI Stage',url:'aistage.net',tier:3,cat:'ai',auto:'auto',dr:20,traffic:2,seo:2,note:null},
+  {name:'AI Tools Hub',url:'aitoolshub.net',tier:3,cat:'ai',auto:'auto',dr:18,traffic:2,seo:2,note:null},
+  {name:'Deeplaunch',url:'deeplaunch.io',tier:3,cat:'ai',auto:'auto',dr:15,traffic:2,seo:2,note:null},
+  {name:'EliteAI Tools',url:'eliteai.tools',tier:3,cat:'ai',auto:'auto',dr:22,traffic:2,seo:3,note:null},
+  {name:'SubmitAITools',url:'submitaitools.org',tier:3,cat:'ai',auto:'auto',dr:18,traffic:2,seo:2,note:null},
+  // TIER 3 — Discovery
+  {name:'BetaPage',url:'betapage.co',tier:3,cat:'launch',auto:'auto',dr:35,traffic:4,seo:4,note:null},
+  {name:'KillerStartups',url:'killerstartups.com',tier:3,cat:'launch',auto:'auto',dr:42,traffic:4,seo:5,note:null},
+  {name:'StartupBlink',url:'startupblink.com',tier:3,cat:'launch',auto:'auto',dr:48,traffic:4,seo:5,note:null},
+  {name:'Softonic',url:'softonic.com',tier:3,cat:'saas',auto:'auto',dr:72,traffic:5,seo:7,note:null},
+  {name:'Manta',url:'manta.com',tier:3,cat:'saas',auto:'auto',dr:62,traffic:4,seo:6,note:null},
+  {name:'Vibe Coding Works',url:'vibe-coding.works',tier:3,cat:'launch',auto:'auto',dr:18,traffic:4,seo:3,note:'Vibecoder community — perfect fit.'},
+  {name:'Submit Checklist',url:'submitchecklist.com',tier:3,cat:'launch',auto:'auto',dr:20,traffic:3,seo:2,note:null},
+  {name:'MyStartupTool',url:'mystartuptool.com',tier:3,cat:'launch',auto:'auto',dr:32,traffic:3,seo:4,note:null},
+  {name:'StartupJohn',url:'startupjohn.com',tier:3,cat:'launch',auto:'auto',dr:18,traffic:2,seo:2,note:null},
+  {name:'Hashnode',url:'hashnode.com',tier:3,cat:'community',auto:'guided',dr:72,traffic:6,seo:8,note:'We write your launch post. You publish.'},
+  {name:'Ben\'s Bites',url:'bensbites.com',tier:3,cat:'community',auto:'guided',dr:55,traffic:5,seo:6,note:'AI newsletter. We prepare your submission.'},
+  {name:'TLDR Newsletter',url:'tldr.tech',tier:3,cat:'community',auto:'guided',dr:60,traffic:5,seo:6,note:'Tech newsletter. We prepare submission.'},
+]
+
+const TIER_INFO = {
+  1: {name:'Tier 1',desc:'Highest traffic. Top launch platforms where vibecoders go to discover new tools.',badge:'tb-1',pkg:'Starter — $9',color:'var(--ink)'},
+  2: {name:'Tier 2',desc:'AI directories + SaaS hubs. Long-term SEO authority and niche discovery.',badge:'tb-2',pkg:'Full Launch — $19',color:'#444'},
+  3: {name:'Tier 3',desc:'Communities, deal platforms, niche AI dirs. Maximum coverage and deal potential.',badge:'tb-3',pkg:'Launch Pro — $29',color:'var(--rust)'},
+}
+
+let activeFilters = {tier:'all', cat:'all', auto:'all'}
+
+function stars(val) {
+  let html = '<div class="stars">'
+  for(let i=1;i<=10;i++) {
+    if(i<=val) html+=`<div class="star on"></div>`
+    else html+=`<div class="star"></div>`
+  }
+  return html+'</div>'
+}
+
+function autoBadge(type) {
+  const map = {auto:'ab-auto',assisted:'ab-assisted',guided:'ab-guided'}
+  return `<span class="auto-badge ${map[type]}">${type}</span>`
+}
+
+function drBar(dr) {
+  return `<div class="dr-bar"><div class="dr-track"><div class="dr-fill" style="width:${dr}%"></div></div><div class="dr-num">${dr}</div></div>`
+}
+
+function buildTable(tierNum) {
+  const t = TIER_INFO[tierNum]
+  const platCount = PLATFORMS.filter(p=>p.tier===tierNum).length
+  const autoCount = PLATFORMS.filter(p=>p.tier===tierNum && p.auto==='auto').length
+  const guidedCount = PLATFORMS.filter(p=>p.tier===tierNum && p.auto==='guided').length
+
+  return `
+    <div class="tier-section" data-tier="${tierNum}">
+      <div class="tier-header">
+        <div class="tier-label-wrap">
+          <div class="tier-badge ${t.badge}">${t.name}</div>
+          <div class="tier-name" style="color:${t.color}">${tierNum===1?'STARTER':tierNum===2?'FULL<br>LAUNCH':'LAUNCH<br>PRO'}</div>
+        </div>
+        <div class="tier-meta">
+          <div class="tm-stat"><div class="tm-num" style="color:${t.color}">${platCount}</div><div class="tm-label">Platforms</div></div>
+          <div class="tm-stat"><div class="tm-num">${autoCount}</div><div class="tm-label">Auto</div></div>
+          <div class="tm-stat"><div class="tm-num">${guidedCount}</div><div class="tm-label">Guided</div></div>
+          <div class="tier-desc">${t.desc}<br><br><strong style="font-family:var(--mono);font-size:10px;letter-spacing:.5px">${t.pkg}</strong></div>
+        </div>
+      </div>
+      <table class="plat-table">
+        <thead class="plat-head">
+          <tr>
+            <th style="width:200px">Platform</th>
+            <th style="width:100px">Category</th>
+            <th style="width:100px">Method</th>
+            <th style="width:110px">DR Score</th>
+            <th style="width:120px">Traffic value</th>
+            <th style="width:120px">SEO value</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${PLATFORMS.filter(p=>p.tier===tierNum).map(p=>`
+            <tr class="plat-row"
+              data-tier="${p.tier}"
+              data-cat="${p.cat}"
+              data-auto="${p.auto}"
+              data-name="${p.name.toLowerCase()}">
+              <td>
+                <div class="pname">${p.name}</div>
+                <div class="purl">${p.url}</div>
+              </td>
+              <td><div class="pcategory">${p.cat}</div></td>
+              <td>${autoBadge(p.auto)}</td>
+              <td>${drBar(p.dr)}</td>
+              <td>${stars(p.traffic)}</td>
+              <td>${stars(p.seo)}</td>
+              <td><div class="${p.auto==='guided'?'note-guided':'plat-note'}">${p.note||'—'}</div></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `
+}
+
+document.getElementById('platforms-container').innerHTML =
+  buildTable(1) + buildTable(2) + buildTable(3)
+
+function applyFilters() {
+  const rows = document.querySelectorAll('.plat-row')
+  let visible = 0
+  rows.forEach(row => {
+    const tierMatch = activeFilters.tier === 'all' || row.dataset.tier === activeFilters.tier
+    const catMatch = activeFilters.cat === 'all' || row.dataset.cat === activeFilters.cat
+    const autoMatch = activeFilters.auto === 'all' || row.dataset.auto === activeFilters.auto
+    const searchVal = document.getElementById('search-input').value.toLowerCase()
+    const nameMatch = !searchVal || row.dataset.name.includes(searchVal)
+    const show = tierMatch && catMatch && autoMatch && nameMatch
+    row.classList.toggle('hidden', !show)
+    if(show) visible++
+  })
+  document.getElementById('result-count').textContent = visible + ' platforms'
+
+  // Tier sections visibility
+  document.querySelectorAll('.tier-section').forEach(sec => {
+    const visibleInSection = sec.querySelectorAll('.plat-row:not(.hidden)').length
+    sec.style.display = visibleInSection === 0 ? 'none' : 'block'
+  })
+}
+
+function filter(type, val, btn) {
+  activeFilters[type] = val
+  const group = btn.closest('.filter-section') || btn.parentElement
+  group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  applyFilters()
+}
+
+function search(val) {
+  applyFilters()
+}
+</script>
+</body>
+</html>

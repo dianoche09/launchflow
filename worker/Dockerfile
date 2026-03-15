@@ -1,19 +1,15 @@
-FROM node:20-slim
-
-# Install necessary OS dependencies for Playwright
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    wget gnupg \
-    && rm -rf /var/lib/apt/lists/*
-RUN npx playwright install-deps chromium
+FROM mcr.microsoft.com/playwright:v1.41.0-jammy
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
-
-COPY . .
-
+RUN npm install bullmq ioredis playwright @sentry/node @axiomhq/js
 RUN npx playwright install chromium
 
-CMD ["npx", "ts-node", "index.ts"]
+COPY index.ts .
+COPY tsconfig.json .
+
+RUN npm install -g typescript
+RUN tsc
+
+CMD ["node", "index.js"]

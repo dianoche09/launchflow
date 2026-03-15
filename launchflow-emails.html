@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Email Templates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;--paper:#f5f2e8;--paper2:#ede9d8;--paper3:#e4e0ce;
+  --acid:#b8ff00;--acid-dark:#8acc00;--rust:#c94d1e;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;--body:'Bricolage Grotesque',sans-serif;--mono:'Azeret Mono',monospace;
+}
+body{background:#eee;font-family:var(--body);padding:40px 20px;-webkit-font-smoothing:antialiased}
+.page-title{font-family:var(--display);font-size:32px;letter-spacing:2px;margin-bottom:8px;color:var(--ink)}
+.page-sub{font-family:var(--mono);font-size:12px;color:#888;margin-bottom:40px}
+.tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.tab{font-family:var(--mono);font-size:11px;padding:8px 18px;border:1.5px solid #ccc;background:white;cursor:pointer;transition:all .12s;color:#666}
+.tab.active{background:var(--ink);color:var(--acid);border-color:var(--ink)}
+.email-wrap{display:none;max-width:600px;margin:0 auto}
+.email-wrap.active{display:block}
+
+/* EMAIL STYLES — inline-safe */
+.email{background:#f5f2e8;border:2px solid #0c0c0a;font-family:'Bricolage Grotesque',Georgia,serif}
+.e-header{background:#0c0c0a;padding:24px 32px;border-bottom:2px solid #0c0c0a}
+.e-logo{font-family:impact,sans-serif;font-size:22px;letter-spacing:2px;color:#b8ff00;text-decoration:none}
+.e-body{padding:40px 32px}
+.e-tag{font-family:monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);margin-bottom:16px;display:block}
+.e-h1{font-family:impact,sans-serif;font-size:52px;letter-spacing:2px;line-height:.9;color:#0c0c0a;margin-bottom:16px}
+.e-h1 span{color:#8acc00}
+.e-p{font-size:15px;color:#444;line-height:1.7;margin-bottom:16px}
+.e-divider{height:2px;background:#0c0c0a;margin:28px 0}
+.e-btn{display:inline-block;background:#0c0c0a;color:#b8ff00;font-family:impact,sans-serif;font-size:18px;letter-spacing:1px;padding:14px 28px;text-decoration:none;margin:8px 0}
+.e-list{list-style:none;margin:16px 0}
+.e-list li{padding:8px 0;border-bottom:1px solid #e4e0ce;font-size:14px;color:#555;display:flex;align-items:center;gap:10px}
+.e-list li:last-child{border-bottom:none}
+.e-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:#0c0c0a;flex-shrink:0}
+.e-stat-row{display:flex;gap:0;border:2px solid #0c0c0a;margin:24px 0}
+.e-stat{flex:1;padding:16px;text-align:center;border-right:2px solid #0c0c0a}
+.e-stat:last-child{border-right:none}
+.e-stat-num{font-family:impact,sans-serif;font-size:36px;letter-spacing:1px;line-height:1;color:#0c0c0a}
+.e-stat-num.a{color:#8acc00}
+.e-stat-num.r{color:#c94d1e}
+.e-stat-label{font-family:monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;margin-top:4px}
+.e-footer{background:#ede9d8;border-top:2px solid #0c0c0a;padding:20px 32px;display:flex;justify-content:space-between;align-items:center}
+.e-footer-text{font-family:monospace;font-size:10px;color:#aaa;line-height:1.6}
+.e-footer-logo{font-family:impact,sans-serif;font-size:16px;letter-spacing:1px;color:#0c0c0a}
+.e-warning{background:#fff0ec;border:1.5px solid #c94d1e;padding:16px 20px;margin:20px 0}
+.e-warning-title{font-family:monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#c94d1e;margin-bottom:6px}
+.e-warning-text{font-size:13px;color:#666;line-height:1.6}
+.e-credit-bar{height:8px;background:#e4e0ce;margin:8px 0;position:relative}
+.e-credit-fill{height:100%;background:#c94d1e}
+.e-platform-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e4e0ce;font-size:13px}
+.e-platform-row:last-child{border-bottom:none}
+.e-platform-badge{font-family:monospace;font-size:9px;padding:2px 6px;letter-spacing:.5px}
+.epb-ok{background:rgba(42,157,0,.1);color:#2a9d00;border:1px solid #2a9d00}
+.epb-pending{background:#fffbe6;color:#8a6600;border:1px solid #d4b800}
+.epb-guided{background:rgba(201,77,30,.08);color:#c94d1e;border:1px solid #c94d1e}
+</style>
+</head>
+<body>
+
+<div class="page-title">EMAIL TEMPLATES</div>
+<div class="page-sub">// 4 transactional emails — copy HTML to your email provider (Resend, Postmark, etc.)</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showEmail('welcome',this)">Welcome</button>
+  <button class="tab" onclick="showEmail('launch-started',this)">Launch Started</button>
+  <button class="tab" onclick="showEmail('launch-complete',this)">Launch Complete</button>
+  <button class="tab" onclick="showEmail('low-credits',this)">Low Credits</button>
+</div>
+
+<!-- WELCOME -->
+<div class="email-wrap active" id="email-welcome">
+  <div class="email">
+    <div class="e-header">
+      <div class="e-logo">LAUNCHFLOW_</div>
+    </div>
+    <div class="e-body">
+      <span class="e-tag">Welcome</span>
+      <div class="e-h1">READY<br>TO <span>LAUNCH.</span></div>
+      <p class="e-p">Hey {{first_name}},</p>
+      <p class="e-p">Welcome to LaunchFlow. You're 3 steps away from submitting your app to 99+ platforms.</p>
+      <div class="e-divider"></div>
+      <p class="e-p" style="font-weight:600;color:#0c0c0a">Here's how it works:</p>
+      <ul class="e-list">
+        <li>Add your project — name, URL, description, logo</li>
+        <li>Generate your AI launch kit — we write all the copy</li>
+        <li>Choose your package — from $9 per launch</li>
+        <li>Click launch — we handle the rest</li>
+      </ul>
+      <div class="e-divider"></div>
+      <a href="https://launchflow.io/dashboard/new" class="e-btn">START MY FIRST LAUNCH →</a>
+      <p class="e-p" style="margin-top:16px;font-size:13px;color:#888">You have <strong style="color:#0c0c0a">3 free credits</strong> to get started. No credit card needed.</p>
+    </div>
+    <div class="e-footer">
+      <div class="e-footer-logo">LAUNCHFLOW</div>
+      <div class="e-footer-text">Built for vibecoders.<br>Unsubscribe · Privacy Policy</div>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH STARTED -->
+<div class="email-wrap" id="email-launch-started">
+  <div class="email">
+    <div class="e-header">
+      <div class="e-logo">LAUNCHFLOW_</div>
+    </div>
+    <div class="e-body">
+      <span class="e-tag">Launch started</span>
+      <div class="e-h1">YOU'RE<br><span>LIVE.</span></div>
+      <p class="e-p">Hey {{first_name}},</p>
+      <p class="e-p"><strong>{{project_name}}</strong> is now being submitted to {{platform_count}} platforms. Sit back — we're handling it.</p>
+      <div class="e-stat-row">
+        <div class="e-stat"><div class="e-stat-num a">{{platform_count}}</div><div class="e-stat-label">Platforms</div></div>
+        <div class="e-stat"><div class="e-stat-num">{{auto_count}}</div><div class="e-stat-label">Auto</div></div>
+        <div class="e-stat"><div class="e-stat-num r">{{guided_count}}</div><div class="e-stat-label">Need you</div></div>
+      </div>
+      <div class="e-warning">
+        <div class="e-warning-title">{{guided_count}} platforms need your action</div>
+        <div class="e-warning-text">Platforms like Product Hunt and Reddit require human submission. We've written all the copy. Visit your dashboard to complete them — takes 2–5 minutes each.</div>
+      </div>
+      <a href="https://launchflow.io/launch/{{launch_id}}" class="e-btn">VIEW LIVE STATUS →</a>
+    </div>
+    <div class="e-footer">
+      <div class="e-footer-logo">LAUNCHFLOW</div>
+      <div class="e-footer-text">Built for vibecoders.<br>Unsubscribe · Privacy Policy</div>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH COMPLETE -->
+<div class="email-wrap" id="email-launch-complete">
+  <div class="email">
+    <div class="e-header">
+      <div class="e-logo">LAUNCHFLOW_</div>
+    </div>
+    <div class="e-body">
+      <span class="e-tag">Launch complete</span>
+      <div class="e-h1">LAUNCH<br><span>DONE.</span></div>
+      <p class="e-p">Hey {{first_name}},</p>
+      <p class="e-p"><strong>{{project_name}}</strong>'s launch is complete. Here's how it went:</p>
+      <div class="e-stat-row">
+        <div class="e-stat"><div class="e-stat-num">{{total}}</div><div class="e-stat-label">Submitted</div></div>
+        <div class="e-stat"><div class="e-stat-num a">{{approved}}</div><div class="e-stat-label">Approved</div></div>
+        <div class="e-stat"><div class="e-stat-num r">{{approval_rate}}%</div><div class="e-stat-label">Approval rate</div></div>
+      </div>
+      <div class="e-divider"></div>
+      <p class="e-p" style="font-weight:600;color:#0c0c0a">Top listings:</p>
+      <div>
+        <div class="e-platform-row"><span style="font-weight:600">Product Hunt</span><span class="e-platform-badge epb-guided">Complete guided</span></div>
+        <div class="e-platform-row"><span style="font-weight:600">Uneed</span><span class="e-platform-badge epb-ok">Live</span></div>
+        <div class="e-platform-row"><span style="font-weight:600">SaaSHub</span><span class="e-platform-badge epb-ok">Live</span></div>
+        <div class="e-platform-row"><span style="font-weight:600">Futurepedia</span><span class="e-platform-badge epb-pending">Pending review</span></div>
+        <div class="e-platform-row"><span style="font-weight:600">AlternativeTo</span><span class="e-platform-badge epb-guided">Complete guided</span></div>
+      </div>
+      <div class="e-divider"></div>
+      <a href="https://launchflow.io/dashboard" class="e-btn">VIEW FULL REPORT →</a>
+      <p class="e-p" style="margin-top:16px;font-size:13px;color:#888">SEO backlinks take 2–4 weeks to fully index. Check back for traffic data.</p>
+    </div>
+    <div class="e-footer">
+      <div class="e-footer-logo">LAUNCHFLOW</div>
+      <div class="e-footer-text">Built for vibecoders.<br>Unsubscribe · Privacy Policy</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOW CREDITS -->
+<div class="email-wrap" id="email-low-credits">
+  <div class="email">
+    <div class="e-header">
+      <div class="e-logo">LAUNCHFLOW_</div>
+    </div>
+    <div class="e-body">
+      <span class="e-tag">Low credits</span>
+      <div class="e-h1">CREDITS<br><span>RUNNING</span><br>LOW.</div>
+      <p class="e-p">Hey {{first_name}},</p>
+      <p class="e-p">You have <strong style="color:#c94d1e">{{credits_remaining}} credits</strong> remaining. That's enough for a partial launch.</p>
+      <div style="margin:20px 0">
+        <div style="font-family:monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:6px;display:flex;justify-content:space-between"><span>Credits used</span><span>{{credits_used}} / {{credits_total}}</span></div>
+        <div class="e-credit-bar"><div class="e-credit-fill" style="width:{{credit_percent}}%"></div></div>
+      </div>
+      <div class="e-divider"></div>
+      <p class="e-p" style="font-weight:600;color:#0c0c0a">Top up your wallet:</p>
+      <ul class="e-list">
+        <li>19 credits — $9 &nbsp;&nbsp;&nbsp; (Starter Pack)</li>
+        <li>49 credits — $19 &nbsp; (Growth Pack) ← most popular</li>
+        <li>120 credits — $39 (Builder Pack) ← best value</li>
+      </ul>
+      <a href="https://launchflow.io/dashboard/plan" class="e-btn">BUY CREDITS →</a>
+      <p class="e-p" style="margin-top:16px;font-size:13px;color:#888">Credits never expire. Buy once, use whenever.</p>
+    </div>
+    <div class="e-footer">
+      <div class="e-footer-logo">LAUNCHFLOW</div>
+      <div class="e-footer-text">Built for vibecoders.<br>Unsubscribe · Privacy Policy</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showEmail(id, btn) {
+  document.querySelectorAll('.email-wrap').forEach(e=>e.classList.remove('active'))
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+  document.getElementById('email-'+id).classList.add('active')
+  btn.classList.add('active')
+}
+</script>
+</body>
+</html>

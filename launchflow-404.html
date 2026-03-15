@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — 404</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;--paper:#f5f2e8;--paper2:#ede9d8;--paper3:#e4e0ce;
+  --acid:#b8ff00;--acid-dark:#8acc00;--rust:#c94d1e;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;--body:'Bricolage Grotesque',sans-serif;--mono:'Azeret Mono',monospace;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);display:flex;flex-direction:column}
+
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper)}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+
+.main{flex:1;display:grid;grid-template-columns:1fr 1fr;border-bottom:var(--border)}
+.left{border-right:var(--border);padding:80px 64px 80px 40px;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink)}
+.bg-num{font-family:var(--display);font-size:clamp(180px,22vw,280px);letter-spacing:-4px;line-height:.85;color:rgba(184,255,0,.08);pointer-events:none;user-select:none;margin-bottom:-20px}
+.left-h1{font-family:var(--display);font-size:clamp(48px,6vw,80px);letter-spacing:2px;line-height:.9;color:var(--paper);margin-bottom:16px}
+.left-h1 span{color:var(--acid)}
+.left-sub{font-size:15px;color:rgba(245,242,232,.45);line-height:1.65;max-width:360px;margin-bottom:40px}
+.left-btn{display:inline-block;background:var(--acid);color:var(--ink);font-family:var(--display);font-size:22px;letter-spacing:1px;padding:16px 36px;text-decoration:none;transition:background .12s;border:2px solid var(--acid)}
+.left-btn:hover{background:var(--acid-dark);border-color:var(--acid-dark)}
+
+.right{padding:64px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.right-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:20px}
+.right-links{display:flex;flex-direction:column;gap:0}
+.right-link{display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:var(--border);text-decoration:none;color:var(--ink);transition:all .12s}
+.right-link:hover{padding-left:8px}
+.right-link:last-child{border-bottom:none}
+.rl-label{font-family:var(--display);font-size:28px;letter-spacing:1px}
+.rl-desc{font-family:var(--mono);font-size:11px;color:#888;margin-top:2px}
+.rl-arrow{font-family:var(--mono);font-size:16px;color:#bbb;transition:transform .12s}
+.right-link:hover .rl-arrow{transform:translateX(4px);color:var(--ink)}
+
+.right-bottom{border:var(--border);padding:20px;background:var(--paper2)}
+.rb-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:8px}
+.rb-text{font-size:13px;color:#666;line-height:1.6}
+
+footer{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-top:var(--border)}
+.footer-logo{font-family:var(--display);font-size:20px;letter-spacing:1px}
+.footer-text{font-family:var(--mono);font-size:11px;color:#aaa}
+</style>
+</head>
+<body>
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+</nav>
+<div class="main">
+  <div class="left">
+    <div class="bg-num">404</div>
+    <div>
+      <h1 class="left-h1">PAGE<br>NOT<br><span>FOUND.</span></h1>
+      <p class="left-sub">This page doesn't exist. But your next launch does. Let's get back to building.</p>
+      <a href="launchflow-v2.html" class="left-btn">GO HOME →</a>
+    </div>
+  </div>
+  <div class="right">
+    <div>
+      <div class="right-title">Or go somewhere useful</div>
+      <div class="right-links">
+        <a href="launchflow-v2.html" class="right-link">
+          <div><div class="rl-label">HOME</div><div class="rl-desc">Back to the main page</div></div>
+          <span class="rl-arrow">→</span>
+        </a>
+        <a href="launchflow-demo-v2.html" class="right-link">
+          <div><div class="rl-label">DEMO</div><div class="rl-desc">Try the launch demo</div></div>
+          <span class="rl-arrow">→</span>
+        </a>
+        <a href="launchflow-pricing.html" class="right-link">
+          <div><div class="rl-label">PRICING</div><div class="rl-desc">$9 per launch, no subscription</div></div>
+          <span class="rl-arrow">→</span>
+        </a>
+        <a href="launchflow-platforms.html" class="right-link">
+          <div><div class="rl-label">PLATFORMS</div><div class="rl-desc">99+ platforms we submit to</div></div>
+          <span class="rl-arrow">→</span>
+        </a>
+        <a href="launchflow-login.html" class="right-link">
+          <div><div class="rl-label">DASHBOARD</div><div class="rl-desc">Sign in to your account</div></div>
+          <span class="rl-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="right-bottom">
+      <div class="rb-label">Lost?</div>
+      <div class="rb-text">If you think this is a bug, email us at <strong>hello@launchflow.io</strong> and we'll fix it.</div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-text">Built for vibecoders — 2025</div>
+</footer>
+</body>
+</html>

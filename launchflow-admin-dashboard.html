@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dim:rgba(184,255,0,.12);
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --rust-dim:rgba(201,77,30,.1);
+  --blue:#1a1aff;
+  --blue-dim:rgba(26,26,255,.08);
+  --green:#2a9d00;
+  --green-dim:rgba(42,157,0,.1);
+  --admin:#1a1aff;
+  --border:2px solid var(--ink);
+  --border1:1px solid var(--paper3);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+  --sidebar:240px;
+  --topbar:52px;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5;overflow:hidden;display:grid;grid-template-columns:var(--sidebar) 1fr;grid-template-rows:var(--topbar) 1fr}
+
+/* TOPBAR */
+.topbar{grid-column:1/-1;border-bottom:var(--border);display:flex;align-items:stretch;height:var(--topbar);background:var(--ink);z-index:100}
+.tb-logo{font-family:var(--display);font-size:24px;letter-spacing:1px;line-height:var(--topbar);padding:0 20px;border-right:2px solid rgba(255,255,255,.1);text-decoration:none;color:var(--acid);white-space:nowrap}
+.tb-admin-tag{display:flex;align-items:center;padding:0 20px;border-right:2px solid rgba(255,255,255,.1);font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,242,232,.4);gap:10px}
+.tb-admin-tag span{background:var(--admin);color:white;padding:3px 9px;font-size:9px;letter-spacing:1px}
+.tb-breadcrumb{display:flex;align-items:center;padding:0 20px;gap:10px;font-family:var(--mono);font-size:11px;color:rgba(245,242,232,.4);letter-spacing:.5px}
+.tb-crumb-sep{color:rgba(255,255,255,.2)}
+.tb-crumb-active{color:rgba(245,242,232,.8)}
+.tb-right{margin-left:auto;display:flex;align-items:stretch}
+.tb-alerts{display:flex;align-items:center;padding:0 20px;border-left:2px solid rgba(255,255,255,.1);font-family:var(--mono);font-size:11px;color:var(--rust);gap:8px;cursor:pointer}
+.tb-alerts-count{background:var(--rust);color:white;font-size:9px;padding:2px 6px;border-radius:0}
+.tb-user{display:flex;align-items:center;padding:0 20px;border-left:2px solid rgba(255,255,255,.1);gap:10px;cursor:pointer}
+.tb-avatar{width:28px;height:28px;border-radius:50%;background:var(--admin);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;color:white;flex-shrink:0}
+.tb-username{font-family:var(--mono);font-size:11px;color:rgba(245,242,232,.7)}
+.tb-role{font-family:var(--mono);font-size:9px;color:rgba(245,242,232,.35);letter-spacing:1px;text-transform:uppercase}
+
+/* SIDEBAR */
+.sidebar{border-right:var(--border);overflow-y:auto;background:var(--paper);display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:0}
+.sb-section{border-bottom:var(--border1);padding:6px 0}
+.sb-section-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#bbb;padding:8px 20px 4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.3px;color:#666;transition:all .1s;border-left:3px solid transparent}
+.sb-item:hover{background:var(--paper2);color:var(--ink)}
+.sb-item.active{background:var(--blue-dim);color:var(--blue);border-left-color:var(--blue);font-weight:500}
+.sb-icon{width:13px;height:13px;flex-shrink:0;opacity:.5}
+.sb-item.active .sb-icon{opacity:1}
+.sb-badge{margin-left:auto;background:var(--rust);color:white;font-size:9px;padding:1px 5px;min-width:16px;text-align:center}
+.sb-badge.ok{background:var(--green)}
+.sb-badge.warn{background:#d4b800}
+.sb-bottom{margin-top:auto;border-top:var(--border1);padding:6px 0}
+
+/* MAIN */
+.main{overflow-y:auto;background:var(--paper2)}
+.main::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-thumb{background:var(--paper3)}
+
+.page{display:none}
+.page.active{display:block}
+
+/* SHARED */
+.page-header{padding:28px 32px 0;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.page-h1{font-family:var(--display);font-size:44px;letter-spacing:2px;line-height:.9}
+.page-sub{font-family:var(--mono);font-size:11px;color:#888;letter-spacing:.5px;margin-top:6px}
+
+.btn{font-family:var(--mono);font-size:11px;letter-spacing:.5px;padding:8px 16px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink);transition:all .12s;white-space:nowrap}
+.btn:hover{background:var(--ink);color:var(--acid)}
+.btn-primary{background:var(--ink);color:var(--acid)}
+.btn-primary:hover{background:#222}
+.btn-danger{border-color:var(--rust);color:var(--rust)}
+.btn-danger:hover{background:var(--rust);color:white}
+.btn-sm{padding:5px 10px;font-size:10px}
+
+.kpi-row{padding:0 32px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0;border:var(--border);background:var(--ink)}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:var(--border);background:var(--ink)}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:var(--border);background:var(--ink)}
+.grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:var(--border);background:var(--ink)}
+.kpi{background:var(--paper);padding:20px 24px;display:flex;flex-direction:column;justify-content:flex-end}
+.kpi-num{font-family:var(--display);font-size:40px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.kpi-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+.kpi-delta{font-family:var(--mono);font-size:10px;margin-top:4px}
+.delta-up{color:var(--green)}
+.delta-down{color:var(--rust)}
+
+.section{margin:0 32px 20px;border:var(--border)}
+.section-head{border-bottom:var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;background:var(--paper)}
+.section-title{font-family:var(--display);font-size:20px;letter-spacing:1px}
+.section-body{background:var(--paper)}
+
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#999;padding:9px 20px;text-align:left;background:var(--paper3);border-bottom:var(--border1)}
+.tbl td{padding:11px 20px;border-bottom:var(--border1);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--paper2);cursor:default}
+.tbl-actions{display:flex;gap:6px}
+
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border:1.5px solid}
+.b-green{background:var(--green-dim);color:var(--green);border-color:var(--green)}
+.b-rust{background:var(--rust-dim);color:var(--rust);border-color:var(--rust)}
+.b-blue{background:var(--blue-dim);color:var(--blue);border-color:var(--blue)}
+.b-amber{background:#fffbe6;color:#8a6600;border-color:#d4b800}
+.b-gray{background:var(--paper3);color:#888;border-color:#ccc}
+.b-admin{background:var(--blue-dim);color:var(--blue);border-color:var(--blue)}
+.b-acid{background:var(--acid-dim);color:var(--acid-dark);border-color:var(--acid-dark)}
+
+/* CHART BAR */
+.chart-area{height:120px;padding:16px 20px;display:flex;align-items:flex-end;gap:4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-fill{background:var(--ink);width:100%}
+.bar-fill.a{background:var(--acid-dark)}
+.bar-fill.b{background:var(--blue)}
+.bar-fill.r{background:var(--rust)}
+.bar-label{font-family:var(--mono);font-size:7px;color:#aaa}
+
+/* BOT STATUS */
+.bot-grid{display:grid;grid-template-columns:repeat(3,1fr);background:var(--ink);gap:0;border:var(--border)}
+.bot-cell{background:var(--paper);padding:20px;border-right:var(--border);border-bottom:var(--border)}
+.bot-cell:nth-child(3n){border-right:none}
+.bot-cell:nth-child(n+4){border-bottom:none}
+.bot-name{font-family:var(--mono);font-size:11px;font-weight:500;margin-bottom:8px;letter-spacing:.5px}
+.bot-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:#888;margin-bottom:10px}
+.bot-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-ok{background:var(--green);animation:blink2 2s ease-in-out infinite}
+.dot-err{background:var(--rust)}
+.dot-warn{background:#d4b800}
+@keyframes blink2{0%,100%{opacity:1}50%{opacity:.4}}
+.bot-stat{font-family:var(--mono);font-size:10px;color:#aaa}
+.bot-stat span{color:var(--ink);font-weight:500}
+
+/* PLATFORM TOGGLE */
+.plat-toggle{display:flex;gap:0;border:1.5px solid var(--ink)}
+.pt-btn{font-family:var(--mono);font-size:10px;letter-spacing:.5px;padding:6px 14px;border:none;cursor:pointer;background:transparent;color:#888;border-right:1.5px solid var(--ink);transition:all .1s}
+.pt-btn:last-child{border-right:none}
+.pt-btn.on{background:var(--ink);color:var(--acid)}
+.pt-btn:not(.on):hover{background:var(--paper2)}
+
+/* MRR CHART */
+.mrr-track{height:8px;background:var(--paper3);margin:16px 20px 0;position:relative}
+.mrr-fill{height:100%;background:var(--acid-dark);transition:width .5s}
+
+/* SOCIAL MEDIA */
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--ink);border:var(--border)}
+.social-cell{background:var(--paper);padding:20px;border-right:var(--border);border-bottom:var(--border)}
+.social-cell:nth-child(2n){border-right:none}
+.social-cell:nth-child(n+3){border-bottom:none}
+.sc-platform{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sc-num{font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:.9;margin-bottom:4px}
+.sc-label{font-family:var(--mono);font-size:10px;color:#aaa}
+.sc-delta{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:4px}
+
+/* INLINE FORM */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px;border-bottom:var(--border1)}
+.form-row:last-of-type{border-bottom:none}
+.field-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:6px;display:block}
+.field-input{width:100%;padding:10px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:13px;outline:none;color:var(--ink)}
+.field-input:focus{background:var(--paper2)}
+.field-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--body);font-size:13px;outline:none;resize:vertical;min-height:80px;color:var(--ink)}
+
+/* LOG */
+.log-item{padding:12px 20px;border-bottom:var(--border1);display:flex;align-items:flex-start;gap:14px;font-size:13px}
+.log-item:last-child{border-bottom:none}
+.log-time{font-family:var(--mono);font-size:10px;color:#aaa;white-space:nowrap;min-width:60px;margin-top:2px}
+.log-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.log-text{color:#444;line-height:1.5}
+.log-text strong{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="launchflow-v2.html" class="tb-logo">LAUNCHFLOW</a>
+  <div class="tb-admin-tag"><span>ADMIN</span> Control Panel</div>
+  <div class="tb-breadcrumb">
+    <span>Admin</span>
+    <span class="tb-crumb-sep">/</span>
+    <span class="tb-crumb-active" id="tb-current">Overview</span>
+  </div>
+  <div class="tb-right">
+    <div class="tb-alerts">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a5 5 0 0 1 5 5v2l1 2H2l1-2V6a5 5 0 0 1 5-5zM5.5 12a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+      <span class="tb-alerts-count">3</span>
+    </div>
+    <div class="tb-user">
+      <div class="tb-avatar">A</div>
+      <div><div class="tb-username">Admin</div><div class="tb-role">superadmin</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-section">
+    <div class="sb-section-label">Overview</div>
+    <div class="sb-item active" onclick="nav('overview')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/></svg>
+      Overview
+    </div>
+    <div class="sb-item" onclick="nav('revenue')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 10l3-4 3 2 3-5 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Revenue & MRR
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Users</div>
+    <div class="sb-item" onclick="nav('users')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 12c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      All Users
+      <span class="sb-badge ok">248</span>
+    </div>
+    <div class="sb-item" onclick="nav('plans')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1l1 3h3l-2.5 2 1 3L7 7.5 4.5 9l1-3L3 4h3z" stroke="currentColor" stroke-width="1.2"/></svg>
+      Plans & Subscriptions
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Launch Engine</div>
+    <div class="sb-item" onclick="nav('launches')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4l-3.2 2.3 1.2 4L7 9l-3.5 2.3 1.2-4L1.5 5h4z" stroke="currentColor" stroke-width="1.2"/></svg>
+      All Launches
+      <span class="sb-badge warn">12</span>
+    </div>
+    <div class="sb-item" onclick="nav('platforms')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" stroke-width="1.2"/><path d="M5 2v10M2 6h8" stroke="currentColor" stroke-width="1.2"/></svg>
+      Platform Manager
+    </div>
+    <div class="sb-item" onclick="nav('bots')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><rect x="3" y="4" width="8" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 4V3a2 2 0 0 1 4 0v1M5 8h4M7 8v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Bot Status
+      <span class="sb-badge">2</span>
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">Content</div>
+    <div class="sb-item" onclick="nav('blog')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M2 7h7M2 11h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Blog & Changelog
+    </div>
+    <div class="sb-item" onclick="nav('social')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="3" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="11" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4.4 6.3L9.6 3.7M4.4 7.7l5.2 2.6" stroke="currentColor" stroke-width="1.2"/></svg>
+      Social Media
+    </div>
+    <div class="sb-item" onclick="nav('seo')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      SEO & Links
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-section-label">System</div>
+    <div class="sb-item" onclick="nav('settings')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M7 1v2M7 11v2M1 7h2M11 7h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      System Settings
+    </div>
+    <div class="sb-item" onclick="nav('api')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M4 4l-3 3 3 3M10 4l3 3-3 3M7 2l-1 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      API & Integrations
+    </div>
+    <div class="sb-item" onclick="nav('logs')">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      System Logs
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-item" onclick="window.location='launchflow-user-dashboard.html'">
+      <svg class="sb-icon" viewBox="0 0 14 14" fill="none"><path d="M9 2h3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H9M6 10l4-3-4-3M10 7H2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      User view
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <div><div class="page-h1">OVERVIEW</div><div class="page-sub">LaunchFlow — Real-time system status</div></div>
+    </div>
+    <div class="kpi-row">
+      <div class="grid-5">
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">$4.2k</div><div class="kpi-label">MRR</div><div class="kpi-delta delta-up">+$340 this week</div></div>
+        <div class="kpi"><div class="kpi-num">248</div><div class="kpi-label">Total Users</div><div class="kpi-delta delta-up">+12 this week</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">89</div><div class="kpi-label">Pro Users</div><div class="kpi-delta">36% conversion</div></div>
+        <div class="kpi"><div class="kpi-num">1,847</div><div class="kpi-label">Total Launches</div><div class="kpi-delta delta-up">+48 today</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">98%</div><div class="kpi-label">Bot Uptime</div><div class="kpi-delta">1 warning</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;margin:0 32px 20px;border:var(--border);gap:0;background:var(--ink)">
+      <div style="background:var(--paper);border-right:var(--border)">
+        <div class="section-head"><div class="section-title">MRR GROWTH</div></div>
+        <div class="chart-area" id="mrr-chart"></div>
+      </div>
+      <div style="background:var(--paper)">
+        <div class="section-head"><div class="section-title">SIGNUPS</div></div>
+        <div class="chart-area" id="signup-chart"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div class="section-title">RECENT ACTIVITY</div></div>
+      <div class="section-body" id="activity-log"></div>
+    </div>
+  </div>
+
+  <!-- REVENUE -->
+  <div class="page" id="page-revenue">
+    <div class="page-header">
+      <div><div class="page-h1">REVENUE & MRR</div><div class="page-sub">Stripe-connected revenue overview.</div></div>
+    </div>
+    <div class="kpi-row">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">$4,218</div><div class="kpi-label">MRR</div><div class="kpi-delta delta-up">+$340 this week</div></div>
+        <div class="kpi"><div class="kpi-num">$50.6k</div><div class="kpi-label">ARR</div><div class="kpi-delta delta-up">projected</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">$168</div><div class="kpi-label">ARPU</div><div class="kpi-delta">avg revenue/user</div></div>
+        <div class="kpi"><div class="kpi-num">2.1%</div><div class="kpi-label">Churn</div><div class="kpi-delta delta-up">-0.3% this month</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">PLAN BREAKDOWN</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Plan</th><th>Users</th><th>Price</th><th>MRR contribution</th><th>% of MRR</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Free</td><td style="font-family:var(--mono)">159</td><td style="font-family:var(--mono)">$0</td><td style="font-family:var(--mono)">$0</td><td style="font-family:var(--mono);color:#aaa">—</td></tr>
+            <tr><td style="font-weight:600">Starter ($9)</td><td style="font-family:var(--mono)">88</td><td style="font-family:var(--mono)">$9 one-time</td><td style="font-family:var(--mono)" style="color:var(--green)">$792</td><td style="font-family:var(--mono)">18.8%</td></tr>
+            <tr><td style="font-weight:600">Full Launch ($19)</td><td style="font-family:var(--mono)">124</td><td style="font-family:var(--mono)">$19 one-time</td><td style="font-family:var(--mono)" style="color:var(--green)">$2,356</td><td style="font-family:var(--mono)">55.8%</td></tr>
+            <tr><td style="font-weight:600">Launch Pro ($29)</td><td style="font-family:var(--mono)">37</td><td style="font-family:var(--mono)">$29 one-time</td><td style="font-family:var(--mono)" style="color:var(--green)">$1,073</td><td style="font-family:var(--mono)">25.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div class="page" id="page-users">
+    <div class="page-header">
+      <div><div class="page-h1">ALL USERS</div><div class="page-sub">248 registered users.</div></div>
+      <div style="display:flex;gap:8px">
+        <input style="padding:8px 14px;border:1.5px solid var(--ink);background:var(--paper);font-family:var(--mono);font-size:11px;outline:none;width:220px" placeholder="Search users...">
+        <button class="btn">Filter</button>
+        <button class="btn">Export</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">USER LIST</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>User</th><th>Email</th><th>Plan</th><th>Projects</th><th>Launches</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATFORMS -->
+  <div class="page" id="page-platforms">
+    <div class="page-header">
+      <div><div class="page-h1">PLATFORM MANAGER</div><div class="page-sub">80 platforms — enable, disable, configure.</div></div>
+      <button class="btn btn-primary">+ Add Platform</button>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">ALL PLATFORMS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Platform</th><th>Category</th><th>Automation</th><th>Tier</th><th>Status</th><th>Success Rate</th><th>Actions</th></tr></thead>
+          <tbody id="platforms-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTS -->
+  <div class="page" id="page-bots">
+    <div class="page-header">
+      <div><div class="page-h1">BOT STATUS</div><div class="page-sub">Playwright automation workers — real-time.</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn">Restart all</button>
+        <button class="btn btn-primary">Deploy update</button>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num" style="color:var(--green)">6</div><div class="kpi-label">Active Bots</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">1</div><div class="kpi-label">Errors</div></div>
+        <div class="kpi"><div class="kpi-num">247</div><div class="kpi-label">Jobs Today</div></div>
+        <div class="kpi"><div class="kpi-num">98%</div><div class="kpi-label">Success Rate</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">WORKER GRID</div></div>
+      <div class="section-body">
+        <div class="bot-grid">
+          <div class="bot-cell"><div class="bot-name">worker-01 · Microlaunch</div><div class="bot-status"><div class="bot-dot dot-ok"></div>Running</div><div class="bot-stat">Jobs: <span>42</span> · Last: <span>2m ago</span></div></div>
+          <div class="bot-cell"><div class="bot-name">worker-02 · Uneed</div><div class="bot-status"><div class="bot-dot dot-ok"></div>Running</div><div class="bot-stat">Jobs: <span>38</span> · Last: <span>5m ago</span></div></div>
+          <div class="bot-cell"><div class="bot-name">worker-03 · Fazier</div><div class="bot-status"><div class="bot-dot dot-err"></div><span style="color:var(--rust)">CAPTCHA error</span></div><div class="bot-stat">Jobs: <span>31</span> · Last: <span>12m ago</span></div></div>
+          <div class="bot-cell"><div class="bot-name">worker-04 · DevHunt</div><div class="bot-status"><div class="bot-dot dot-ok"></div>Running</div><div class="bot-stat">Jobs: <span>28</span> · Last: <span>1m ago</span></div></div>
+          <div class="bot-cell"><div class="bot-name">worker-05 · StartupBase</div><div class="bot-status"><div class="bot-dot dot-warn"></div><span style="color:#d4b800">Slow response</span></div><div class="bot-stat">Jobs: <span>19</span> · Last: <span>8m ago</span></div></div>
+          <div class="bot-cell"><div class="bot-name">worker-06 · SaaSHub</div><div class="bot-status"><div class="bot-dot dot-ok"></div>Running</div><div class="bot-stat">Jobs: <span>44</span> · Last: <span>3m ago</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNCHES -->
+  <div class="page" id="page-launches">
+    <div class="page-header">
+      <div><div class="page-h1">ALL LAUNCHES</div><div class="page-sub">1,847 total launches across all users.</div></div>
+      <button class="btn">Export</button>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">LAUNCH LOG</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>User</th><th>Project</th><th>Submitted</th><th>Approved</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>Gürkan K.</td><td style="font-weight:600">ShipStack</td><td style="font-family:var(--mono)">62</td><td style="font-family:var(--mono);color:var(--green)">42</td><td><span class="badge b-green">Live</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Mar 10</td></tr>
+            <tr><td>Jake M.</td><td style="font-weight:600">TaskFlow</td><td style="font-family:var(--mono)">80</td><td style="font-family:var(--mono);color:var(--green)">71</td><td><span class="badge b-green">Live</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Mar 9</td></tr>
+            <tr><td>Sara L.</td><td style="font-weight:600">AIWriter</td><td style="font-family:var(--mono)">34</td><td style="font-family:var(--mono)">18</td><td><span class="badge b-blue">Launching</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Mar 14</td></tr>
+            <tr><td>Tom R.</td><td style="font-weight:600">CodeBuddy</td><td style="font-family:var(--mono)">12</td><td style="font-family:var(--mono)">10</td><td><span class="badge b-amber">Pending</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Mar 14</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="page" id="page-blog">
+    <div class="page-header">
+      <div><div class="page-h1">BLOG & CHANGELOG</div><div class="page-sub">Content management for public pages.</div></div>
+      <button class="btn btn-primary">+ New Post</button>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">ALL POSTS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">How we submit to 80+ platforms without getting banned</td><td><span class="badge b-blue">Blog</span></td><td><span class="badge b-green">Published</span></td><td style="font-family:var(--mono);font-size:11px">Mar 10</td><td class="tbl-actions"><button class="btn btn-sm">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+            <tr><td style="font-weight:600">v1.2.0 — AI launch kit improvements</td><td><span class="badge b-acid">Changelog</span></td><td><span class="badge b-green">Published</span></td><td style="font-family:var(--mono);font-size:11px">Mar 8</td><td class="tbl-actions"><button class="btn btn-sm">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+            <tr><td style="font-weight:600">The vibecoder distribution problem</td><td><span class="badge b-blue">Blog</span></td><td><span class="badge b-amber">Draft</span></td><td style="font-family:var(--mono);font-size:11px">—</td><td class="tbl-actions"><button class="btn btn-sm">Edit</button><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">NEW POST</div></div>
+      <div class="section-body">
+        <div class="form-row"><div><label class="field-label">Title</label><input class="field-input" placeholder="Post title..."></div><div><label class="field-label">Type</label><select class="field-input"><option>Blog</option><option>Changelog</option></select></div></div>
+        <div style="padding:20px;border-bottom:var(--border1)"><label class="field-label">Content</label><textarea class="field-textarea" placeholder="Write your post..."></textarea></div>
+        <div style="padding:16px 20px;display:flex;gap:8px"><button class="btn btn-primary">Publish</button><button class="btn">Save draft</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL MEDIA -->
+  <div class="page" id="page-social">
+    <div class="page-header">
+      <div><div class="page-h1">SOCIAL MEDIA</div><div class="page-sub">Accounts, followers, scheduled posts.</div></div>
+      <button class="btn btn-primary">+ Schedule post</button>
+    </div>
+    <div style="margin:0 32px 20px">
+      <div class="social-grid">
+        <div class="social-cell"><div class="sc-platform">X / Twitter</div><div class="sc-num">3,240</div><div class="sc-label">Followers</div><div class="sc-delta">+142 this week</div></div>
+        <div class="social-cell"><div class="sc-platform">Product Hunt</div><div class="sc-num">480</div><div class="sc-label">Followers</div><div class="sc-delta">+28 this week</div></div>
+        <div class="social-cell"><div class="sc-platform">Indie Hackers</div><div class="sc-num">186</div><div class="sc-label">Followers</div><div class="sc-delta">+14 this week</div></div>
+        <div class="social-cell"><div class="sc-platform">LinkedIn</div><div class="sc-num">920</div><div class="sc-label">Followers</div><div class="sc-delta">+56 this week</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">SCHEDULED POSTS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Content</th><th>Platform</th><th>Scheduled</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Just hit 250 users on LaunchFlow 🚀 Build in public works...</td><td>X / Twitter</td><td style="font-family:var(--mono);font-size:11px">Mar 15, 10:00</td><td><span class="badge b-amber">Scheduled</span></td><td><button class="btn btn-sm">Edit</button></td></tr>
+            <tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">New blog post: How we handle 80+ platform submissions...</td><td>LinkedIn</td><td style="font-family:var(--mono);font-size:11px">Mar 16, 09:00</td><td><span class="badge b-amber">Scheduled</span></td><td><button class="btn btn-sm">Edit</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO & LINKS -->
+  <div class="page" id="page-seo">
+    <div class="page-header">
+      <div><div class="page-h1">SEO & LINKS</div><div class="page-sub">Domain authority, backlinks, link management.</div></div>
+    </div>
+    <div class="kpi-row">
+      <div class="grid-4">
+        <div class="kpi"><div class="kpi-num" style="color:var(--rust)">DR 38</div><div class="kpi-label">Domain Rating</div><div class="kpi-delta delta-up">+6 this month</div></div>
+        <div class="kpi"><div class="kpi-num">4,820</div><div class="kpi-label">Backlinks</div><div class="kpi-delta delta-up">+340 this week</div></div>
+        <div class="kpi"><div class="kpi-num">89%</div><div class="kpi-label">Dofollow ratio</div></div>
+        <div class="kpi"><div class="kpi-num">24k</div><div class="kpi-label">Organic visits</div><div class="kpi-delta delta-up">+3.2k this week</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">TOP REFERRERS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Source</th><th>Visits</th><th>DR</th><th>Type</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">producthunt.com</td><td style="font-family:var(--mono)">9,200</td><td style="font-family:var(--mono)">93</td><td><span class="badge b-green">Dofollow</span></td><td><span class="badge b-green">Live</span></td></tr>
+            <tr><td style="font-weight:600">news.ycombinator.com</td><td style="font-family:var(--mono)">3,800</td><td style="font-family:var(--mono)">91</td><td><span class="badge b-amber">Nofollow</span></td><td><span class="badge b-green">Live</span></td></tr>
+            <tr><td style="font-weight:600">saashub.com</td><td style="font-family:var(--mono)">2,100</td><td style="font-family:var(--mono)">72</td><td><span class="badge b-green">Dofollow</span></td><td><span class="badge b-green">Live</span></td></tr>
+            <tr><td style="font-weight:600">alternativeto.net</td><td style="font-family:var(--mono)">1,600</td><td style="font-family:var(--mono)">80</td><td><span class="badge b-green">Dofollow</span></td><td><span class="badge b-green">Live</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANS -->
+  <div class="page" id="page-plans">
+    <div class="page-header">
+      <div><div class="page-h1">PLANS & SUBSCRIPTIONS</div><div class="page-sub">Stripe-connected plan management.</div></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">ACTIVE SUBSCRIPTIONS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>User</th><th>Package</th><th>Amount</th><th>Credits</th><th>Date</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Gürkan K.</td><td><span class="badge b-acid">Full Launch</span></td><td style="font-family:var(--mono)">$19</td><td style="font-family:var(--mono)">80 credits</td><td style="font-family:var(--mono);font-size:11px">Mar 14</td><td><span class="badge b-green">Paid</span></td><td><button class="btn btn-sm">Refund</button></td></tr>
+            <tr><td>Jake M.</td><td><span class="badge b-admin">Builder Pack</span></td><td style="font-family:var(--mono)">$39</td><td style="font-family:var(--mono)">200 credits</td><td style="font-family:var(--mono);font-size:11px">Mar 9</td><td><span class="badge b-green">Paid</span></td><td><button class="btn btn-sm">Refund</button></td></tr>
+            <tr><td>Sara L.</td><td><span class="badge b-acid">Full Launch</span></td><td style="font-family:var(--mono)">$19</td><td style="font-family:var(--mono)">80 credits</td><td style="font-family:var(--mono);font-size:11px">Mar 1</td><td><span class="badge b-amber">Pending</span></td><td><button class="btn btn-sm">Retry</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="page-header">
+      <div><div class="page-h1">SYSTEM SETTINGS</div><div class="page-sub">Global configuration and integrations.</div></div>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">GENERAL</div></div>
+      <div class="section-body">
+        <div class="form-row"><div><label class="field-label">Site name</label><input class="field-input" value="LaunchFlow"></div><div><label class="field-label">Support email</label><input class="field-input" value="hello@launchflow.io"></div></div>
+        <div class="form-row"><div><label class="field-label">OpenAI API key</label><input class="field-input" value="sk-••••••••••••••••" type="password"></div><div><label class="field-label">Stripe secret key</label><input class="field-input" value="sk_live_••••••••••••" type="password"></div></div>
+        <div style="padding:16px 20px"><button class="btn btn-primary">Save settings</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API -->
+  <div class="page" id="page-api">
+    <div class="page-header">
+      <div><div class="page-h1">API & INTEGRATIONS</div><div class="page-sub">Keys, webhooks, and third-party connections.</div></div>
+      <button class="btn btn-primary">Generate new key</button>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">API KEYS</div></div>
+      <div class="section-body">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Key</th><th>Permissions</th><th>Created</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Production</td><td style="font-family:var(--mono);font-size:11px">lf_live_••••••••••••••••</td><td><span class="badge b-green">Full access</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Jan 1</td><td><button class="btn btn-sm btn-danger">Revoke</button></td></tr>
+            <tr><td>Staging</td><td style="font-family:var(--mono);font-size:11px">lf_test_••••••••••••••••</td><td><span class="badge b-blue">Read only</span></td><td style="font-family:var(--mono);font-size:11px;color:#888">Feb 15</td><td><button class="btn btn-sm btn-danger">Revoke</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="page" id="page-logs">
+    <div class="page-header">
+      <div><div class="page-h1">SYSTEM LOGS</div><div class="page-sub">Real-time event log.</div></div>
+      <button class="btn">Clear logs</button>
+    </div>
+    <div class="section">
+      <div class="section-head"><div class="section-title">EVENT LOG</div></div>
+      <div class="section-body" id="logs-container"></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const USERS=[
+  {name:'Gürkan K.',email:'gurkan@launchflow.io',plan:'Pro',projects:3,launches:127,joined:'Feb 14'},
+  {name:'Jake M.',email:'jake@example.com',plan:'Agency',projects:8,launches:344,joined:'Jan 1'},
+  {name:'Sara L.',email:'sara@example.com',plan:'Pro',projects:2,launches:62,joined:'Mar 1'},
+  {name:'Tom R.',email:'tom@example.com',plan:'Free',projects:1,launches:5,joined:'Mar 10'},
+  {name:'Liu W.',email:'liu@example.com',plan:'Pro',projects:4,launches:188,joined:'Feb 2'},
+]
+
+const PLATFORMS_DATA=[
+  {name:'Product Hunt',cat:'Launch',auto:'Manual',tier:1,status:true,rate:95},
+  {name:'Uneed',cat:'Launch',auto:'Bot',tier:1,status:true,rate:88},
+  {name:'DevHunt',cat:'Launch',auto:'Bot',tier:1,status:true,rate:82},
+  {name:'BetaList',cat:'Launch',auto:'Bot',tier:1,status:true,rate:76},
+  {name:'Microlaunch',cat:'Launch',auto:'Bot',tier:1,status:true,rate:91},
+  {name:'Fazier',cat:'Launch',auto:'Bot',tier:1,status:false,rate:0},
+  {name:"There's an AI for That",cat:'AI Dir',auto:'Bot',tier:2,status:true,rate:79},
+  {name:'Futurepedia',cat:'AI Dir',auto:'Bot',tier:2,status:true,rate:84},
+  {name:'SaaSHub',cat:'SaaS Dir',auto:'Bot',tier:2,status:true,rate:90},
+  {name:'AlternativeTo',cat:'SaaS Dir',auto:'Bot',tier:2,status:true,rate:72},
+]
+
+const LOGS=[
+  {time:'12:42',color:'b-green',text:'<strong>ShipStack</strong> submission approved on <strong>SaaSHub</strong>'},
+  {time:'12:38',color:'b-rust',text:'Bot worker-03 encountered CAPTCHA on <strong>Fazier</strong> — paused'},
+  {time:'12:31',color:'b-blue',text:'New signup: <strong>liu@example.com</strong> joined on Free plan'},
+  {time:'12:20',color:'b-green',text:'<strong>TaskFlow</strong> (Jake M.) reached 80/80 submissions — launch complete'},
+  {time:'12:14',color:'b-amber',text:'Submission pending review on <strong>Product Hunt</strong> for Negolio'},
+  {time:'11:58',color:'b-green',text:'Stripe payment $49 received from <strong>Jake M.</strong> (Agency plan)'},
+  {time:'11:44',color:'b-rust',text:'Failed submission: <strong>r/sideproject</strong> — rate limit hit'},
+  {time:'11:30',color:'b-blue',text:'Plan upgrade: <strong>sara@example.com</strong> Free → Pro'},
+]
+
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'))
+  document.getElementById('page-'+page).classList.add('active')
+  const lbl={overview:'Overview',revenue:'Revenue & MRR',users:'All Users',plans:'Plans & Subscriptions',launches:'All Launches',platforms:'Platform Manager',bots:'Bot Status',blog:'Blog & Changelog',social:'Social Media',seo:'SEO & Links',settings:'System Settings',api:'API & Integrations',logs:'System Logs'}
+  document.getElementById('tb-current').textContent=lbl[page]||page
+  document.querySelectorAll('.sb-item').forEach(i=>{if(i.getAttribute('onclick')&&i.getAttribute('onclick').includes("'"+page+"'"))i.classList.add('active')})
+}
+
+// Build charts
+function buildChart(id,vals,cls){
+  const mx=Math.max(...vals)
+  const el=document.getElementById(id)
+  const lbls=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  vals.forEach((v,i)=>{
+    const col=document.createElement('div')
+    col.className='bar-col'
+    const h=Math.round((v/mx)*100)
+    col.innerHTML=`<div class="bar-fill ${cls}" style="height:${h}%"></div><div class="bar-label">${lbls[i]}</div>`
+    el.appendChild(col)
+  })
+}
+buildChart('mrr-chart',[1200,1500,1800,2100,2400,2800,3100,3400,3700,4000,4200,4218],'r')
+buildChart('signup-chart',[8,12,18,14,22,28,19,24,32,28,36,42],'a')
+
+// Users table
+const utbody=document.getElementById('users-tbody')
+USERS.forEach(u=>{
+  const planMap={Pro:'b-acid',Agency:'b-admin',Free:'b-gray'}
+  utbody.innerHTML+=`<tr>
+    <td style="font-weight:600">${u.name}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:#888">${u.email}</td>
+    <td><span class="badge ${planMap[u.plan]}">${u.plan}</span></td>
+    <td style="font-family:var(--mono)">${u.projects}</td>
+    <td style="font-family:var(--mono)">${u.launches}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:#888">${u.joined}</td>
+    <td class="tbl-actions"><button class="btn btn-sm">Edit</button><button class="btn btn-sm btn-danger">Ban</button></td>
+  </tr>`
+})
+
+// Platforms table
+const ptbody=document.getElementById('platforms-tbody')
+PLATFORMS_DATA.forEach(p=>{
+  ptbody.innerHTML+=`<tr>
+    <td style="font-weight:600">${p.name}</td>
+    <td style="font-family:var(--mono);font-size:10px;color:#888">${p.cat}</td>
+    <td><span class="badge ${p.auto==='Bot'?'b-acid':'b-blue'}">${p.auto}</span></td>
+    <td style="font-family:var(--mono);font-size:11px">Tier ${p.tier}</td>
+    <td>
+      <div class="plat-toggle">
+        <div class="pt-btn ${p.status?'on':''}" onclick="this.classList.add('on');this.nextElementSibling.classList.remove('on')">ON</div>
+        <div class="pt-btn ${!p.status?'on':''}" onclick="this.classList.add('on');this.previousElementSibling.classList.remove('on')">OFF</div>
+      </div>
+    </td>
+    <td style="font-family:var(--mono);font-size:12px">${p.status?p.rate+'%':'—'}</td>
+    <td class="tbl-actions"><button class="btn btn-sm">Config</button></td>
+  </tr>`
+})
+
+// Activity log
+const actlog=document.getElementById('activity-log')
+LOGS.forEach(l=>{
+  const colors={
+    'b-green':getComputedStyle(document.documentElement).getPropertyValue('--green')||'#2a9d00',
+    'b-rust':'#c94d1e','b-blue':'#1a1aff','b-amber':'#d4b800'
+  }
+  actlog.innerHTML+=`<div class="log-item">
+    <div class="log-time">${l.time}</div>
+    <div class="log-dot" style="background:${l.color==='b-green'?'#2a9d00':l.color==='b-rust'?'#c94d1e':l.color==='b-blue'?'#1a1aff':'#d4b800'}"></div>
+    <div class="log-text">${l.text}</div>
+  </div>`
+})
+
+// System logs
+const logsContainer=document.getElementById('logs-container')
+const logEntries=[
+  ...LOGS,
+  {time:'11:22',color:'b-green',text:'Bot worker-01 completed 10 submissions — queue clear'},
+  {time:'11:10',color:'b-blue',text:'New project created: <strong>Kolayimar</strong> by Gürkan K.'},
+  {time:'10:58',color:'b-amber',text:'High queue volume detected — 47 jobs pending'},
+]
+logEntries.forEach(l=>{
+  logsContainer.innerHTML+=`<div class="log-item">
+    <div class="log-time">${l.time}</div>
+    <div class="log-dot" style="background:${l.color==='b-green'?'#2a9d00':l.color==='b-rust'?'#c94d1e':l.color==='b-blue'?'#1a1aff':'#d4b800'}"></div>
+    <div class="log-text">${l.text}</div>
+  </div>`
+})
+</script>
+</body>
+</html>

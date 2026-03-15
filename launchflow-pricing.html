@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaunchFlow — Pricing. $9 per launch, no subscription.</title>
+<meta name="description" content="Pay per launch. Starter $9 (19 platforms), Full Launch $19 (49 platforms), Launch Pro $29 (99+ platforms). Credits never expire.">
+<meta property="og:title" content="LaunchFlow Pricing — From $9 per launch">
+<meta property="og:description" content="No subscriptions. Pay once per launch. Credits never expire.">
+<meta property="og:url" content="https://launchflow.io/pricing">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://launchflow.io/pricing">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0c0c0a;
+  --paper:#f5f2e8;
+  --paper2:#ede9d8;
+  --paper3:#e4e0ce;
+  --acid:#b8ff00;
+  --acid-dark:#8acc00;
+  --rust:#c94d1e;
+  --blue:#1a1aff;
+  --border:2px solid var(--ink);
+  --display:'Bebas Neue',sans-serif;
+  --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Azeret Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{border-bottom:var(--border);padding:0 32px;display:flex;align-items:stretch;height:56px;background:var(--paper);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:1px;line-height:56px;padding-right:32px;border-right:var(--border);text-decoration:none;color:var(--ink)}
+.nav-links{display:flex;list-style:none;margin-left:0}
+.nav-links li{border-left:var(--border)}
+.nav-links a{display:flex;align-items:center;padding:0 24px;height:56px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none;transition:background .12s;letter-spacing:.5px}
+.nav-links a:hover{background:var(--paper2)}
+.nav-links a.active{background:var(--ink);color:var(--acid)}
+.nav-cta-wrap{border-left:var(--border);margin-left:auto;display:flex;align-items:center}
+.nav-cta{display:block;background:var(--acid);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:500;padding:0 24px;height:56px;line-height:56px;text-decoration:none;letter-spacing:.5px;transition:background .12s}
+.nav-cta:hover{background:var(--acid-dark)}
+
+/* HERO */
+.pricing-hero{
+  border-bottom:var(--border);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:280px;
+}
+.ph-left{
+  border-right:var(--border);
+  padding:60px 64px 60px 40px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.ph-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rust);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.ph-eyebrow::before{content:'';width:24px;height:2px;background:var(--rust)}
+.ph-h1{font-family:var(--display);font-size:clamp(72px,9vw,120px);letter-spacing:2px;line-height:.88;margin-bottom:0}
+.ph-h1 span{color:var(--acid);background:var(--ink);padding:0 8px;display:inline-block}
+.ph-sub{font-size:16px;color:#666;line-height:1.65;max-width:400px;margin-top:24px}
+
+.ph-right{
+  display:flex;flex-direction:column;
+}
+.ph-stat{flex:1;border-bottom:var(--border);padding:28px 32px;display:flex;flex-direction:column;justify-content:flex-end}
+.ph-stat:last-child{border-bottom:none}
+.ph-stat-num{font-family:var(--display);font-size:52px;letter-spacing:1px;line-height:.9;margin-bottom:6px}
+.ph-stat-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888}
+
+/* TOGGLE */
+.toggle-bar{border-bottom:var(--border);display:flex;align-items:center;padding:0 40px;height:56px;gap:0}
+.toggle-label{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888;margin-right:24px}
+.toggle-wrap{display:flex;border:var(--border)}
+.toggle-btn{font-family:var(--mono);font-size:12px;letter-spacing:.5px;padding:0 24px;height:36px;border:none;background:transparent;cursor:pointer;color:#888;border-right:var(--border);transition:all .12s}
+.toggle-btn:last-child{border-right:none}
+.toggle-btn.active{background:var(--ink);color:var(--acid)}
+.toggle-btn:not(.active):hover{background:var(--paper2);color:var(--ink)}
+.toggle-note{margin-left:20px;font-family:var(--mono);font-size:11px;color:var(--acid-dark);display:none}
+.toggle-note.visible{display:block}
+
+/* PACKAGES SECTION */
+.packages-section{border-bottom:var(--border)}
+.packages-header{border-bottom:var(--border);padding:32px 40px;display:flex;align-items:flex-end;justify-content:space-between}
+.packages-h2{font-family:var(--display);font-size:clamp(48px,6vw,72px);letter-spacing:2px;line-height:.88}
+.packages-sub{font-family:var(--mono);font-size:12px;color:#888;max-width:280px;line-height:1.65;text-align:right}
+
+.packages-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+
+.pkg{
+  border-right:var(--border);
+  padding:40px 32px;
+  display:flex;flex-direction:column;
+  transition:background .15s;
+  position:relative;
+}
+.pkg:last-child{border-right:none}
+.pkg:hover{background:var(--paper2)}
+.pkg.featured{background:var(--ink);color:var(--paper)}
+.pkg.featured:hover{background:#111}
+
+.pkg-popular{
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:var(--acid);color:var(--ink);
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  padding:4px 14px;letter-spacing:1px;text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.pkg-tier{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:24px}
+.pkg.featured .pkg-tier{color:rgba(245,242,232,.4)}
+
+.pkg-price{font-family:var(--display);font-size:72px;letter-spacing:1px;line-height:.88;margin-bottom:6px}
+.pkg.featured .pkg-price{color:var(--acid)}
+.pkg-period{font-family:var(--mono);font-size:12px;color:#999;margin-bottom:32px}
+.pkg.featured .pkg-period{color:rgba(245,242,232,.4)}
+
+.pkg-divider{height:2px;background:var(--paper3);margin-bottom:28px}
+.pkg.featured .pkg-divider{background:rgba(255,255,255,.1)}
+
+.pkg-features{flex:1;display:flex;flex-direction:column;gap:0;margin-bottom:32px}
+.pkg-feat{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid var(--paper3);font-size:14px;color:#444}
+.pkg-feat:last-child{border-bottom:none}
+.pkg.featured .pkg-feat{border-bottom-color:rgba(255,255,255,.08);color:rgba(245,242,232,.7)}
+.pkg-feat-dot{width:5px;height:5px;border-radius:50%;background:var(--ink);flex-shrink:0;margin-top:5px}
+.pkg.featured .pkg-feat-dot{background:var(--acid)}
+.feat-highlight{font-weight:700;color:var(--ink)}
+.pkg.featured .feat-highlight{color:var(--paper)}
+
+.pkg-btn{
+  display:block;text-align:center;text-decoration:none;
+  font-family:var(--display);font-size:20px;letter-spacing:1px;
+  padding:14px 20px;border:var(--border);
+  color:var(--ink);background:transparent;cursor:pointer;
+  transition:all .12s;
+}
+.pkg-btn:hover{background:var(--ink);color:var(--acid)}
+.pkg.featured .pkg-btn{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+.pkg.featured .pkg-btn:hover{background:var(--acid-dark);border-color:var(--acid-dark)}
+
+/* FREE ROW */
+.free-row{
+  border-bottom:var(--border);
+  padding:24px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--paper2);
+}
+.free-label{font-family:var(--display);font-size:28px;letter-spacing:1px}
+.free-desc{font-family:var(--mono);font-size:12px;color:#888;letter-spacing:.3px}
+.free-features{display:flex;gap:24px}
+.free-feat{font-family:var(--mono);font-size:11px;color:#666;display:flex;align-items:center;gap:6px}
+.free-feat::before{content:'';width:4px;height:4px;border-radius:50%;background:#aaa}
+.free-btn{
+  font-family:var(--mono);font-size:12px;letter-spacing:.5px;
+  padding:10px 24px;border:1.5px solid var(--ink);
+  background:transparent;cursor:pointer;color:var(--ink);
+  transition:all .12s;text-decoration:none;
+}
+.free-btn:hover{background:var(--ink);color:var(--acid)}
+
+/* CREDITS SECTION */
+.credits-section{border-bottom:var(--border)}
+.credits-header{border-bottom:var(--border);padding:32px 40px;display:flex;align-items:flex-end;justify-content:space-between}
+.credits-h2{font-family:var(--display);font-size:clamp(48px,6vw,72px);letter-spacing:2px;line-height:.88}
+.credits-sub{font-family:var(--mono);font-size:12px;color:#888;max-width:300px;line-height:1.65;text-align:right}
+
+.credits-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.credit-pkg{border-right:var(--border);padding:40px 36px;display:flex;flex-direction:column;transition:background .15s;position:relative}
+.credit-pkg:last-child{border-right:none}
+.credit-pkg:hover{background:var(--paper2)}
+.credit-pkg.best{background:var(--ink);color:var(--paper)}
+.credit-pkg.best:hover{background:#111}
+
+.cp-name{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:20px}
+.credit-pkg.best .cp-name{color:rgba(245,242,232,.4)}
+
+.cp-price{font-family:var(--display);font-size:80px;letter-spacing:1px;line-height:.88;margin-bottom:4px}
+.credit-pkg.best .cp-price{color:var(--acid)}
+.cp-credits{font-family:var(--display);font-size:28px;letter-spacing:1px;color:#aaa;margin-bottom:6px}
+.credit-pkg.best .cp-credits{color:rgba(245,242,232,.4)}
+.cp-unit{font-family:var(--mono);font-size:12px;color:#999;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--paper3)}
+.credit-pkg.best .cp-unit{color:rgba(245,242,232,.3);border-bottom-color:rgba(255,255,255,.1)}
+
+.cp-value{font-family:var(--display);font-size:22px;letter-spacing:1px;margin-bottom:6px}
+.credit-pkg.best .cp-value{color:var(--acid)}
+.cp-value-desc{font-family:var(--mono);font-size:11px;color:#888;line-height:1.6;margin-bottom:32px;flex:1}
+.credit-pkg.best .cp-value-desc{color:rgba(245,242,232,.45)}
+
+.cp-btn{
+  display:block;text-align:center;text-decoration:none;
+  font-family:var(--display);font-size:20px;letter-spacing:1px;
+  padding:14px 20px;border:var(--border);
+  color:var(--ink);background:transparent;cursor:pointer;
+  transition:all .12s;
+}
+.cp-btn:hover{background:var(--ink);color:var(--acid)}
+.credit-pkg.best .cp-btn{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+.credit-pkg.best .cp-btn:hover{background:var(--acid-dark);border-color:var(--acid-dark)}
+
+/* CREDIT EXPLAINER */
+.credit-explain{border-bottom:var(--border);padding:28px 40px;background:var(--paper2);display:flex;gap:40px;align-items:start}
+.ce-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px}
+.ce-items{display:flex;gap:32px}
+.ce-item{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:#666}
+.ce-icon{width:28px;height:28px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--acid);flex-shrink:0}
+.ce-note{font-family:var(--mono);font-size:11px;color:#aaa;padding-left:24px;border-left:2px solid var(--paper3)}
+
+/* COMPARISON */
+.comparison-section{border-bottom:var(--border)}
+.comparison-header{border-bottom:var(--border);padding:32px 40px}
+.comparison-h2{font-family:var(--display);font-size:clamp(48px,5vw,64px);letter-spacing:2px;line-height:.88}
+
+.comp-table{width:100%;border-collapse:collapse}
+.comp-table th{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#888;padding:14px 24px;text-align:left;background:var(--paper3);border-bottom:var(--border);border-right:1px solid var(--paper3)}
+.comp-table th:last-child{border-right:none}
+.comp-table th.highlight{background:var(--ink);color:var(--acid)}
+.comp-table td{padding:14px 24px;border-bottom:1px solid var(--paper2);border-right:1px solid var(--paper2);font-size:13px;color:#555}
+.comp-table td:last-child{border-right:none}
+.comp-table td:first-child{font-weight:500;color:var(--ink)}
+.comp-table td.highlight{background:#fafde8}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:var(--paper2)}
+.comp-table tr:hover td.highlight{background:#f5fad0}
+.check{color:var(--acid-dark);font-size:16px}
+.cross{color:#ddd}
+.partial{color:#d4b800}
+
+/* FAQ */
+.faq-section{border-bottom:var(--border)}
+.faq-header{border-bottom:var(--border);padding:32px 40px}
+.faq-h2{font-family:var(--display);font-size:clamp(48px,5vw,64px);letter-spacing:2px;line-height:.88}
+
+.faq-grid{display:grid;grid-template-columns:1fr 1fr}
+.faq-item{border-right:var(--border);border-bottom:var(--border);padding:32px 36px;cursor:pointer;transition:background .15s}
+.faq-item:nth-child(2n){border-right:none}
+.faq-item:nth-last-child(-n+2){border-bottom:none}
+.faq-item:hover{background:var(--paper2)}
+.faq-q{font-family:var(--body);font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.faq-arrow{font-family:var(--mono);font-size:14px;color:#aaa;flex-shrink:0;margin-top:2px}
+.faq-a{font-size:14px;color:#666;line-height:1.7}
+
+/* CTA */
+.cta-section{display:grid;grid-template-columns:1fr 400px;border-bottom:var(--border)}
+.cta-left{border-right:var(--border);padding:72px 64px 72px 40px;background:var(--ink)}
+.cta-h2{font-family:var(--display);font-size:clamp(56px,7vw,88px);letter-spacing:2px;line-height:.88;color:var(--paper);margin-bottom:20px}
+.cta-h2 span{color:var(--acid)}
+.cta-sub{font-size:15px;color:rgba(245,242,232,.45);line-height:1.65;max-width:380px;margin-bottom:40px}
+.cta-btns{display:flex;gap:12px;flex-wrap:wrap}
+.cta-btn-primary{background:var(--acid);color:var(--ink);font-family:var(--display);font-size:22px;letter-spacing:1px;padding:16px 36px;text-decoration:none;border:2px solid var(--acid);transition:all .12s}
+.cta-btn-primary:hover{background:var(--acid-dark);border-color:var(--acid-dark)}
+.cta-btn-ghost{background:transparent;color:rgba(245,242,232,.6);font-family:var(--mono);font-size:13px;padding:16px 24px;text-decoration:none;border:2px solid rgba(255,255,255,.15);transition:all .12s}
+.cta-btn-ghost:hover{border-color:rgba(255,255,255,.4);color:var(--paper)}
+
+.cta-right{padding:48px 40px;display:flex;flex-direction:column;justify-content:center;gap:20px}
+.cta-note{font-family:var(--mono);font-size:11px;color:#888;display:flex;align-items:center;gap:10px}
+.cta-note::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--acid-dark);flex-shrink:0}
+
+/* FOOTER */
+footer{border-top:var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--display);font-size:22px;letter-spacing:1px}
+.footer-center{font-family:var(--mono);font-size:11px;color:#aaa}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--mono);font-size:11px;color:#aaa;text-decoration:none;transition:color .12s}
+.footer-links a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="launchflow-v2.html" class="nav-logo">LAUNCHFLOW</a>
+  <ul class="nav-links">
+    <li><a href="launchflow-v2.html#how">Process</a></li>
+    <li><a href="launchflow-v2.html#platforms">Platforms</a></li>
+    <li><a href="#" class="active">Pricing</a></li>
+  </ul>
+  <div class="nav-cta-wrap">
+    <a href="launchflow-login.html" class="nav-cta">Get started free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="pricing-hero">
+  <div class="ph-left">
+    <div class="ph-eyebrow">Pricing</div>
+    <h1 class="ph-h1">PAY PER<br><span>LAUNCH.</span></h1>
+    <p class="ph-sub">No subscriptions. No monthly fees. Pay once per launch and keep everything forever. Or buy credits and use them whenever.</p>
+  </div>
+  <div class="ph-right">
+    <div class="ph-stat"><div class="ph-stat-num" style="color:var(--rust)">$9</div><div class="ph-stat-label">starts at</div></div>
+    <div class="ph-stat"><div class="ph-stat-num">80+</div><div class="ph-stat-label">platforms covered</div></div>
+    <div class="ph-stat"><div class="ph-stat-num">$0</div><div class="ph-stat-label">monthly fee</div></div>
+  </div>
+</div>
+
+<!-- FREE ROW -->
+<div class="free-row">
+  <div>
+    <div class="free-label">FREE FOREVER</div>
+    <div class="free-desc">No credit card required. 3 platforms. Always free.</div>
+  </div>
+  <div class="free-features">
+    <div class="free-feat">3 platform submissions</div>
+    <div class="free-feat">Basic AI launch kit</div>
+    <div class="free-feat">Launch dashboard</div>
+    <div class="free-feat">No expiry</div>
+  </div>
+  <a href="launchflow-login.html" class="free-btn">Start free →</a>
+</div>
+
+<!-- PACKAGES -->
+<div class="packages-section">
+  <div class="packages-header">
+    <h2 class="packages-h2">LAUNCH<br>PACKAGES</h2>
+    <div class="packages-sub">One-time payment per launch.<br>No subscriptions. No renewals.<br>Credits never expire.</div>
+  </div>
+  <div class="packages-grid">
+
+    <div class="pkg">
+      <div class="pkg-tier">Starter</div>
+      <div class="pkg-price">$9</div>
+      <div class="pkg-period">one-time · per launch</div>
+      <div class="pkg-divider"></div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#888;margin-bottom:16px">TIER 1 ONLY — TOP LAUNCH SITES</div>
+      <div class="pkg-features">
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div><span><span class="feat-highlight">19 platforms</span></span></div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Product Hunt, Uneed, DevHunt, BetaList + 15 more</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Basic AI launch kit</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Submission dashboard</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Launch report</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Guided where required</div>
+      </div>
+      <a href="launchflow-login.html" class="pkg-btn">GET STARTER</a>
+    </div>
+
+    <div class="pkg featured">
+      <div class="pkg-popular">Most popular</div>
+      <div class="pkg-tier">Full Launch</div>
+      <div class="pkg-price">$19</div>
+      <div class="pkg-period">one-time · per launch</div>
+      <div class="pkg-divider"></div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:rgba(245,242,232,.35);margin-bottom:16px">TIER 1 + 2 — LAUNCH + DIRECTORIES</div>
+      <div class="pkg-features">
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div><span><span class="feat-highlight">49 platforms</span></span></div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>All Tier 1 + AI directories</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>SaaS directories incl. G2, Capterra</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Full AI launch kit</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Smart queue + live tracking</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Launch report PDF</div>
+      </div>
+      <a href="launchflow-login.html" class="pkg-btn">GET FULL LAUNCH</a>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-tier">Launch Pro</div>
+      <div class="pkg-price">$29</div>
+      <div class="pkg-period">one-time · per launch</div>
+      <div class="pkg-divider"></div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:#888;margin-bottom:16px">TIER 1 + 2 + 3 — MAXIMUM COVERAGE</div>
+      <div class="pkg-features">
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div><span><span class="feat-highlight">99+ platforms</span></span></div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>All Tier 1 + 2 + communities</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Reddit copy for 5 subreddits</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>HN + Dev.to guided submit</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Deal platforms (AppSumo etc.)</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Priority queue</div>
+      </div>
+      <a href="launchflow-login.html" class="pkg-btn">GET LAUNCH PRO</a>
+    </div>
+
+    <div class="pkg" style="background:var(--paper2)">
+      <div class="pkg-tier">Agency / Team</div>
+      <div class="pkg-price" style="font-size:48px;line-height:1">Let's<br>talk</div>
+      <div class="pkg-period">custom pricing</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-features">
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Unlimited launches</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Team access (up to 10)</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>White-label reports</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>API access</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Dedicated support</div>
+        <div class="pkg-feat"><div class="pkg-feat-dot"></div>Custom platform list</div>
+      </div>
+      <a href="mailto:hello@launchflow.io" class="pkg-btn">CONTACT US</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- CREDITS -->
+<div class="credits-section">
+  <div class="credits-header">
+    <h2 class="credits-h2">CREDIT<br>PACKS</h2>
+    <div class="credits-sub">Ship multiple projects?<br>Buy credits once, use them<br>whenever. Never expire.</div>
+  </div>
+  <div class="credits-grid">
+
+    <div class="credit-pkg">
+      <div class="cp-name">Starter Pack</div>
+      <div class="cp-price">$9</div>
+      <div class="cp-credits">19 credits</div>
+      <div class="cp-unit">$0.47 per platform</div>
+      <div class="cp-value">~1 starter launch</div>
+      <div class="cp-value-desc">Submit one project to 19 Tier 1 platforms. Credits roll over — use them whenever you're ready.</div>
+      <a href="launchflow-login.html" class="cp-btn">BUY PACK</a>
+    </div>
+
+    <div class="credit-pkg best">
+      <div class="pkg-popular">Best value</div>
+      <div class="cp-name">Growth Pack</div>
+      <div class="cp-price">$19</div>
+      <div class="cp-credits">49 credits</div>
+      <div class="cp-unit">$0.39 per platform</div>
+      <div class="cp-value">1 full launch</div>
+      <div class="cp-value-desc">Submit one project to all 49 Tier 1 + 2 platforms. Or spread across multiple smaller launches. Your call.</div>
+      <a href="launchflow-login.html" class="cp-btn">BUY PACK</a>
+    </div>
+
+    <div class="credit-pkg">
+      <div class="cp-name">Builder Pack</div>
+      <div class="cp-price">$39</div>
+      <div class="cp-credits">120 credits</div>
+      <div class="cp-unit">$0.33 per platform</div>
+      <div class="cp-value">2–3 launches</div>
+      <div class="cp-value-desc">Serial shipper? Launch 2–3 projects fully or mix and match tiers across many small launches.</div>
+      <a href="launchflow-login.html" class="cp-btn">BUY PACK</a>
+    </div>
+
+  </div>
+
+  <div class="credit-explain">
+    <div>
+      <div class="ce-title">How credits work</div>
+      <div class="ce-items">
+        <div class="ce-item"><div class="ce-icon">1</div>1 credit = 1 platform submission</div>
+        <div class="ce-item"><div class="ce-icon">∞</div>Credits never expire</div>
+        <div class="ce-item"><div class="ce-icon">+</div>Buy more anytime</div>
+        <div class="ce-item"><div class="ce-icon">≡</div>Use across multiple projects</div>
+      </div>
+    </div>
+    <div class="ce-note">Credits stack with packages. Bought a Full Launch and have leftover credits? They all live in the same wallet.</div>
+  </div>
+
+  <!-- Guided explanation -->
+  <div style="border-top:var(--border);padding:28px 40px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;background:var(--ink)">
+    <div style="font-family:var(--display);font-size:36px;letter-spacing:2px;line-height:.9;color:var(--acid)">SEMI-<br>AUTO</div>
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,242,232,.4);margin-bottom:10px">Why some platforms are guided</div>
+      <p style="font-size:14px;color:rgba(245,242,232,.6);line-height:1.7;max-width:600px">Platforms like Product Hunt, Reddit, and G2 have strict community rules that prohibit automated submissions. We respect those rules — and a human-submitted listing performs better anyway. For guided platforms, <strong style="color:var(--paper)">we write all your copy and give you step-by-step instructions.</strong> You submit with one click. Takes 2 minutes per platform.</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="comparison-section">
+  <div class="comparison-header">
+    <h2 class="comparison-h2">VS. THE<br>ALTERNATIVES</h2>
+  </div>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="highlight">LaunchFlow</th>
+        <th>ListingBott</th>
+        <th>SubmitSaaS</th>
+        <th>Manual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Starting price</td>
+        <td class="highlight" style="font-weight:700;color:var(--acid-dark)">$9</td>
+        <td>$299</td>
+        <td>$60</td>
+        <td style="color:var(--rust)">~$150 (time)</td>
+      </tr>
+      <tr>
+        <td>Payment model</td>
+        <td class="highlight">Per launch</td>
+        <td>Per project</td>
+        <td>Per project</td>
+        <td>Your time</td>
+      </tr>
+      <tr>
+        <td>80+ platforms</td>
+        <td class="highlight"><span class="check">✓</span></td>
+        <td><span class="check">✓</span></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="check">✓</span></td>
+      </tr>
+      <tr>
+        <td>AI launch kit</td>
+        <td class="highlight"><span class="check">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+      </tr>
+      <tr>
+        <td>Built for vibecoders</td>
+        <td class="highlight"><span class="check">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+      </tr>
+      <tr>
+        <td>Live dashboard</td>
+        <td class="highlight"><span class="check">✓</span></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="partial">~</span></td>
+        <td><span class="cross">✗</span></td>
+      </tr>
+      <tr>
+        <td>Delivery time</td>
+        <td class="highlight" style="font-weight:600">Immediate</td>
+        <td>1 month</td>
+        <td>48 hours</td>
+        <td>2–3 hours</td>
+      </tr>
+      <tr>
+        <td>Credits / reuse</td>
+        <td class="highlight"><span class="check">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="cross">✗</span></td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-header">
+    <h2 class="faq-h2">FAQ</h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q">What's the difference between packages and credits? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">Packages are fixed bundles for a single launch — you pick one and go. Credits are flexible tokens you can use across multiple projects whenever you want. Both include the same platform submissions at the same price.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do credits expire? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">Never. Credits stay in your account until you use them. Buy a Builder Pack today, use it for your next three launches over the next year. No pressure.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Which platforms are included? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">80+ platforms across launch sites (Product Hunt, Uneed, DevHunt, BetaList), AI directories (Futurepedia, There's an AI for That), SaaS directories (SaaSHub, AlternativeTo), and communities. Full list on the Platforms page.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if a platform rejects my submission? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">We don't refund for platform rejections — that's outside our control. But we do retry automatically, and our approval rate is 70%+. If our bot fails technically (not a rejection), we re-run it for free.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How fast does it launch? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">Immediately. Once you click launch, submissions start queuing. Tier 1 platforms go first (Product Hunt, Uneed, DevHunt). Directories follow over the next 24–48 hours for natural SEO pacing.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I use this for multiple projects? <span class="faq-arrow">↓</span></div>
+      <div class="faq-a">Yes. You can have unlimited projects in your account. Credits work across all of them. If you ship regularly, the Builder Pack at $39 for 200 credits is the best deal.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-left">
+    <h2 class="cta-h2">STOP<br>BUILDING<br>INTO <span>SILENCE.</span></h2>
+    <p class="cta-sub">You shipped. Nobody saw it. That ends here. Start free, launch your first 3 platforms with zero commitment.</p>
+    <div class="cta-btns">
+      <a href="launchflow-login.html" class="cta-btn-primary">START FREE</a>
+      <a href="launchflow-demo-v2.html" class="cta-btn-ghost">Try the demo first</a>
+    </div>
+  </div>
+  <div class="cta-right">
+    <div class="cta-note">No credit card required to start</div>
+    <div class="cta-note">3 platforms free, forever</div>
+    <div class="cta-note">Pay only when you launch more</div>
+    <div class="cta-note">Credits never expire</div>
+    <div class="cta-note">Cancel anytime — there's nothing to cancel</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">LAUNCHFLOW</div>
+  <div class="footer-center">Built for vibecoders — 2025</div>
+  <div class="footer-links">
+    <a href="#">Twitter</a>
+    <a href="#">Product Hunt</a>
+    <a href="launchflow-v2.html">Home</a>
+  </div>
+</footer>
+
+</body>
+</html>
