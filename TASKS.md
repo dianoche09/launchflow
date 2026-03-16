@@ -154,8 +154,8 @@
 - [x] `PINECONE_API_KEY`, `PINECONE_INDEX` env vars
 
 ### LangChain — langchain.com
-- [ ] `langchain` + `@langchain/openai` install
-- [ ] Migrate `generate-launch-content.ts` to LangChain chains
+- [x] `langchain` + `@langchain/openai` install
+- [x] Migrate `generate-launch-content.ts` to LangChain chains
 - [ ] RAG pipeline for platform-specific copy generation
 
 ### Loops.so (Email Marketing) — loops.so
