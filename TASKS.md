@@ -149,9 +149,9 @@
 ## Phase 9: Advanced Integrations (PLANNED)
 
 ### Pinecone (Vector DB) — pinecone.io
-- [ ] `@pinecone-database/pinecone` install
-- [ ] Embed platform metadata for semantic platform matching
-- [ ] `PINECONE_API_KEY`, `PINECONE_INDEX` env vars
+- [x] `@pinecone-database/pinecone` install
+- [x] Embed platform metadata for semantic platform matching
+- [x] `PINECONE_API_KEY`, `PINECONE_INDEX` env vars
 
 ### LangChain — langchain.com
 - [ ] `langchain` + `@langchain/openai` install
