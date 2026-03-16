@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServer } from '@/lib/supabase/server';
 import { generateLaunchContent } from '@/lib/openai/generate-launch-content';
-import { addLaunchJob } from '@/lib/queue';
+import { inngest } from '@/inngest/client';
 import { sendLoopsLaunchStartedEmail } from '@/lib/email/loops';
 import { logger } from '@/lib/logger';
 
@@ -76,10 +76,13 @@ export async function POST(
                     guidedCount++;
                 }
 
-                await addLaunchJob({
-                    projectId: id,
-                    platformId: platform.id,
-                    content,
+                await inngest.send({
+                    name: 'app/launch.submitted',
+                    data: {
+                        projectId: id,
+                        platformId: platform.id,
+                        content: content
+                    }
                 });
             }
         }

@@ -169,12 +169,12 @@
 > Vercel 10-30 sn timeout koyar. AI üretimi, toplu submit, büyük analiz için gerekli.
 
 #### Inngest (öneri)
-- [ ] `inngest` + `@inngest/next` install
-- [ ] `src/inngest/client.ts` oluştur
-- [ ] `app/api/inngest/route.ts` (serve endpoint)
-- [ ] Launch job'unu BullMQ'dan Inngest function'a taşı
-- [ ] Email gönderimi Inngest step'e al (retry + delay desteği)
-- [ ] `INNGEST_EVENT_KEY`, `INNGEST_SIGNING_KEY` env vars
+- [x] `inngest` + `@inngest/next` install
+- [x] `src/inngest/client.ts` oluştur
+- [x] `app/api/inngest/route.ts` (serve endpoint)
+- [x] Launch job'unu BullMQ'dan Inngest function'a taşı
+- [x] Email gönderimi Inngest step'e al (retry + delay desteği)
+- [x] `INNGEST_EVENT_KEY`, `INNGEST_SIGNING_KEY` env vars
 
 > Pattern: UserService içinde `inngest.send('app/user.signed.up', { email })` → Inngest function'da `step.run()` ile mail gönder + `step.sleep('3d')` ile follow-up
 

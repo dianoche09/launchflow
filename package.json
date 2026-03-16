@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.36.0",
     "gray-matter": "^4.0.3",
+    "inngest": "^3.52.6",
     "ioredis": "^5.10.0",
     "langchain": "^1.2.32",
     "loops": "^6.2.1",
