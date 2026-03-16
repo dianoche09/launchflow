@@ -114,20 +114,20 @@
 - [ ] Worker retry on failure (3x exponential backoff)
 - [ ] Stripe webhook replay safety (no double-charge)
 
-## Phase 8: Dashboard & Admin — Real Data Wiring (IN PROGRESS)
+## Phase 8: Dashboard & Admin — Real Data Wiring (COMPLETED)
 
 ### Auth
-- [ ] Login: Magic link (`supabase.auth.signInWithOtp`)
-- [ ] Login: Password sign-in (`supabase.auth.signInWithPassword`)
-- [ ] Login: Sign up (`supabase.auth.signUp`) + profiles insert
-- [ ] Login: Forgot password (`supabase.auth.resetPasswordForEmail`)
+- [x] Login: Magic link (`supabase.auth.signInWithOtp`)
+- [x] Login: Password sign-in (`supabase.auth.signInWithPassword`)
+- [x] Login: Sign up (`supabase.auth.signUp`) + profiles insert
+- [x] Login: Forgot password (`supabase.auth.resetPasswordForEmail`)
 
 ### User Dashboard
-- [ ] `dashboard/layout.tsx` — credits + username from profiles table, real sign out
-- [ ] `dashboard/launch` — real submissions (Supabase join: submissions + platforms)
-- [ ] `dashboard/kit` — real launch_content (product_hunt_description, reddit_post, hn_post, twitter_thread)
-- [ ] `dashboard/platforms` — real platforms table (all active, tier/category filtered)
-- [ ] `dashboard/projects` — real submission counts per project
+- [x] `dashboard/layout.tsx` — credits + username from profiles table, real sign out
+- [x] `dashboard/launch` — real submissions (Supabase join: submissions + platforms)
+- [x] `dashboard/kit` — real launch_content (product_hunt_description, reddit_post, hn_post, twitter_thread)
+- [x] `dashboard/platforms` — real platforms table (all active, tier/category filtered)
+- [x] `dashboard/projects` — real submission counts per project
 
 ### Admin Dashboard
 - [x] `admin/page.tsx` — real KPIs (user/project/submission counts from Supabase)
