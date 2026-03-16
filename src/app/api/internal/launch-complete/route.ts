@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServer } from '@/lib/supabase/server';
-import { sendLaunchCompleteEmail } from '@/lib/email/resend';
+import { sendLoopsLaunchCompleteEmail } from '@/lib/email/loops';
 import { logger } from '@/lib/logger';
 
 export async function POST(req: NextRequest) {
@@ -58,11 +58,11 @@ export async function POST(req: NextRequest) {
         const total = subs.length;
         const approved = subs.filter((s) => s.status === 'approved' || s.status === 'submitted').length;
 
-        // 3. Send email via Resend
+        // 3. Send email via Loops
         const firstName = fullName ? fullName.split(' ')[0] : 'Founder';
 
-        await sendLaunchCompleteEmail(email, firstName, project.name, total, approved);
-        logger.info('Launch complete email sent', { projectId, email });
+        await sendLoopsLaunchCompleteEmail(email, firstName, project.name, approved);
+        logger.info('Launch complete event sent to Loops', { projectId, email });
 
         // Update project status if needed, though usually worker handles this
         // await supabase.from('projects').update({ status: 'launched' }).eq('id', projectId);

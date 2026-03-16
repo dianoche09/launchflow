@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServer } from '@/lib/supabase/server';
 import { generateLaunchContent } from '@/lib/openai/generate-launch-content';
 import { addLaunchJob } from '@/lib/queue';
-import { sendLaunchStartedEmail } from '@/lib/email/resend';
+import { sendLoopsLaunchStartedEmail } from '@/lib/email/loops';
 import { logger } from '@/lib/logger';
 
 
@@ -87,14 +87,10 @@ export async function POST(
         // 6. Send Launch Started Email
         if (user.email) {
             const firstName = user.user_metadata?.full_name?.split(' ')[0] || 'Founder';
-            await sendLaunchStartedEmail(
+            await sendLoopsLaunchStartedEmail(
                 user.email,
                 firstName,
-                project.name,
-                platforms?.length || 0,
-                autoCount,
-                guidedCount,
-                id
+                project.name
             );
         }
 

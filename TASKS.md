@@ -156,14 +156,14 @@
 ### LangChain — langchain.com
 - [x] `langchain` + `@langchain/openai` install
 - [x] Migrate `generate-launch-content.ts` to LangChain chains
-- [ ] RAG pipeline for platform-specific copy generation
+- [x] RAG pipeline for platform-specific copy generation
 
 ### Loops.so (Email Marketing) — loops.so
-- [ ] `loops` package install
-- [ ] `LOOPS_API_KEY` env var
-- [ ] Onboarding email sequence (welcome → first launch → complete)
-- [ ] Migrate transactional emails from Resend to Loops events
-- [ ] Create `src/lib/email/loops.ts`
+- [x] `loops` package install
+- [x] `LOOPS_API_KEY` env var
+- [x] Onboarding email sequence (welcome → first launch → complete)
+- [x] Migrate transactional emails from Resend to Loops events
+- [x] Create `src/lib/email/loops.ts`
 
 ### Background Jobs — Vercel Timeout Aşımı Çözümleri
 > Vercel 10-30 sn timeout koyar. AI üretimi, toplu submit, büyük analiz için gerekli.

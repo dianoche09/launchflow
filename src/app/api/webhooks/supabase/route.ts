@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendWelcomeEmail } from '@/lib/email/resend';
+import { sendLoopsWelcomeEmail } from '@/lib/email/loops';
 
 // Secret to verify webhook requests from Supabase
 const WEBHOOK_SECRET = process.env.SUPABASE_WEBHOOK_SECRET;
@@ -21,14 +21,9 @@ export async function POST(req: NextRequest) {
 
             const firstName = full_name ? full_name.split(' ')[0] : 'Founder';
 
-            const { data, error } = await sendWelcomeEmail(email, firstName);
+            await sendLoopsWelcomeEmail(email, firstName);
 
-            if (error) {
-                console.error('Error sending welcome email (Resend):', error);
-                return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
-            }
-
-            return NextResponse.json({ message: 'Welcome email sent', data });
+            return NextResponse.json({ message: 'Welcome email event mapped to Loops' });
         }
 
         return NextResponse.json({ message: 'Webhook ignored (not an INSERT profile)' });
